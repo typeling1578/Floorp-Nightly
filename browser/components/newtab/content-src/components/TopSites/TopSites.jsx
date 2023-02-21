@@ -2,10 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import {
-  actionCreators as ac,
-  actionTypes as at,
-} from "common/Actions.sys.mjs";
+import { actionCreators as ac, actionTypes as at } from "common/Actions.jsm";
 import { MIN_RICH_FAVICON_SIZE, TOP_SITES_SOURCE } from "./TopSitesConstants";
 import { CollapsibleSection } from "content-src/components/CollapsibleSection/CollapsibleSection";
 import { ComponentPerfTimer } from "content-src/components/ComponentPerfTimer/ComponentPerfTimer";
@@ -13,7 +10,7 @@ import { connect } from "react-redux";
 import { ModalOverlayWrapper } from "../../asrouter/components/ModalOverlay/ModalOverlay";
 import React from "react";
 import { SearchShortcutsForm } from "./SearchShortcutsForm";
-import { TOP_SITES_MAX_SITES_PER_ROW } from "common/Reducers.sys.mjs";
+import { TOP_SITES_MAX_SITES_PER_ROW } from "common/Reducers.jsm";
 import { TopSiteForm } from "./TopSiteForm";
 import { TopSiteList } from "./TopSite";
 

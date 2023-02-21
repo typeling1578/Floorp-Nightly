@@ -2,10 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import {
-  actionCreators as ac,
-  actionTypes as at,
-} from "common/Actions.sys.mjs";
+import { actionCreators as ac, actionTypes as at } from "common/Actions.jsm";
 import { DSImage } from "../DSImage/DSImage.jsx";
 import { DSLinkMenu } from "../DSLinkMenu/DSLinkMenu";
 import { ImpressionStats } from "../../DiscoveryStreamImpressionStats/ImpressionStats";
@@ -72,7 +69,9 @@ export const DSSource = ({
   return <p className="source clamp">{source}</p>;
 };
 
+// Default Meta that displays CTA as link if cta_variant in layout is set as "link"
 export const DefaultMeta = ({
+  display_engagement_labels,
   source,
   title,
   excerpt,
@@ -80,10 +79,12 @@ export const DefaultMeta = ({
   newSponsoredLabel,
   context,
   context_type,
+  cta,
+  engagement,
+  cta_variant,
   sponsor,
   sponsored_by_override,
   saveToPocketCard,
-  isRecentSave,
 }) => (
   <div className="meta">
     <div className="info-wrap">
@@ -99,6 +100,11 @@ export const DefaultMeta = ({
         {title}
       </header>
       {excerpt && <p className="excerpt clamp">{excerpt}</p>}
+      {cta_variant === "link" && cta && (
+        <div role="link" className="cta-link icon icon-arrow" tabIndex="0">
+          {cta}
+        </div>
+      )}
     </div>
     {!newSponsoredLabel && (
       <DSContextFooter
@@ -106,6 +112,8 @@ export const DefaultMeta = ({
         context={context}
         sponsor={sponsor}
         sponsored_by_override={sponsored_by_override}
+        display_engagement_labels={display_engagement_labels}
+        engagement={engagement}
       />
     )}
     {/* Sponsored label is normally in the way of any message.
@@ -115,7 +123,54 @@ export const DefaultMeta = ({
       <DSMessageFooter
         context_type={context_type}
         context={null}
+        display_engagement_labels={display_engagement_labels}
+        engagement={engagement}
         saveToPocketCard={saveToPocketCard}
+      />
+    )}
+  </div>
+);
+
+export const CTAButtonMeta = ({
+  display_engagement_labels,
+  source,
+  title,
+  excerpt,
+  context,
+  context_type,
+  cta,
+  engagement,
+  sponsor,
+  sponsored_by_override,
+}) => (
+  <div className="meta">
+    <div className="info-wrap">
+      <p className="source clamp">
+        {context && (
+          <FluentOrText
+            message={{
+              id: `newtab-label-sponsored`,
+              values: { sponsorOrSource: sponsor ? sponsor : source },
+            }}
+          />
+        )}
+
+        {!context && (sponsor ? sponsor : source)}
+      </p>
+      <header title={title} className="title clamp">
+        {title}
+      </header>
+      {excerpt && <p className="excerpt clamp">{excerpt}</p>}
+    </div>
+    {context && cta && <button className="button cta-button">{cta}</button>}
+    {!context && (
+      <DSContextFooter
+        context_type={context_type}
+        context={context}
+        sponsor={sponsor}
+        sponsored_by_override={sponsored_by_override}
+        display_engagement_labels={display_engagement_labels}
+        engagement={engagement}
       />
     )}
   </div>
@@ -179,9 +234,11 @@ export class _DSCard extends React.PureComponent {
   onLinkClick(event) {
     if (this.props.dispatch) {
       this.props.dispatch(
-        ac.DiscoveryStreamUserEvent({
+        ac.UserEvent({
           event: "CLICK",
-          source: this.props.type.toUpperCase(),
+          source: this.props.is_video
+            ? "CARDGRID_VIDEO"
+            : this.props.type.toUpperCase(),
           action_position: this.props.pos,
           value: { card_type: this.props.flightId ? "spoc" : "organic" },
         })
@@ -189,7 +246,9 @@ export class _DSCard extends React.PureComponent {
 
       this.props.dispatch(
         ac.ImpressionStats({
-          source: this.props.type.toUpperCase(),
+          source: this.props.is_video
+            ? "CARDGRID_VIDEO"
+            : this.props.type.toUpperCase(),
           click: 0,
           window_inner_width: this.props.windowObj.innerWidth,
           window_inner_height: this.props.windowObj.innerHeight,
@@ -200,7 +259,6 @@ export class _DSCard extends React.PureComponent {
               ...(this.props.shim && this.props.shim.click
                 ? { shim: this.props.shim.click }
                 : {}),
-              type: this.props.flightId ? "spoc" : "organic",
             },
           ],
         })
@@ -218,11 +276,10 @@ export class _DSCard extends React.PureComponent {
       );
 
       this.props.dispatch(
-        ac.DiscoveryStreamUserEvent({
+        ac.UserEvent({
           event: "SAVE_TO_POCKET",
           source: "CARDGRID_HOVER",
           action_position: this.props.pos,
-          value: { card_type: this.props.flightId ? "spoc" : "organic" },
         })
       );
 
@@ -322,19 +379,46 @@ export class _DSCard extends React.PureComponent {
       );
     }
 
-    const { isRecentSave, DiscoveryStream, saveToPocketCard } = this.props;
+    if (this.props.lastCard) {
+      return (
+        <div className="ds-card last-card-message">
+          <div className="img-wrapper">
+            <picture className="ds-image img loaded">
+              <img
+                data-l10n-id="newtab-pocket-last-card-image"
+                className="last-card-message-image"
+                src="chrome://activity-stream/content/data/content/assets/caught-up-illustration.svg"
+                alt="You’re all caught up"
+              />
+            </picture>
+          </div>
+          <div className="meta">
+            <div className="info-wrap">
+              <header
+                className="title clamp"
+                data-l10n-id="newtab-pocket-last-card-title"
+              />
+              <p
+                className="ds-last-card-desc"
+                data-l10n-id="newtab-pocket-last-card-desc"
+              />
+            </div>
+          </div>
+        </div>
+      );
+    }
+    const isButtonCTA = this.props.cta_variant === "button";
 
     const {
-      pocketButtonEnabled,
+      is_video,
+      saveToPocketCard,
       hideDescriptions,
       compactImages,
       imageGradient,
-      newSponsoredLabel,
       titleLines = 3,
       descLines = 3,
-      readTime: displayReadTime,
-    } = DiscoveryStream;
-
+      displayReadTime,
+    } = this.props;
     const excerpt = !hideDescriptions ? this.props.excerpt : "";
 
     let timeToRead;
@@ -343,6 +427,7 @@ export class _DSCard extends React.PureComponent {
         this.props.time_to_read || readTimeFromWordCount(this.props.word_count);
     }
 
+    const videoCardClassName = is_video ? `video-card` : ``;
     const compactImagesClassName = compactImages ? `ds-card-compact-image` : ``;
     const imageGradientClassName = imageGradient
       ? `ds-card-image-gradient`
@@ -350,27 +435,9 @@ export class _DSCard extends React.PureComponent {
     const titleLinesName = `ds-card-title-lines-${titleLines}`;
     const descLinesClassName = `ds-card-desc-lines-${descLines}`;
 
-    let stpButton = () => {
-      return (
-        <button className="card-stp-button" onClick={this.onSaveClick}>
-          {this.props.context_type === "pocket" ? (
-            <>
-              <span className="story-badge-icon icon icon-pocket" />
-              <span data-l10n-id="newtab-pocket-saved" />
-            </>
-          ) : (
-            <>
-              <span className="story-badge-icon icon icon-pocket-save" />
-              <span data-l10n-id="newtab-pocket-save" />
-            </>
-          )}
-        </button>
-      );
-    };
-
     return (
       <div
-        className={`ds-card ${compactImagesClassName} ${imageGradientClassName} ${titleLinesName} ${descLinesClassName}`}
+        className={`ds-card ${videoCardClassName} ${videoCardClassName} ${compactImagesClassName} ${imageGradientClassName} ${titleLinesName} ${descLinesClassName}`}
         ref={this.setContextMenuButtonHostRef}
       >
         <SafeAnchor
@@ -385,23 +452,45 @@ export class _DSCard extends React.PureComponent {
               source={this.props.image_src}
               rawSource={this.props.raw_image_src}
               sizes={this.dsImageSizes}
-              url={this.props.url}
-              title={this.props.title}
-              isRecentSave={isRecentSave}
             />
+            {this.props.is_video && (
+              <div className="playhead">
+                <span>Video Content</span>
+              </div>
+            )}
           </div>
-          <DefaultMeta
-            source={this.props.source}
-            title={this.props.title}
-            excerpt={excerpt}
-            newSponsoredLabel={newSponsoredLabel}
-            timeToRead={timeToRead}
-            context={this.props.context}
-            context_type={this.props.context_type}
-            sponsor={this.props.sponsor}
-            sponsored_by_override={this.props.sponsored_by_override}
-            saveToPocketCard={saveToPocketCard}
-          />
+          {isButtonCTA ? (
+            <CTAButtonMeta
+              display_engagement_labels={this.props.display_engagement_labels}
+              source={this.props.source}
+              title={this.props.title}
+              excerpt={excerpt}
+              timeToRead={timeToRead}
+              context={this.props.context}
+              context_type={this.props.context_type}
+              engagement={this.props.engagement}
+              cta={this.props.cta}
+              sponsor={this.props.sponsor}
+              sponsored_by_override={this.props.sponsored_by_override}
+            />
+          ) : (
+            <DefaultMeta
+              display_engagement_labels={this.props.display_engagement_labels}
+              source={this.props.source}
+              title={this.props.title}
+              excerpt={excerpt}
+              newSponsoredLabel={this.props.newSponsoredLabel}
+              timeToRead={timeToRead}
+              context={this.props.context}
+              engagement={this.props.engagement}
+              context_type={this.props.context_type}
+              cta={this.props.cta}
+              cta_variant={this.props.cta_variant}
+              sponsor={this.props.sponsor}
+              sponsored_by_override={this.props.sponsored_by_override}
+              saveToPocketCard={saveToPocketCard}
+            />
+          )}
           <ImpressionStats
             flightId={this.props.flightId}
             rows={[
@@ -414,13 +503,25 @@ export class _DSCard extends React.PureComponent {
               },
             ]}
             dispatch={this.props.dispatch}
-            source={this.props.type}
+            source={this.props.is_video ? "CARDGRID_VIDEO" : this.props.type}
           />
         </SafeAnchor>
         {saveToPocketCard && (
           <div className="card-stp-button-hover-background">
             <div className="card-stp-button-position-wrapper">
-              {!this.props.flightId && stpButton()}
+              <button className="card-stp-button" onClick={this.onSaveClick}>
+                {this.props.context_type === "pocket" ? (
+                  <>
+                    <span className="story-badge-icon icon icon-pocket" />
+                    <span data-l10n-id="newtab-pocket-saved-to-pocket" />
+                  </>
+                ) : (
+                  <>
+                    <span className="story-badge-icon icon icon-pocket-save" />
+                    <span data-l10n-id="newtab-pocket-save-to-pocket" />
+                  </>
+                )}
+              </button>
               <DSLinkMenu
                 id={this.props.id}
                 index={this.props.pos}
@@ -439,8 +540,7 @@ export class _DSCard extends React.PureComponent {
                 onMenuUpdate={this.onMenuUpdate}
                 onMenuShow={this.onMenuShow}
                 saveToPocketCard={saveToPocketCard}
-                pocket_button_enabled={pocketButtonEnabled}
-                isRecentSave={isRecentSave}
+                pocket_button_enabled={this.props.pocket_button_enabled}
               />
             </div>
           </div>
@@ -464,8 +564,7 @@ export class _DSCard extends React.PureComponent {
             hostRef={this.contextMenuButtonHostRef}
             onMenuUpdate={this.onMenuUpdate}
             onMenuShow={this.onMenuShow}
-            pocket_button_enabled={pocketButtonEnabled}
-            isRecentSave={isRecentSave}
+            pocket_button_enabled={this.props.pocket_button_enabled}
           />
         )}
       </div>
@@ -479,7 +578,7 @@ _DSCard.defaultProps = {
 
 export const DSCard = connect(state => ({
   App: state.App,
-  DiscoveryStream: state.DiscoveryStream,
 }))(_DSCard);
 
 export const PlaceholderDSCard = props => <DSCard placeholder={true} />;
+export const LastCardMessage = props => <DSCard lastCard={true} />;

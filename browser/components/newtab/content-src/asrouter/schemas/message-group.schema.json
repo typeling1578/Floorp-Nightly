@@ -38,8 +38,12 @@
             "type": "object",
             "properties": {
               "period": {
-                "type": "integer",
-                "description": "Period of time in milliseconds (e.g. 86400000 for one day)"
+                "oneOf": [
+                  {
+                    "type": "integer",
+                    "description": "Period of time in milliseconds (e.g. 86400000 for one day)"
+                  }
+                ]
               },
               "cap": {
                 "type": "integer",
@@ -52,13 +56,8 @@
           }
         }
       }
-    },
-    "type": {
-      "type": "string",
-      "description": "Local auto-generated group or remote group configuration from RS.",
-      "enum": ["remote-settings", "local", "default"]
     }
   },
-  "required": ["id", "enabled", "type"],
+  "required": ["id", "enabled"],
   "additionalProperties": true
 }

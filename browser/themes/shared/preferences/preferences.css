@@ -3,6 +3,7 @@
    - You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 @namespace html "http://www.w3.org/1999/xhtml";
+@import url("chrome://browser/skin/preferences/preferences-floorp.css");
 
 /* Global rules */
 :root {

@@ -2,10 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import {
-  actionCreators as ac,
-  actionTypes as at,
-} from "common/Actions.sys.mjs";
+import { actionCreators as ac, actionTypes as at } from "common/Actions.jsm";
 import {
   MIN_RICH_FAVICON_SIZE,
   MIN_SMALL_FAVICON_SIZE,
@@ -19,20 +16,11 @@ import { LinkMenu } from "content-src/components/LinkMenu/LinkMenu";
 import { ImpressionStats } from "../DiscoveryStreamImpressionStats/ImpressionStats";
 import React from "react";
 import { ScreenshotUtils } from "content-src/lib/screenshot-utils";
-import { TOP_SITES_MAX_SITES_PER_ROW } from "common/Reducers.sys.mjs";
+import { TOP_SITES_MAX_SITES_PER_ROW } from "common/Reducers.jsm";
 import { ContextMenuButton } from "content-src/components/ContextMenu/ContextMenuButton";
 import { TopSiteImpressionWrapper } from "./TopSiteImpressionWrapper";
 const SPOC_TYPE = "SPOC";
 const NEWTAB_SOURCE = "newtab";
-
-// For cases if we want to know if this is sponsored by either sponsored_position or type.
-// We have two sources for sponsored topsites, and
-// sponsored_position is set by one sponsored source, and type is set by another.
-// This is not called in all cases, sometimes we want to know if it's one source
-// or the other. This function is only applicable in cases where we only care if it's either.
-function isSponsored(link) {
-  return link?.sponsored_position || link?.type === SPOC_TYPE;
-}
 
 export class TopSiteLink extends React.PureComponent {
   constructor(props) {
@@ -49,7 +37,7 @@ export class TopSiteLink extends React.PureComponent {
    */
   _allowDrop(e) {
     return (
-      (this.dragged || !isSponsored(this.props.link)) &&
+      (this.dragged || !this.props.link.sponsored_position) &&
       e.dataTransfer.types.includes("text/topsite-index")
     );
   }
@@ -64,7 +52,7 @@ export class TopSiteLink extends React.PureComponent {
         break;
       case "dragstart":
         event.target.blur();
-        if (isSponsored(this.props.link)) {
+        if (this.props.link.sponsored_position) {
           event.preventDefault();
           break;
         }
@@ -222,7 +210,7 @@ export class TopSiteLink extends React.PureComponent {
         backgroundColor: link.backgroundColor,
         backgroundImage: hasScreenshotImage
           ? `url(${this.state.screenshotImage.url})`
-          : `url('${spocImgURL}')`,
+          : `url(${spocImgURL})`,
       };
     } else if (tippyTopIcon || faviconSize >= MIN_RICH_FAVICON_SIZE) {
       // styles and class names for top sites with rich icons
@@ -290,6 +278,7 @@ export class TopSiteLink extends React.PureComponent {
         onDragLeave={this.onDragEvent}
         {...draggableProps}
       >
+        <div className="background" />
         <div className="top-site-inner">
           {/* We don't yet support an accessible drag-and-drop implementation, see Bug 1552005 */}
           {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
@@ -300,7 +289,6 @@ export class TopSiteLink extends React.PureComponent {
             onKeyPress={this.onKeyPress}
             onClick={onClick}
             draggable={true}
-            data-is-sponsored-link={!!link.sponsored_tile_id}
           >
             <div className="tile" aria-hidden={true}>
               <div
@@ -351,7 +339,6 @@ export class TopSiteLink extends React.PureComponent {
                   id: link.id,
                   pos: link.pos,
                   shim: link.shim && link.shim.impression,
-                  advertiser: title.toLocaleLowerCase(),
                 },
               ]}
               dispatch={this.props.dispatch}
@@ -404,7 +391,10 @@ export class TopSite extends React.PureComponent {
       value.card_type = "search";
       value.search_vendor = this.props.link.hostname;
     }
-    if (isSponsored(this.props.link)) {
+    if (
+      this.props.link.type === SPOC_TYPE ||
+      this.props.link.sponsored_position
+    ) {
       value.card_type = "spoc";
     }
     return { value };
@@ -444,7 +434,6 @@ export class TopSite extends React.PureComponent {
 
       // Fire off a spoc specific impression.
       if (this.props.link.type === SPOC_TYPE) {
-        // Record a Pocket click.
         this.props.dispatch(
           ac.ImpressionStats({
             source: TOP_SITES_SOURCE,
@@ -456,21 +445,6 @@ export class TopSite extends React.PureComponent {
                 shim: this.props.link.shim && this.props.link.shim.click,
               },
             ],
-          })
-        );
-
-        // Record a click for sponsored topsites.
-        const title = this.props.link.label || this.props.link.hostname;
-        this.props.dispatch(
-          ac.OnlyToMain({
-            type: at.TOP_SITES_IMPRESSION_STATS,
-            data: {
-              type: "click",
-              position: this.props.link.pos + 1,
-              tile_id: this.props.link.id,
-              advertiser: title.toLocaleLowerCase(),
-              source: NEWTAB_SOURCE,
-            },
           })
         );
       }
@@ -593,7 +567,7 @@ export class TopSitePlaceholder extends React.PureComponent {
         isDraggable={false}
       >
         <button
-          aria-haspopup="dialog"
+          aria-haspopup="true"
           className="context-menu-button edit-button icon"
           data-l10n-id="newtab-menu-topsites-placeholder-tooltip"
           onClick={this.onEditButtonClick}
@@ -720,10 +694,10 @@ export class TopSiteList extends React.PureComponent {
     const topSites = this._getTopSites();
     topSites[this.state.draggedIndex] = null;
     const preview = topSites.map(site =>
-      site && (site.isPinned || isSponsored(site)) ? site : null
+      site && (site.isPinned || site.sponsored_position) ? site : null
     );
     const unpinned = topSites.filter(
-      site => site && !site.isPinned && !isSponsored(site)
+      site => site && !site.isPinned && !site.sponsored_position
     );
     const siteToInsert = Object.assign({}, this.state.draggedSite, {
       isPinned: true,
@@ -747,7 +721,7 @@ export class TopSiteList extends React.PureComponent {
         index > this.state.draggedIndex ? holeIndex < index : holeIndex > index
       ) {
         let nextIndex = holeIndex + shiftingStep;
-        while (isSponsored(preview[nextIndex])) {
+        while (preview[nextIndex] && preview[nextIndex].sponsored_position) {
           nextIndex += shiftingStep;
         }
         preview[holeIndex] = preview[nextIndex];

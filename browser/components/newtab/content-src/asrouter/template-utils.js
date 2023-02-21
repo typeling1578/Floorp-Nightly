@@ -15,8 +15,7 @@ export function safeURI(url) {
     "chrome:",
   ].includes(protocol);
   if (!isAllowed) {
-    // eslint-disable-next-line no-console
-    console.warn(`The protocol ${protocol} is not allowed for template URLs.`);
+    console.warn(`The protocol ${protocol} is not allowed for template URLs.`); // eslint-disable-line no-console
   }
   return isAllowed ? url : "";
 }

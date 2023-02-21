@@ -2,10 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import {
-  actionCreators as ac,
-  actionTypes as at,
-} from "common/Actions.sys.mjs";
+import { actionCreators as ac, actionTypes as at } from "common/Actions.jsm";
 import { ASRouterUtils } from "../../asrouter/asrouter-utils";
 import { connect } from "react-redux";
 import React from "react";
@@ -497,10 +494,11 @@ export class ASRouterAdminInner extends React.PureComponent {
     this.setAttribution = this.setAttribution.bind(this);
     this.onCopyTargetingParams = this.onCopyTargetingParams.bind(this);
     this.onNewTargetingParams = this.onNewTargetingParams.bind(this);
-    this.handleOpenPB = this.handleOpenPB.bind(this);
-    this.selectPBMessage = this.selectPBMessage.bind(this);
-    this.resetPBJSON = this.resetPBJSON.bind(this);
-    this.resetPBMessageState = this.resetPBMessageState.bind(this);
+    this.handleUpdateWNMessages = this.handleUpdateWNMessages.bind(this);
+    this.handleForceWNP = this.handleForceWNP.bind(this);
+    this.handleCloseWNP = this.handleCloseWNP.bind(this);
+    this.resetPanel = this.resetPanel.bind(this);
+    this.restoreWNMessageState = this.restoreWNMessageState.bind(this);
     this.toggleJSON = this.toggleJSON.bind(this);
     this.toggleAllMessages = this.toggleAllMessages.bind(this);
     this.resetGroups = this.resetGroups.bind(this);
@@ -510,9 +508,9 @@ export class ASRouterAdminInner extends React.PureComponent {
     this.state = {
       messageFilter: "all",
       messageGroupsFilter: "all",
+      WNMessages: [],
       collapsedMessages: [],
       modifiedMessages: [],
-      selectedPBMessage: "",
       evaluationStatus: {},
       stringTargetingParameters: null,
       newStringTargetingParameters: null,
@@ -589,6 +587,31 @@ export class ASRouterAdminInner extends React.PureComponent {
     }));
   }
 
+  resetAllJSON() {
+    let messageCheckboxes = document.querySelectorAll('input[type="checkbox"]');
+
+    for (const checkbox of messageCheckboxes) {
+      let trimmedId = checkbox.id.replace(" checkbox", "");
+
+      let message = this.state.messages.filter(msg => msg.id === trimmedId);
+      let msgId = message[0].id;
+
+      document.getElementById(`${msgId}-textarea`).value = JSON.stringify(
+        message[0],
+        null,
+        2
+      );
+    }
+    this.setState({
+      WNMessages: [],
+    });
+  }
+
+  resetPanel() {
+    this.resetAllJSON();
+    this.handleCloseWNP();
+  }
+
   handleOverride(id) {
     return () =>
       ASRouterUtils.overrideMessage(id).then(state => {
@@ -599,37 +622,21 @@ export class ASRouterAdminInner extends React.PureComponent {
       });
   }
 
-  resetPBMessageState() {
-    // Iterate over Private Browsing messages and block/unblock each one to clear impressions
-    const PBMessages = this.state.messages.filter(
-      message => message.template === "pb_newtab"
-    ); // messages from state go here
+  async handleUpdateWNMessages() {
+    await this.restoreWNMessageState();
+    let messages = this.state.WNMessages;
 
-    PBMessages.forEach(message => {
-      if (message?.id) {
-        ASRouterUtils.blockById(message.id);
-        ASRouterUtils.unblockById(message.id);
-      }
-    });
-    // Clear the selected messages & radio buttons
-    document.getElementById("clear radio").checked = true;
-    this.selectPBMessage("clear");
+    for (const msg of messages) {
+      ASRouterUtils.modifyMessageJson(JSON.parse(msg));
+    }
   }
 
-  resetPBJSON(msg) {
-    // reset the displayed JSON for the given message
-    document.getElementById(`${msg.id}-textarea`).value = JSON.stringify(
-      msg,
-      null,
-      2
-    );
+  handleForceWNP() {
+    ASRouterUtils.sendMessage({ type: "FORCE_WHATSNEW_PANEL" });
   }
 
-  handleOpenPB() {
-    ASRouterUtils.sendMessage({
-      type: "FORCE_PRIVATE_BROWSING_WINDOW",
-      data: { message: { content: this.state.selectedPBMessage } },
-    });
+  handleCloseWNP() {
+    ASRouterUtils.sendMessage({ type: "CLOSE_WHATSNEW_PANEL" });
   }
 
   expireCache() {
@@ -672,7 +679,7 @@ export class ASRouterAdminInner extends React.PureComponent {
       try {
         JSON.parse(value);
       } catch (e) {
-        console.error(`Error parsing value of parameter ${name}`);
+        console.log(`Error parsing value of parameter ${name}`); // eslint-disable-line no-console
         targetingParametersError = { id: name };
       }
 
@@ -935,25 +942,23 @@ export class ASRouterAdminInner extends React.PureComponent {
     );
   }
 
-  selectPBMessage(msgId) {
-    if (msgId === "clear") {
-      this.setState({
-        selectedPBMessage: "",
-      });
-    } else {
-      let selected = document.getElementById(`${msgId} radio`);
-      let msg = JSON.parse(document.getElementById(`${msgId}-textarea`).value);
+  restoreWNMessageState() {
+    // check the page for checked boxes, and reset the state of WNMessages based on that.
+    let tempState = [];
+    let messageCheckboxes = document.querySelectorAll('input[type="checkbox"]');
+    // put the JSON of all the checked checkboxes in the array
+    for (const checkbox of messageCheckboxes) {
+      let trimmedId = checkbox.id.replace(" checkbox", "");
+      let msg = document.getElementById(`${trimmedId}-textarea`).value;
 
-      if (selected.checked) {
-        this.setState({
-          selectedPBMessage: msg?.content,
-        });
-      } else {
-        this.setState({
-          selectedPBMessage: "",
-        });
+      if (checkbox.checked) {
+        tempState.push(msg);
       }
     }
+
+    this.setState({
+      WNMessages: tempState,
+    });
   }
 
   modifyJson(content) {
@@ -968,7 +973,7 @@ export class ASRouterAdminInner extends React.PureComponent {
     });
   }
 
-  renderPBMessageItem(msg) {
+  renderWNMessageItem(msg) {
     const isBlocked =
       this.state.messageBlockList.includes(msg.id) ||
       this.state.messageBlockList.includes(msg.campaign);
@@ -1000,27 +1005,10 @@ export class ASRouterAdminInner extends React.PureComponent {
         </td>
         <td>
           <input
-            type="radio"
-            id={`${msg.id} radio`}
-            name="PB_message_radio"
-            style={{ marginBottom: 20 }}
-            onClick={() => this.selectPBMessage(msg.id)}
-            disabled={isBlocked}
+            type="checkbox"
+            id={`${msg.id} checkbox`}
+            name={`${msg.id} checkbox`}
           />
-          <button
-            className={`button ${isBlocked ? "" : " primary"}`}
-            onClick={
-              isBlocked ? this.handleUnblock(msg) : this.handleBlock(msg)
-            }
-          >
-            {isBlocked ? "Unblock" : "Block"}
-          </button>
-          <button
-            className="ASRouterButton slim button"
-            onClick={e => this.resetPBJSON(msg)}
-          >
-            Reset JSON
-          </button>
         </td>
         <td className={`message-summary`}>
           <pre className={isCollapsed ? "collapsed" : "expanded"}>
@@ -1059,9 +1047,7 @@ export class ASRouterAdminInner extends React.PureComponent {
       this.state.messageFilter === "all"
         ? this.state.messages
         : this.state.messages.filter(
-            message =>
-              message.provider === this.state.messageFilter &&
-              message.template !== "pb_newtab"
+            message => message.provider === this.state.messageFilter
           );
 
     return (
@@ -1107,17 +1093,17 @@ export class ASRouterAdminInner extends React.PureComponent {
     );
   }
 
-  renderPBMessages() {
+  renderWNMessages() {
     if (!this.state.messages) {
       return null;
     }
     const messagesToShow = this.state.messages.filter(
-      message => message.template === "pb_newtab"
+      message => message.provider === "whats-new-panel" && message.content.body
     );
     return (
       <table>
         <tbody>
-          {messagesToShow.map(msg => this.renderPBMessageItem(msg))}
+          {messagesToShow.map(msg => this.renderWNMessageItem(msg))}
         </tbody>
       </table>
     );
@@ -1232,7 +1218,7 @@ export class ASRouterAdminInner extends React.PureComponent {
                 </span>
               );
             } else if (provider.type === "remote-settings") {
-              label = `remote settings (${provider.collection})`;
+              label = `remote settings (${provider.bucket})`;
             } else if (provider.type === "remote-experiments") {
               label = (
                 <span>
@@ -1647,12 +1633,12 @@ export class ASRouterAdminInner extends React.PureComponent {
     return <p>No errors</p>;
   }
 
-  renderPBTab() {
+  renderWNPTests() {
     if (!this.state.messages) {
       return null;
     }
     let messagesToShow = this.state.messages.filter(
-      message => message.template === "pb_newtab"
+      message => message.provider === "whats-new-panel"
     );
 
     return (
@@ -1660,41 +1646,37 @@ export class ASRouterAdminInner extends React.PureComponent {
         <p className="helpLink">
           <span className="icon icon-small-spacer icon-info" />{" "}
           <span>
-            To view an available message, select its radio button and click
-            "Open a Private Browsing Window".
+            To correctly render selected messages, click 'Open What's New
+            Panel', select the messages you want to see, and click 'Render
+            Selected Messages'.
             <br />
-            To modify a message, make changes to the JSON first, then select the
-            radio button. (To make new changes, click "Reset Message State",
-            make your changes, and reselect the radio button.)
             <br />
-            Click "Reset Message State" to clear all message impressions and
-            view messages in a clean state.
+            To modify a message, select it, modify the JSON and click 'Render
+            Selected Messages' again to see your changes.
             <br />
-            Note that ContentSearch functions do not work in debug mode.
+            Click 'Reset Panel' to close the panel and reset all JSON to its
+            original state.
           </span>
         </p>
         <div>
           <button
             className="ASRouterButton primary button"
-            onClick={this.handleOpenPB}
+            onClick={this.handleForceWNP}
           >
-            Open a Private Browsing Window
+            Open What's New Panel
           </button>
           <button
-            className="ASRouterButton primary button"
-            style={{ marginInlineStart: 12 }}
-            onClick={this.resetPBMessageState}
+            className="ASRouterButton secondary button"
+            onClick={this.handleUpdateWNMessages}
           >
-            Reset Message State
+            Render Selected Messages
           </button>
-          <br />
-          <input
-            type="radio"
-            id={`clear radio`}
-            name="PB_message_radio"
-            value="clearPBMessage"
-            style={{ display: "none" }}
-          />
+          <button
+            className="ASRouterButton secondary button"
+            onClick={this.resetPanel}
+          >
+            Reset Panel
+          </button>
           <h2>Messages</h2>
           <button
             className="ASRouterButton slim button"
@@ -1703,7 +1685,7 @@ export class ASRouterAdminInner extends React.PureComponent {
           >
             Collapse/Expand All
           </button>
-          {this.renderPBMessages()}
+          {this.renderWNMessages()}
         </div>
       </div>
     );
@@ -1712,11 +1694,11 @@ export class ASRouterAdminInner extends React.PureComponent {
   getSection() {
     const [section] = this.props.location.routes;
     switch (section) {
-      case "private":
+      case "wnpanel":
         return (
           <React.Fragment>
-            <h2>Private Browsing Messages</h2>
-            {this.renderPBTab()}
+            <h2>What's New Panel</h2>
+            {this.renderWNPTests()}
           </React.Fragment>
         );
       case "targeting":
@@ -1831,7 +1813,7 @@ export class ASRouterAdminInner extends React.PureComponent {
               <a href="#devtools">General</a>
             </li>
             <li>
-              <a href="#devtools-private">Private Browsing</a>
+              <a href="#devtools-wnpanel">What's New Panel</a>
             </li>
             <li>
               <a href="#devtools-targeting">Targeting</a>

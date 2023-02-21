@@ -69,7 +69,7 @@ export class SubmitFormSnippet extends React.PureComponent {
       const response = await fetch(fetchRequest); // eslint-disable-line fetch-options/no-fetch-credentials
       json = await response.json();
     } catch (err) {
-      console.error(err);
+      console.log(err); // eslint-disable-line no-console
     }
 
     if (json && json.status === "ok") {
@@ -83,6 +83,7 @@ export class SubmitFormSnippet extends React.PureComponent {
         id: "NEWTAB_FOOTER_BAR_CONTENT",
       });
     } else {
+      // eslint-disable-next-line no-console
       console.error(
         "There was a problem submitting the form",
         json || "[No JSON response]"

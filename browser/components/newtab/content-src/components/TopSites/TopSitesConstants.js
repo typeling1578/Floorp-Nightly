@@ -14,6 +14,8 @@ export const TOP_SITES_CONTEXT_MENU_OPTIONS = [
   "DeleteUrl",
 ];
 export const TOP_SITES_SPOC_CONTEXT_MENU_OPTIONS = [
+  "PinTopSite",
+  "Separator",
   "OpenInNewWindow",
   "OpenInPrivateWindow",
   "Separator",

@@ -3,10 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import React from "react";
-import {
-  actionCreators as ac,
-  actionTypes as at,
-} from "common/Actions.sys.mjs";
+import { actionCreators as ac, actionTypes as at } from "common/Actions.jsm";
 import { ModalOverlayWrapper } from "content-src/asrouter/components/ModalOverlay/ModalOverlay";
 
 export class DSPrivacyModal extends React.PureComponent {
@@ -19,7 +16,7 @@ export class DSPrivacyModal extends React.PureComponent {
 
   onLearnLinkClick(event) {
     this.props.dispatch(
-      ac.DiscoveryStreamUserEvent({
+      ac.UserEvent({
         event: "CLICK_PRIVACY_INFO",
         source: "DS_PRIVACY_MODAL",
       })

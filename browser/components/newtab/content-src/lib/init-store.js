@@ -2,13 +2,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-/* eslint-env mozilla/remote-page */
+/* eslint-env mozilla/frame-script */
 
 import {
   actionCreators as ac,
   actionTypes as at,
   actionUtils as au,
-} from "common/Actions.sys.mjs";
+} from "common/Actions.jsm";
 import { applyMiddleware, combineReducers, createStore } from "redux";
 
 export const MERGE_STORE_ACTION = "NEW_TAB_INITIAL_STATE";
@@ -161,7 +161,7 @@ export function initStore(reducers, initialState) {
       try {
         store.dispatch(msg.data);
       } catch (ex) {
-        console.error("Content msg:", msg, "Dispatch error: ", ex);
+        console.error("Content msg:", msg, "Dispatch error: ", ex); // eslint-disable-line no-console
         dump(
           `Content msg: ${JSON.stringify(msg)}\nDispatch error: ${ex}\n${
             ex.stack

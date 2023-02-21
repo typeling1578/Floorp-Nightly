@@ -2,7 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import { actionCreators as ac } from "common/Actions.sys.mjs";
+import { actionCreators as ac } from "common/Actions.jsm";
 import { DSDismiss } from "content-src/components/DiscoveryStreamComponents/DSDismiss/DSDismiss";
 import { DSImage } from "../DSImage/DSImage.jsx";
 import { ImpressionStats } from "../../DiscoveryStreamImpressionStats/ImpressionStats";
@@ -24,7 +24,7 @@ export class DSTextPromo extends React.PureComponent {
       // Grab the first item in the array as we only have 1 spoc position.
       const [spoc] = data.spocs;
       this.props.dispatch(
-        ac.DiscoveryStreamUserEvent({
+        ac.UserEvent({
           event: "CLICK",
           source,
           action_position: 0,
@@ -67,7 +67,7 @@ export class DSTextPromo extends React.PureComponent {
 
       this.props.dispatch(action);
       this.props.dispatch(
-        ac.DiscoveryStreamUserEvent({
+        ac.UserEvent({
           event: userEvent,
           source,
           action_position: index,

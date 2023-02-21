@@ -5,10 +5,7 @@
 /* globals ContentSearchUIController, ContentSearchHandoffUIController */
 "use strict";
 
-import {
-  actionCreators as ac,
-  actionTypes as at,
-} from "common/Actions.sys.mjs";
+import { actionCreators as ac, actionTypes as at } from "common/Actions.jsm";
 import { connect } from "react-redux";
 import { IS_NEWTAB } from "content-src/lib/constants";
 import React from "react";

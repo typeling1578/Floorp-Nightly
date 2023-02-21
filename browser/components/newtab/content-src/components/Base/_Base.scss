@@ -24,7 +24,6 @@
 }
 
 main {
-position:relative;
   margin: auto;
   width: $wrapper-default-width;
   padding: 0;
@@ -141,17 +140,4 @@ position:relative;
       background-color: var(--newtab-element-active-color);
     }
   }
-}
-
-#floorp {
-  position: fixed;
-  bottom: 2.5em;
-  color: rgba(255, 255, 255, 0.8);
-}
-
-.releasenote {
-  position: fixed;
-  font-size: 1.2em;
-  right: 1.5em;
-  color: #ffffff8e;
 }

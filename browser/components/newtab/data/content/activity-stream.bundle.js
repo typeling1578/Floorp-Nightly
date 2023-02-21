@@ -78,24 +78,24 @@ __webpack_require__.d(builtins_namespaceObject, {
   "NUMBER": () => (NUMBER)
 });
 
-;// CONCATENATED MODULE: ./common/Actions.jsm
+;// CONCATENATED MODULE: ./common/Actions.sys.mjs
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+const MAIN_MESSAGE_TYPE = "ActivityStream:Main";
+const CONTENT_MESSAGE_TYPE = "ActivityStream:Content";
+const PRELOAD_MESSAGE_TYPE = "ActivityStream:PreloadedBrowser";
+const UI_CODE = 1;
+const BACKGROUND_PROCESS = 2;
 
-var MAIN_MESSAGE_TYPE = "ActivityStream:Main";
-var CONTENT_MESSAGE_TYPE = "ActivityStream:Content";
-var PRELOAD_MESSAGE_TYPE = "ActivityStream:PreloadedBrowser";
-var UI_CODE = 1;
-var BACKGROUND_PROCESS = 2;
 /**
  * globalImportContext - Are we in UI code (i.e. react, a dom) or some kind of background process?
  *                       Use this in action creators if you need different logic
  *                       for ui/background processes.
  */
-
-const globalImportContext = typeof Window === "undefined" ? BACKGROUND_PROCESS : UI_CODE; // Export for tests
+const globalImportContext =
+  typeof Window === "undefined" ? BACKGROUND_PROCESS : UI_CODE;
 
 // Create an object that avoids accidental differing key/value pairs:
 // {
@@ -104,33 +104,169 @@ const globalImportContext = typeof Window === "undefined" ? BACKGROUND_PROCESS :
 // }
 const actionTypes = {};
 
-for (const type of ["ABOUT_SPONSORED_TOP_SITES", "ADDONS_INFO_REQUEST", "ADDONS_INFO_RESPONSE", "ARCHIVE_FROM_POCKET", "AS_ROUTER_INITIALIZED", "AS_ROUTER_PREF_CHANGED", "AS_ROUTER_TARGETING_UPDATE", "AS_ROUTER_TELEMETRY_USER_EVENT", "BLOCK_URL", "BOOKMARK_URL", "CLEAR_PREF", "COPY_DOWNLOAD_LINK", "DELETE_BOOKMARK_BY_ID", "DELETE_FROM_POCKET", "DELETE_HISTORY_URL", "DIALOG_CANCEL", "DIALOG_OPEN", "DISABLE_SEARCH", "DISCOVERY_STREAM_COLLECTION_DISMISSIBLE_TOGGLE", "DISCOVERY_STREAM_CONFIG_CHANGE", "DISCOVERY_STREAM_CONFIG_RESET", "DISCOVERY_STREAM_CONFIG_RESET_DEFAULTS", "DISCOVERY_STREAM_CONFIG_SETUP", "DISCOVERY_STREAM_CONFIG_SET_VALUE", "DISCOVERY_STREAM_DEV_EXPIRE_CACHE", "DISCOVERY_STREAM_DEV_IDLE_DAILY", "DISCOVERY_STREAM_DEV_SYNC_RS", "DISCOVERY_STREAM_DEV_SYSTEM_TICK", "DISCOVERY_STREAM_FEEDS_UPDATE", "DISCOVERY_STREAM_FEED_UPDATE", "DISCOVERY_STREAM_IMPRESSION_STATS", "DISCOVERY_STREAM_LAYOUT_RESET", "DISCOVERY_STREAM_LAYOUT_UPDATE", "DISCOVERY_STREAM_LINK_BLOCKED", "DISCOVERY_STREAM_LOADED_CONTENT", "DISCOVERY_STREAM_PERSONALIZATION_INIT", "DISCOVERY_STREAM_PERSONALIZATION_LAST_UPDATED", "DISCOVERY_STREAM_PERSONALIZATION_TOGGLE", "DISCOVERY_STREAM_RETRY_FEED", "DISCOVERY_STREAM_SPOCS_CAPS", "DISCOVERY_STREAM_SPOCS_ENDPOINT", "DISCOVERY_STREAM_SPOCS_PLACEMENTS", "DISCOVERY_STREAM_SPOCS_UPDATE", "DISCOVERY_STREAM_SPOC_BLOCKED", "DISCOVERY_STREAM_SPOC_IMPRESSION", "DOWNLOAD_CHANGED", "FAKE_FOCUS_SEARCH", "FILL_SEARCH_TERM", "HANDOFF_SEARCH_TO_AWESOMEBAR", "HIDE_PRIVACY_INFO", "INIT", "NEW_TAB_INIT", "NEW_TAB_INITIAL_STATE", "NEW_TAB_LOAD", "NEW_TAB_REHYDRATED", "NEW_TAB_STATE_REQUEST", "NEW_TAB_UNLOAD", "OPEN_DOWNLOAD_FILE", "OPEN_LINK", "OPEN_NEW_WINDOW", "OPEN_PRIVATE_WINDOW", "OPEN_WEBEXT_SETTINGS", "PARTNER_LINK_ATTRIBUTION", "PLACES_BOOKMARKS_REMOVED", "PLACES_BOOKMARK_ADDED", "PLACES_HISTORY_CLEARED", "PLACES_LINKS_CHANGED", "PLACES_LINKS_DELETED", "PLACES_LINK_BLOCKED", "PLACES_SAVED_TO_POCKET", "POCKET_CTA", "POCKET_LINK_DELETED_OR_ARCHIVED", "POCKET_LOGGED_IN", "POCKET_WAITING_FOR_SPOC", "PREFS_INITIAL_VALUES", "PREF_CHANGED", "PREVIEW_REQUEST", "PREVIEW_REQUEST_CANCEL", "PREVIEW_RESPONSE", "REMOVE_DOWNLOAD_FILE", "RICH_ICON_MISSING", "SAVE_SESSION_PERF_DATA", "SAVE_TO_POCKET", "SCREENSHOT_UPDATED", "SECTION_DEREGISTER", "SECTION_DISABLE", "SECTION_ENABLE", "SECTION_MOVE", "SECTION_OPTIONS_CHANGED", "SECTION_REGISTER", "SECTION_UPDATE", "SECTION_UPDATE_CARD", "SETTINGS_CLOSE", "SETTINGS_OPEN", "SET_PREF", "SHOW_DOWNLOAD_FILE", "SHOW_FIREFOX_ACCOUNTS", "SHOW_PRIVACY_INFO", "SHOW_SEARCH", "SKIPPED_SIGNIN", "SNIPPETS_BLOCKLIST_CLEARED", "SNIPPETS_BLOCKLIST_UPDATED", "SNIPPETS_DATA", "SNIPPETS_PREVIEW_MODE", "SNIPPETS_RESET", "SNIPPET_BLOCKED", "SUBMIT_EMAIL", "SUBMIT_SIGNIN", "SYSTEM_TICK", "TELEMETRY_IMPRESSION_STATS", "TELEMETRY_USER_EVENT", "TOP_SITES_CANCEL_EDIT", "TOP_SITES_CLOSE_SEARCH_SHORTCUTS_MODAL", "TOP_SITES_EDIT", "TOP_SITES_IMPRESSION_STATS", "TOP_SITES_INSERT", "TOP_SITES_OPEN_SEARCH_SHORTCUTS_MODAL", "TOP_SITES_PIN", "TOP_SITES_PREFS_UPDATED", "TOP_SITES_UNPIN", "TOP_SITES_UPDATED", "TOTAL_BOOKMARKS_REQUEST", "TOTAL_BOOKMARKS_RESPONSE", "UNINIT", "UPDATE_PINNED_SEARCH_SHORTCUTS", "UPDATE_SEARCH_SHORTCUTS", "UPDATE_SECTION_PREFS", "WEBEXT_CLICK", "WEBEXT_DISMISS"]) {
+for (const type of [
+  "ABOUT_SPONSORED_TOP_SITES",
+  "ADDONS_INFO_REQUEST",
+  "ADDONS_INFO_RESPONSE",
+  "ARCHIVE_FROM_POCKET",
+  "AS_ROUTER_INITIALIZED",
+  "AS_ROUTER_PREF_CHANGED",
+  "AS_ROUTER_TARGETING_UPDATE",
+  "AS_ROUTER_TELEMETRY_USER_EVENT",
+  "BLOCK_URL",
+  "BOOKMARK_URL",
+  "CLEAR_PREF",
+  "COPY_DOWNLOAD_LINK",
+  "DELETE_BOOKMARK_BY_ID",
+  "DELETE_FROM_POCKET",
+  "DELETE_HISTORY_URL",
+  "DIALOG_CANCEL",
+  "DIALOG_OPEN",
+  "DISABLE_SEARCH",
+  "DISCOVERY_STREAM_COLLECTION_DISMISSIBLE_TOGGLE",
+  "DISCOVERY_STREAM_CONFIG_CHANGE",
+  "DISCOVERY_STREAM_CONFIG_RESET",
+  "DISCOVERY_STREAM_CONFIG_RESET_DEFAULTS",
+  "DISCOVERY_STREAM_CONFIG_SETUP",
+  "DISCOVERY_STREAM_CONFIG_SET_VALUE",
+  "DISCOVERY_STREAM_DEV_EXPIRE_CACHE",
+  "DISCOVERY_STREAM_DEV_IDLE_DAILY",
+  "DISCOVERY_STREAM_DEV_SYNC_RS",
+  "DISCOVERY_STREAM_DEV_SYSTEM_TICK",
+  "DISCOVERY_STREAM_EXPERIMENT_DATA",
+  "DISCOVERY_STREAM_FEEDS_UPDATE",
+  "DISCOVERY_STREAM_FEED_UPDATE",
+  "DISCOVERY_STREAM_IMPRESSION_STATS",
+  "DISCOVERY_STREAM_LAYOUT_RESET",
+  "DISCOVERY_STREAM_LAYOUT_UPDATE",
+  "DISCOVERY_STREAM_LINK_BLOCKED",
+  "DISCOVERY_STREAM_LOADED_CONTENT",
+  "DISCOVERY_STREAM_PERSONALIZATION_INIT",
+  "DISCOVERY_STREAM_PERSONALIZATION_LAST_UPDATED",
+  "DISCOVERY_STREAM_PERSONALIZATION_TOGGLE",
+  "DISCOVERY_STREAM_POCKET_STATE_INIT",
+  "DISCOVERY_STREAM_POCKET_STATE_SET",
+  "DISCOVERY_STREAM_PREFS_SETUP",
+  "DISCOVERY_STREAM_RECENT_SAVES",
+  "DISCOVERY_STREAM_RETRY_FEED",
+  "DISCOVERY_STREAM_SPOCS_CAPS",
+  "DISCOVERY_STREAM_SPOCS_ENDPOINT",
+  "DISCOVERY_STREAM_SPOCS_PLACEMENTS",
+  "DISCOVERY_STREAM_SPOCS_UPDATE",
+  "DISCOVERY_STREAM_SPOC_BLOCKED",
+  "DISCOVERY_STREAM_SPOC_IMPRESSION",
+  "DISCOVERY_STREAM_USER_EVENT",
+  "DOWNLOAD_CHANGED",
+  "FAKE_FOCUS_SEARCH",
+  "FILL_SEARCH_TERM",
+  "HANDOFF_SEARCH_TO_AWESOMEBAR",
+  "HIDE_PRIVACY_INFO",
+  "INIT",
+  "NEW_TAB_INIT",
+  "NEW_TAB_INITIAL_STATE",
+  "NEW_TAB_LOAD",
+  "NEW_TAB_REHYDRATED",
+  "NEW_TAB_STATE_REQUEST",
+  "NEW_TAB_UNLOAD",
+  "OPEN_DOWNLOAD_FILE",
+  "OPEN_LINK",
+  "OPEN_NEW_WINDOW",
+  "OPEN_PRIVATE_WINDOW",
+  "OPEN_WEBEXT_SETTINGS",
+  "PARTNER_LINK_ATTRIBUTION",
+  "PLACES_BOOKMARKS_REMOVED",
+  "PLACES_BOOKMARK_ADDED",
+  "PLACES_HISTORY_CLEARED",
+  "PLACES_LINKS_CHANGED",
+  "PLACES_LINKS_DELETED",
+  "PLACES_LINK_BLOCKED",
+  "PLACES_SAVED_TO_POCKET",
+  "POCKET_CTA",
+  "POCKET_LINK_DELETED_OR_ARCHIVED",
+  "POCKET_LOGGED_IN",
+  "POCKET_WAITING_FOR_SPOC",
+  "PREFS_INITIAL_VALUES",
+  "PREF_CHANGED",
+  "PREVIEW_REQUEST",
+  "PREVIEW_REQUEST_CANCEL",
+  "PREVIEW_RESPONSE",
+  "REMOVE_DOWNLOAD_FILE",
+  "RICH_ICON_MISSING",
+  "SAVE_SESSION_PERF_DATA",
+  "SAVE_TO_POCKET",
+  "SCREENSHOT_UPDATED",
+  "SECTION_DEREGISTER",
+  "SECTION_DISABLE",
+  "SECTION_ENABLE",
+  "SECTION_MOVE",
+  "SECTION_OPTIONS_CHANGED",
+  "SECTION_REGISTER",
+  "SECTION_UPDATE",
+  "SECTION_UPDATE_CARD",
+  "SETTINGS_CLOSE",
+  "SETTINGS_OPEN",
+  "SET_PREF",
+  "SHOW_DOWNLOAD_FILE",
+  "SHOW_FIREFOX_ACCOUNTS",
+  "SHOW_PRIVACY_INFO",
+  "SHOW_SEARCH",
+  "SKIPPED_SIGNIN",
+  "SNIPPETS_BLOCKLIST_CLEARED",
+  "SNIPPETS_BLOCKLIST_UPDATED",
+  "SNIPPETS_DATA",
+  "SNIPPETS_PREVIEW_MODE",
+  "SNIPPETS_RESET",
+  "SNIPPET_BLOCKED",
+  "SUBMIT_EMAIL",
+  "SUBMIT_SIGNIN",
+  "SYSTEM_TICK",
+  "TELEMETRY_IMPRESSION_STATS",
+  "TELEMETRY_USER_EVENT",
+  "TOP_SITES_CANCEL_EDIT",
+  "TOP_SITES_CLOSE_SEARCH_SHORTCUTS_MODAL",
+  "TOP_SITES_EDIT",
+  "TOP_SITES_IMPRESSION_STATS",
+  "TOP_SITES_INSERT",
+  "TOP_SITES_OPEN_SEARCH_SHORTCUTS_MODAL",
+  "TOP_SITES_PIN",
+  "TOP_SITES_PREFS_UPDATED",
+  "TOP_SITES_UNPIN",
+  "TOP_SITES_UPDATED",
+  "TOTAL_BOOKMARKS_REQUEST",
+  "TOTAL_BOOKMARKS_RESPONSE",
+  "UNINIT",
+  "UPDATE_PINNED_SEARCH_SHORTCUTS",
+  "UPDATE_SEARCH_SHORTCUTS",
+  "UPDATE_SECTION_PREFS",
+  "WEBEXT_CLICK",
+  "WEBEXT_DISMISS",
+]) {
   actionTypes[type] = type;
-} // Helper function for creating routed actions between content and main
-// Not intended to be used by consumers
-
-
-function _RouteMessage(action, options) {
-  const meta = action.meta ? { ...action.meta
-  } : {};
-
-  if (!options || !options.from || !options.to) {
-    throw new Error("Routed Messages must have options as the second parameter, and must at least include a .from and .to property.");
-  } // For each of these fields, if they are passed as an option,
-  // add them to the action. If they are not defined, remove them.
-
-
-  ["from", "to", "toTarget", "fromTarget", "skipMain", "skipLocal"].forEach(o => {
-    if (typeof options[o] !== "undefined") {
-      meta[o] = options[o];
-    } else if (meta[o]) {
-      delete meta[o];
-    }
-  });
-  return { ...action,
-    meta
-  };
 }
+
+// Helper function for creating routed actions between content and main
+// Not intended to be used by consumers
+function _RouteMessage(action, options) {
+  const meta = action.meta ? { ...action.meta } : {};
+  if (!options || !options.from || !options.to) {
+    throw new Error(
+      "Routed Messages must have options as the second parameter, and must at least include a .from and .to property."
+    );
+  }
+  // For each of these fields, if they are passed as an option,
+  // add them to the action. If they are not defined, remove them.
+  ["from", "to", "toTarget", "fromTarget", "skipMain", "skipLocal"].forEach(
+    o => {
+      if (typeof options[o] !== "undefined") {
+        meta[o] = options[o];
+      } else if (meta[o]) {
+        delete meta[o];
+      }
+    }
+  );
+  return { ...action, meta };
+}
+
 /**
  * AlsoToMain - Creates a message that will be dispatched locally and also sent to the Main process.
  *
@@ -140,16 +276,15 @@ function _RouteMessage(action, options) {
  * @param  {string} fromTarget The id of the content port from which the action originated. (optional)
  * @return {object} An action with added .meta properties
  */
-
-
 function AlsoToMain(action, fromTarget, skipLocal) {
   return _RouteMessage(action, {
     from: CONTENT_MESSAGE_TYPE,
     to: MAIN_MESSAGE_TYPE,
     fromTarget,
-    skipLocal
+    skipLocal,
   });
 }
+
 /**
  * OnlyToMain - Creates a message that will be sent to the Main process and skip the local reducer.
  *
@@ -158,25 +293,23 @@ function AlsoToMain(action, fromTarget, skipLocal) {
  * @param  {string} fromTarget The id of the content port from which the action originated. (optional)
  * @return {object} An action with added .meta properties
  */
-
-
 function OnlyToMain(action, fromTarget) {
   return AlsoToMain(action, fromTarget, true);
 }
+
 /**
  * BroadcastToContent - Creates a message that will be dispatched to main and sent to ALL content processes.
  *
  * @param  {object} action Any redux action (required)
  * @return {object} An action with added .meta properties
  */
-
-
 function BroadcastToContent(action) {
   return _RouteMessage(action, {
     from: MAIN_MESSAGE_TYPE,
-    to: CONTENT_MESSAGE_TYPE
+    to: CONTENT_MESSAGE_TYPE,
   });
 }
+
 /**
  * AlsoToOneContent - Creates a message that will be will be dispatched to the main store
  *                    and also sent to a particular Content process.
@@ -186,20 +319,20 @@ function BroadcastToContent(action) {
  * @param  {bool} skipMain Used by OnlyToOneContent to skip the main process
  * @return {object} An action with added .meta properties
  */
-
-
 function AlsoToOneContent(action, target, skipMain) {
   if (!target) {
-    throw new Error("You must provide a target ID as the second parameter of AlsoToOneContent. If you want to send to all content processes, use BroadcastToContent");
+    throw new Error(
+      "You must provide a target ID as the second parameter of AlsoToOneContent. If you want to send to all content processes, use BroadcastToContent"
+    );
   }
-
   return _RouteMessage(action, {
     from: MAIN_MESSAGE_TYPE,
     to: CONTENT_MESSAGE_TYPE,
     toTarget: target,
-    skipMain
+    skipMain,
   });
 }
+
 /**
  * OnlyToOneContent - Creates a message that will be sent to a particular Content process
  *                    and skip the main reducer.
@@ -208,25 +341,23 @@ function AlsoToOneContent(action, target, skipMain) {
  * @param  {string} target The id of a content port
  * @return {object} An action with added .meta properties
  */
-
-
 function OnlyToOneContent(action, target) {
   return AlsoToOneContent(action, target, true);
 }
+
 /**
  * AlsoToPreloaded - Creates a message that dispatched to the main reducer and also sent to the preloaded tab.
  *
  * @param  {object} action Any redux action (required)
  * @return {object} An action with added .meta properties
  */
-
-
 function AlsoToPreloaded(action) {
   return _RouteMessage(action, {
     from: MAIN_MESSAGE_TYPE,
-    to: PRELOAD_MESSAGE_TYPE
+    to: PRELOAD_MESSAGE_TYPE,
   });
 }
+
 /**
  * UserEvent - A telemetry ping indicating a user action. This should only
  *                   be sent from the UI during a user session.
@@ -234,14 +365,27 @@ function AlsoToPreloaded(action) {
  * @param  {object} data Fields to include in the ping (source, etc.)
  * @return {object} An AlsoToMain action
  */
-
-
 function UserEvent(data) {
   return AlsoToMain({
     type: actionTypes.TELEMETRY_USER_EVENT,
-    data
+    data,
   });
 }
+
+/**
+ * DiscoveryStreamUserEvent - A telemetry ping indicating a user action from Discovery Stream. This should only
+ *                     be sent from the UI during a user session.
+ *
+ * @param  {object} data Fields to include in the ping (source, etc.)
+ * @return {object} An AlsoToMain action
+ */
+function DiscoveryStreamUserEvent(data) {
+  return AlsoToMain({
+    type: actionTypes.DISCOVERY_STREAM_USER_EVENT,
+    data,
+  });
+}
+
 /**
  * ASRouterUserEvent - A telemetry ping indicating a user action from AS router. This should only
  *                     be sent from the UI during a user session.
@@ -249,14 +393,13 @@ function UserEvent(data) {
  * @param  {object} data Fields to include in the ping (source, etc.)
  * @return {object} An AlsoToMain action
  */
-
-
 function ASRouterUserEvent(data) {
   return AlsoToMain({
     type: actionTypes.AS_ROUTER_TELEMETRY_USER_EVENT,
-    data
+    data,
   });
 }
+
 /**
  * ImpressionStats - A telemetry ping indicating an impression stats.
  *
@@ -264,15 +407,14 @@ function ASRouterUserEvent(data) {
  * @param  {int} importContext (For testing) Override the import context for testing.
  * #return {object} An action. For UI code, a AlsoToMain action.
  */
-
-
 function ImpressionStats(data, importContext = globalImportContext) {
   const action = {
     type: actionTypes.TELEMETRY_IMPRESSION_STATS,
-    data
+    data,
   };
   return importContext === UI_CODE ? AlsoToMain(action) : action;
 }
+
 /**
  * DiscoveryStreamImpressionStats - A telemetry ping indicating an impression stats in Discovery Stream.
  *
@@ -280,15 +422,17 @@ function ImpressionStats(data, importContext = globalImportContext) {
  * @param  {int} importContext (For testing) Override the import context for testing.
  * #return {object} An action. For UI code, a AlsoToMain action.
  */
-
-
-function DiscoveryStreamImpressionStats(data, importContext = globalImportContext) {
+function DiscoveryStreamImpressionStats(
+  data,
+  importContext = globalImportContext
+) {
   const action = {
     type: actionTypes.DISCOVERY_STREAM_IMPRESSION_STATS,
-    data
+    data,
   };
   return importContext === UI_CODE ? AlsoToMain(action) : action;
 }
+
 /**
  * DiscoveryStreamLoadedContent - A telemetry ping indicating a content gets loaded in Discovery Stream.
  *
@@ -296,42 +440,36 @@ function DiscoveryStreamImpressionStats(data, importContext = globalImportContex
  * @param  {int} importContext (For testing) Override the import context for testing.
  * #return {object} An action. For UI code, a AlsoToMain action.
  */
-
-
-function DiscoveryStreamLoadedContent(data, importContext = globalImportContext) {
+function DiscoveryStreamLoadedContent(
+  data,
+  importContext = globalImportContext
+) {
   const action = {
     type: actionTypes.DISCOVERY_STREAM_LOADED_CONTENT,
-    data
+    data,
   };
   return importContext === UI_CODE ? AlsoToMain(action) : action;
 }
 
 function SetPref(name, value, importContext = globalImportContext) {
-  const action = {
-    type: actionTypes.SET_PREF,
-    data: {
-      name,
-      value
-    }
-  };
+  const action = { type: actionTypes.SET_PREF, data: { name, value } };
   return importContext === UI_CODE ? AlsoToMain(action) : action;
 }
 
 function WebExtEvent(type, data, importContext = globalImportContext) {
   if (!data || !data.source) {
-    throw new Error('WebExtEvent actions should include a property "source", the id of the webextension that should receive the event.');
+    throw new Error(
+      'WebExtEvent actions should include a property "source", the id of the webextension that should receive the event.'
+    );
   }
-
-  const action = {
-    type,
-    data
-  };
+  const action = { type, data };
   return importContext === UI_CODE ? AlsoToMain(action) : action;
 }
 
-var actionCreators = {
+const actionCreators = {
   BroadcastToContent,
   UserEvent,
+  DiscoveryStreamUserEvent,
   ASRouterUserEvent,
   ImpressionStats,
   AlsoToOneContent,
@@ -342,79 +480,111 @@ var actionCreators = {
   SetPref,
   WebExtEvent,
   DiscoveryStreamImpressionStats,
-  DiscoveryStreamLoadedContent
-}; // These are helpers to test for certain kinds of actions
+  DiscoveryStreamLoadedContent,
+};
 
-var actionUtils = {
+// These are helpers to test for certain kinds of actions
+const actionUtils = {
   isSendToMain(action) {
     if (!action.meta) {
       return false;
     }
-
-    return action.meta.to === MAIN_MESSAGE_TYPE && action.meta.from === CONTENT_MESSAGE_TYPE;
+    return (
+      action.meta.to === MAIN_MESSAGE_TYPE &&
+      action.meta.from === CONTENT_MESSAGE_TYPE
+    );
   },
-
   isBroadcastToContent(action) {
     if (!action.meta) {
       return false;
     }
-
     if (action.meta.to === CONTENT_MESSAGE_TYPE && !action.meta.toTarget) {
       return true;
     }
-
     return false;
   },
-
   isSendToOneContent(action) {
     if (!action.meta) {
       return false;
     }
-
     if (action.meta.to === CONTENT_MESSAGE_TYPE && action.meta.toTarget) {
       return true;
     }
-
     return false;
   },
-
   isSendToPreloaded(action) {
     if (!action.meta) {
       return false;
     }
-
-    return action.meta.to === PRELOAD_MESSAGE_TYPE && action.meta.from === MAIN_MESSAGE_TYPE;
+    return (
+      action.meta.to === PRELOAD_MESSAGE_TYPE &&
+      action.meta.from === MAIN_MESSAGE_TYPE
+    );
   },
-
   isFromMain(action) {
     if (!action.meta) {
       return false;
     }
-
-    return action.meta.from === MAIN_MESSAGE_TYPE && action.meta.to === CONTENT_MESSAGE_TYPE;
+    return (
+      action.meta.from === MAIN_MESSAGE_TYPE &&
+      action.meta.to === CONTENT_MESSAGE_TYPE
+    );
   },
-
   getPortIdOfSender(action) {
-    return action.meta && action.meta.fromTarget || null;
+    return (action.meta && action.meta.fromTarget) || null;
   },
-
-  _RouteMessage
+  _RouteMessage,
 };
-;// CONCATENATED MODULE: ./common/ActorConstants.jsm
-/* vim: set ts=2 sw=2 sts=2 et tw=80: */
 
+;// CONCATENATED MODULE: ./common/ActorConstants.sys.mjs
+/* vim: set ts=2 sw=2 sts=2 et tw=80: */
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+const MESSAGE_TYPE_LIST = [
+  "BLOCK_MESSAGE_BY_ID",
+  "USER_ACTION",
+  "IMPRESSION",
+  "TRIGGER",
+  "NEWTAB_MESSAGE_REQUEST",
+  // PB is Private Browsing
+  "PBNEWTAB_MESSAGE_REQUEST",
+  "DOORHANGER_TELEMETRY",
+  "TOOLBAR_BADGE_TELEMETRY",
+  "TOOLBAR_PANEL_TELEMETRY",
+  "MOMENTS_PAGE_TELEMETRY",
+  "INFOBAR_TELEMETRY",
+  "SPOTLIGHT_TELEMETRY",
+  "TOAST_NOTIFICATION_TELEMETRY",
+  "AS_ROUTER_TELEMETRY_USER_EVENT",
 
-const MESSAGE_TYPE_LIST = ["BLOCK_MESSAGE_BY_ID", "USER_ACTION", "IMPRESSION", "TRIGGER", "NEWTAB_MESSAGE_REQUEST", // PB is Private Browsing
-"PBNEWTAB_MESSAGE_REQUEST", "DOORHANGER_TELEMETRY", "TOOLBAR_BADGE_TELEMETRY", "TOOLBAR_PANEL_TELEMETRY", "MOMENTS_PAGE_TELEMETRY", "INFOBAR_TELEMETRY", "SPOTLIGHT_TELEMETRY", "AS_ROUTER_TELEMETRY_USER_EVENT", // Admin types
-"ADMIN_CONNECT_STATE", "UNBLOCK_MESSAGE_BY_ID", "UNBLOCK_ALL", "BLOCK_BUNDLE", "UNBLOCK_BUNDLE", "DISABLE_PROVIDER", "ENABLE_PROVIDER", "EVALUATE_JEXL_EXPRESSION", "EXPIRE_QUERY_CACHE", "FORCE_ATTRIBUTION", "FORCE_WHATSNEW_PANEL", "CLOSE_WHATSNEW_PANEL", "OVERRIDE_MESSAGE", "MODIFY_MESSAGE_JSON", "RESET_PROVIDER_PREF", "SET_PROVIDER_USER_PREF", "RESET_GROUPS_STATE"];
+  // Admin types
+  "ADMIN_CONNECT_STATE",
+  "UNBLOCK_MESSAGE_BY_ID",
+  "UNBLOCK_ALL",
+  "BLOCK_BUNDLE",
+  "UNBLOCK_BUNDLE",
+  "DISABLE_PROVIDER",
+  "ENABLE_PROVIDER",
+  "EVALUATE_JEXL_EXPRESSION",
+  "EXPIRE_QUERY_CACHE",
+  "FORCE_ATTRIBUTION",
+  "FORCE_WHATSNEW_PANEL",
+  "FORCE_PRIVATE_BROWSING_WINDOW",
+  "CLOSE_WHATSNEW_PANEL",
+  "OVERRIDE_MESSAGE",
+  "MODIFY_MESSAGE_JSON",
+  "RESET_PROVIDER_PREF",
+  "SET_PROVIDER_USER_PREF",
+  "RESET_GROUPS_STATE",
+];
+
 const MESSAGE_TYPE_HASH = MESSAGE_TYPE_LIST.reduce((hash, value) => {
   hash[value] = value;
   return hash;
 }, {});
+
 ;// CONCATENATED MODULE: ./content-src/asrouter/asrouter-utils.js
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
@@ -960,11 +1130,10 @@ class ASRouterAdminInner extends (external_React_default()).PureComponent {
     this.setAttribution = this.setAttribution.bind(this);
     this.onCopyTargetingParams = this.onCopyTargetingParams.bind(this);
     this.onNewTargetingParams = this.onNewTargetingParams.bind(this);
-    this.handleUpdateWNMessages = this.handleUpdateWNMessages.bind(this);
-    this.handleForceWNP = this.handleForceWNP.bind(this);
-    this.handleCloseWNP = this.handleCloseWNP.bind(this);
-    this.resetPanel = this.resetPanel.bind(this);
-    this.restoreWNMessageState = this.restoreWNMessageState.bind(this);
+    this.handleOpenPB = this.handleOpenPB.bind(this);
+    this.selectPBMessage = this.selectPBMessage.bind(this);
+    this.resetPBJSON = this.resetPBJSON.bind(this);
+    this.resetPBMessageState = this.resetPBMessageState.bind(this);
     this.toggleJSON = this.toggleJSON.bind(this);
     this.toggleAllMessages = this.toggleAllMessages.bind(this);
     this.resetGroups = this.resetGroups.bind(this);
@@ -974,9 +1143,9 @@ class ASRouterAdminInner extends (external_React_default()).PureComponent {
     this.state = {
       messageFilter: "all",
       messageGroupsFilter: "all",
-      WNMessages: [],
       collapsedMessages: [],
       modifiedMessages: [],
+      selectedPBMessage: "",
       evaluationStatus: {},
       stringTargetingParameters: null,
       newStringTargetingParameters: null,
@@ -1053,26 +1222,6 @@ class ASRouterAdminInner extends (external_React_default()).PureComponent {
     }));
   }
 
-  resetAllJSON() {
-    let messageCheckboxes = document.querySelectorAll('input[type="checkbox"]');
-
-    for (const checkbox of messageCheckboxes) {
-      let trimmedId = checkbox.id.replace(" checkbox", "");
-      let message = this.state.messages.filter(msg => msg.id === trimmedId);
-      let msgId = message[0].id;
-      document.getElementById(`${msgId}-textarea`).value = JSON.stringify(message[0], null, 2);
-    }
-
-    this.setState({
-      WNMessages: []
-    });
-  }
-
-  resetPanel() {
-    this.resetAllJSON();
-    this.handleCloseWNP();
-  }
-
   handleOverride(id) {
     return () => ASRouterUtils.overrideMessage(id).then(state => {
       this.setStateFromParent(state);
@@ -1082,24 +1231,34 @@ class ASRouterAdminInner extends (external_React_default()).PureComponent {
     });
   }
 
-  async handleUpdateWNMessages() {
-    await this.restoreWNMessageState();
-    let messages = this.state.WNMessages;
+  resetPBMessageState() {
+    // Iterate over Private Browsing messages and block/unblock each one to clear impressions
+    const PBMessages = this.state.messages.filter(message => message.template === "pb_newtab"); // messages from state go here
 
-    for (const msg of messages) {
-      ASRouterUtils.modifyMessageJson(JSON.parse(msg));
-    }
+    PBMessages.forEach(message => {
+      if (message !== null && message !== void 0 && message.id) {
+        ASRouterUtils.blockById(message.id);
+        ASRouterUtils.unblockById(message.id);
+      }
+    }); // Clear the selected messages & radio buttons
+
+    document.getElementById("clear radio").checked = true;
+    this.selectPBMessage("clear");
   }
 
-  handleForceWNP() {
-    ASRouterUtils.sendMessage({
-      type: "FORCE_WHATSNEW_PANEL"
-    });
+  resetPBJSON(msg) {
+    // reset the displayed JSON for the given message
+    document.getElementById(`${msg.id}-textarea`).value = JSON.stringify(msg, null, 2);
   }
 
-  handleCloseWNP() {
+  handleOpenPB() {
     ASRouterUtils.sendMessage({
-      type: "CLOSE_WHATSNEW_PANEL"
+      type: "FORCE_PRIVATE_BROWSING_WINDOW",
+      data: {
+        message: {
+          content: this.state.selectedPBMessage
+        }
+      }
     });
   }
 
@@ -1156,8 +1315,7 @@ class ASRouterAdminInner extends (external_React_default()).PureComponent {
       try {
         JSON.parse(value);
       } catch (e) {
-        console.log(`Error parsing value of parameter ${name}`); // eslint-disable-line no-console
-
+        console.error(`Error parsing value of parameter ${name}`);
         targetingParametersError = {
           id: name
         };
@@ -1389,23 +1547,25 @@ class ASRouterAdminInner extends (external_React_default()).PureComponent {
     }, JSON.stringify(msg, null, 2))))));
   }
 
-  restoreWNMessageState() {
-    // check the page for checked boxes, and reset the state of WNMessages based on that.
-    let tempState = [];
-    let messageCheckboxes = document.querySelectorAll('input[type="checkbox"]'); // put the JSON of all the checked checkboxes in the array
+  selectPBMessage(msgId) {
+    if (msgId === "clear") {
+      this.setState({
+        selectedPBMessage: ""
+      });
+    } else {
+      let selected = document.getElementById(`${msgId} radio`);
+      let msg = JSON.parse(document.getElementById(`${msgId}-textarea`).value);
 
-    for (const checkbox of messageCheckboxes) {
-      let trimmedId = checkbox.id.replace(" checkbox", "");
-      let msg = document.getElementById(`${trimmedId}-textarea`).value;
-
-      if (checkbox.checked) {
-        tempState.push(msg);
+      if (selected.checked) {
+        this.setState({
+          selectedPBMessage: msg === null || msg === void 0 ? void 0 : msg.content
+        });
+      } else {
+        this.setState({
+          selectedPBMessage: ""
+        });
       }
     }
-
-    this.setState({
-      WNMessages: tempState
-    });
   }
 
   modifyJson(content) {
@@ -1418,7 +1578,7 @@ class ASRouterAdminInner extends (external_React_default()).PureComponent {
     });
   }
 
-  renderWNMessageItem(msg) {
+  renderPBMessageItem(msg) {
     const isBlocked = this.state.messageBlockList.includes(msg.id) || this.state.messageBlockList.includes(msg.campaign);
     const impressions = this.state.messageImpressions[msg.id] ? this.state.messageImpressions[msg.id].length : 0;
     const isCollapsed = this.state.collapsedMessages.includes(msg.id);
@@ -1438,10 +1598,21 @@ class ASRouterAdminInner extends (external_React_default()).PureComponent {
       toggleJSON: this.toggleJSON,
       isCollapsed: isCollapsed
     })), /*#__PURE__*/external_React_default().createElement("td", null, /*#__PURE__*/external_React_default().createElement("input", {
-      type: "checkbox",
-      id: `${msg.id} checkbox`,
-      name: `${msg.id} checkbox`
-    })), /*#__PURE__*/external_React_default().createElement("td", {
+      type: "radio",
+      id: `${msg.id} radio`,
+      name: "PB_message_radio",
+      style: {
+        marginBottom: 20
+      },
+      onClick: () => this.selectPBMessage(msg.id),
+      disabled: isBlocked
+    }), /*#__PURE__*/external_React_default().createElement("button", {
+      className: `button ${isBlocked ? "" : " primary"}`,
+      onClick: isBlocked ? this.handleUnblock(msg) : this.handleBlock(msg)
+    }, isBlocked ? "Unblock" : "Block"), /*#__PURE__*/external_React_default().createElement("button", {
+      className: "ASRouterButton slim button",
+      onClick: e => this.resetPBJSON(msg)
+    }, "Reset JSON")), /*#__PURE__*/external_React_default().createElement("td", {
       className: `message-summary`
     }, /*#__PURE__*/external_React_default().createElement("pre", {
       className: isCollapsed ? "collapsed" : "expanded"
@@ -1471,7 +1642,7 @@ class ASRouterAdminInner extends (external_React_default()).PureComponent {
       return null;
     }
 
-    const messagesToShow = this.state.messageFilter === "all" ? this.state.messages : this.state.messages.filter(message => message.provider === this.state.messageFilter);
+    const messagesToShow = this.state.messageFilter === "all" ? this.state.messages : this.state.messages.filter(message => message.provider === this.state.messageFilter && message.template !== "pb_newtab");
     return /*#__PURE__*/external_React_default().createElement("div", null, /*#__PURE__*/external_React_default().createElement("button", {
       className: "ASRouterButton slim" // eslint-disable-next-line react/jsx-no-bind
       ,
@@ -1492,13 +1663,13 @@ class ASRouterAdminInner extends (external_React_default()).PureComponent {
     return /*#__PURE__*/external_React_default().createElement("table", null, /*#__PURE__*/external_React_default().createElement("tbody", null, messagesToShow.map(msg => this.renderMessageItem(msg))));
   }
 
-  renderWNMessages() {
+  renderPBMessages() {
     if (!this.state.messages) {
       return null;
     }
 
-    const messagesToShow = this.state.messages.filter(message => message.provider === "whats-new-panel" && message.content.body);
-    return /*#__PURE__*/external_React_default().createElement("table", null, /*#__PURE__*/external_React_default().createElement("tbody", null, messagesToShow.map(msg => this.renderWNMessageItem(msg))));
+    const messagesToShow = this.state.messages.filter(message => message.template === "pb_newtab");
+    return /*#__PURE__*/external_React_default().createElement("table", null, /*#__PURE__*/external_React_default().createElement("tbody", null, messagesToShow.map(msg => this.renderPBMessageItem(msg))));
   }
 
   renderMessageFilter() {
@@ -1572,7 +1743,7 @@ class ASRouterAdminInner extends (external_React_default()).PureComponent {
           rel: "noopener noreferrer"
         }, info.url), ")");
       } else if (provider.type === "remote-settings") {
-        label = `remote settings (${provider.bucket})`;
+        label = `remote settings (${provider.collection})`;
       } else if (provider.type === "remote-experiments") {
         label = /*#__PURE__*/external_React_default().createElement("span", null, "remote settings (", /*#__PURE__*/external_React_default().createElement("a", {
           className: "providerUrl",
@@ -1790,38 +1961,46 @@ class ASRouterAdminInner extends (external_React_default()).PureComponent {
     return /*#__PURE__*/external_React_default().createElement("p", null, "No errors");
   }
 
-  renderWNPTests() {
+  renderPBTab() {
     if (!this.state.messages) {
       return null;
     }
 
-    let messagesToShow = this.state.messages.filter(message => message.provider === "whats-new-panel");
+    let messagesToShow = this.state.messages.filter(message => message.template === "pb_newtab");
     return /*#__PURE__*/external_React_default().createElement("div", null, /*#__PURE__*/external_React_default().createElement("p", {
       className: "helpLink"
     }, /*#__PURE__*/external_React_default().createElement("span", {
       className: "icon icon-small-spacer icon-info"
-    }), " ", /*#__PURE__*/external_React_default().createElement("span", null, "To correctly render selected messages, click 'Open What's New Panel', select the messages you want to see, and click 'Render Selected Messages'.", /*#__PURE__*/external_React_default().createElement("br", null), /*#__PURE__*/external_React_default().createElement("br", null), "To modify a message, select it, modify the JSON and click 'Render Selected Messages' again to see your changes.", /*#__PURE__*/external_React_default().createElement("br", null), "Click 'Reset Panel' to close the panel and reset all JSON to its original state.")), /*#__PURE__*/external_React_default().createElement("div", null, /*#__PURE__*/external_React_default().createElement("button", {
+    }), " ", /*#__PURE__*/external_React_default().createElement("span", null, "To view an available message, select its radio button and click \"Open a Private Browsing Window\".", /*#__PURE__*/external_React_default().createElement("br", null), "To modify a message, make changes to the JSON first, then select the radio button. (To make new changes, click \"Reset Message State\", make your changes, and reselect the radio button.)", /*#__PURE__*/external_React_default().createElement("br", null), "Click \"Reset Message State\" to clear all message impressions and view messages in a clean state.", /*#__PURE__*/external_React_default().createElement("br", null), "Note that ContentSearch functions do not work in debug mode.")), /*#__PURE__*/external_React_default().createElement("div", null, /*#__PURE__*/external_React_default().createElement("button", {
       className: "ASRouterButton primary button",
-      onClick: this.handleForceWNP
-    }, "Open What's New Panel"), /*#__PURE__*/external_React_default().createElement("button", {
-      className: "ASRouterButton secondary button",
-      onClick: this.handleUpdateWNMessages
-    }, "Render Selected Messages"), /*#__PURE__*/external_React_default().createElement("button", {
-      className: "ASRouterButton secondary button",
-      onClick: this.resetPanel
-    }, "Reset Panel"), /*#__PURE__*/external_React_default().createElement("h2", null, "Messages"), /*#__PURE__*/external_React_default().createElement("button", {
+      onClick: this.handleOpenPB
+    }, "Open a Private Browsing Window"), /*#__PURE__*/external_React_default().createElement("button", {
+      className: "ASRouterButton primary button",
+      style: {
+        marginInlineStart: 12
+      },
+      onClick: this.resetPBMessageState
+    }, "Reset Message State"), /*#__PURE__*/external_React_default().createElement("br", null), /*#__PURE__*/external_React_default().createElement("input", {
+      type: "radio",
+      id: `clear radio`,
+      name: "PB_message_radio",
+      value: "clearPBMessage",
+      style: {
+        display: "none"
+      }
+    }), /*#__PURE__*/external_React_default().createElement("h2", null, "Messages"), /*#__PURE__*/external_React_default().createElement("button", {
       className: "ASRouterButton slim button" // eslint-disable-next-line react/jsx-no-bind
       ,
       onClick: e => this.toggleAllMessages(messagesToShow)
-    }, "Collapse/Expand All"), this.renderWNMessages()));
+    }, "Collapse/Expand All"), this.renderPBMessages()));
   }
 
   getSection() {
     const [section] = this.props.location.routes;
 
     switch (section) {
-      case "wnpanel":
-        return /*#__PURE__*/external_React_default().createElement((external_React_default()).Fragment, null, /*#__PURE__*/external_React_default().createElement("h2", null, "What's New Panel"), this.renderWNPTests());
+      case "private":
+        return /*#__PURE__*/external_React_default().createElement((external_React_default()).Fragment, null, /*#__PURE__*/external_React_default().createElement("h2", null, "Private Browsing Messages"), this.renderPBTab());
 
       case "targeting":
         return /*#__PURE__*/external_React_default().createElement((external_React_default()).Fragment, null, /*#__PURE__*/external_React_default().createElement("h2", null, "Targeting Utilities"), /*#__PURE__*/external_React_default().createElement("button", {
@@ -1878,8 +2057,8 @@ class ASRouterAdminInner extends (external_React_default()).PureComponent {
     }, /*#__PURE__*/external_React_default().createElement("ul", null, /*#__PURE__*/external_React_default().createElement("li", null, /*#__PURE__*/external_React_default().createElement("a", {
       href: "#devtools"
     }, "General")), /*#__PURE__*/external_React_default().createElement("li", null, /*#__PURE__*/external_React_default().createElement("a", {
-      href: "#devtools-wnpanel"
-    }, "What's New Panel")), /*#__PURE__*/external_React_default().createElement("li", null, /*#__PURE__*/external_React_default().createElement("a", {
+      href: "#devtools-private"
+    }, "Private Browsing")), /*#__PURE__*/external_React_default().createElement("li", null, /*#__PURE__*/external_React_default().createElement("a", {
       href: "#devtools-targeting"
     }, "Targeting")), /*#__PURE__*/external_React_default().createElement("li", null, /*#__PURE__*/external_React_default().createElement("a", {
       href: "#devtools-groups"
@@ -3467,12 +3646,14 @@ function mapBundleSync(iterable, ids) {
     return getBundleForId(iterable, ids);
   }
 
-  return ids.map(id => getBundleForId(iterable, id));
+  return ids.map(
+    id => getBundleForId(iterable, id)
+  );
 }
+
 /*
  * Find the best `FluentBundle` with the translation for `id`.
  */
-
 function getBundleForId(iterable, id) {
   for (const bundle of iterable) {
     if (bundle.hasMessage(id)) {
@@ -3482,6 +3663,7 @@ function getBundleForId(iterable, id) {
 
   return null;
 }
+
 ;// CONCATENATED MODULE: ./node_modules/fluent-sequence/src/map_async.js
 /*
  * Asynchronously map an identifier or an array of identifiers to the best
@@ -3508,9 +3690,9 @@ async function mapBundleAsync(iterable, ids) {
       if (!foundBundles[index] && bundle.hasMessage(id)) {
         foundBundles[index] = bundle;
         remainingCount--;
-      } // Return early when all ids have been mapped to contexts.
+      }
 
-
+      // Return early when all ids have been mapped to contexts.
       if (remainingCount === 0) {
         return foundBundles;
       }
@@ -3519,11 +3701,14 @@ async function mapBundleAsync(iterable, ids) {
 
   return foundBundles;
 }
+
 ;// CONCATENATED MODULE: ./node_modules/fluent-sequence/src/index.js
 /*
  * @module fluent-sequence
  * @overview Manage ordered sequences of FluentBundles.
  */
+
+
 
 
 ;// CONCATENATED MODULE: ./node_modules/cached-iterable/src/cached_iterable.mjs
@@ -4317,7 +4502,8 @@ function safeURI(url) {
   const isAllowed = ["http:", "https:", "data:", "resource:", "chrome:"].includes(protocol);
 
   if (!isAllowed) {
-    console.warn(`The protocol ${protocol} is not allowed for template URLs.`); // eslint-disable-line no-console
+    // eslint-disable-next-line no-console
+    console.warn(`The protocol ${protocol} is not allowed for template URLs.`);
   }
 
   return isAllowed ? url : "";
@@ -4936,7 +5122,7 @@ class SubmitFormSnippet extends (external_React_default()).PureComponent {
 
       json = await response.json();
     } catch (err) {
-      console.log(err); // eslint-disable-line no-console
+      console.error(err);
     }
 
     if (json && json.status === "ok") {
@@ -4957,7 +5143,6 @@ class SubmitFormSnippet extends (external_React_default()).PureComponent {
         id: "NEWTAB_FOOTER_BAR_CONTENT"
       });
     } else {
-      // eslint-disable-next-line no-console
       console.error("There was a problem submitting the form", json || "[No JSON response]");
       this.setState({
         signupSuccess: false,
@@ -5631,7 +5816,7 @@ class ASRouterUISurface extends (external_React_default()).PureComponent {
 
     if (!fxaEndpoint) {
       const err = "Tried to fetch flow params before fxaEndpoint pref was ready";
-      console.error(err); // eslint-disable-line no-console
+      console.error(err);
     }
 
     try {
@@ -5656,10 +5841,10 @@ class ASRouterUISurface extends (external_React_default()).PureComponent {
           flowBeginTime
         };
       } else {
-        console.error("Non-200 response", response); // eslint-disable-line no-console
+        console.error("Non-200 response", response);
       }
     } catch (error) {
-      console.error(error); // eslint-disable-line no-console
+      console.error(error);
     }
 
     return result;
@@ -6062,6 +6247,99 @@ const ConfirmDialog = (0,external_ReactRedux_namespaceObject.connect)(state => s
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+const PLACEHOLDER_IMAGE_DATA_ARRAY = [{
+  rotation: "0deg",
+  offsetx: "20px",
+  offsety: "8px",
+  scale: "45%"
+}, {
+  rotation: "54deg",
+  offsetx: "-26px",
+  offsety: "62px",
+  scale: "55%"
+}, {
+  rotation: "-30deg",
+  offsetx: "78px",
+  offsety: "30px",
+  scale: "68%"
+}, {
+  rotation: "-22deg",
+  offsetx: "0",
+  offsety: "92px",
+  scale: "60%"
+}, {
+  rotation: "-65deg",
+  offsetx: "66px",
+  offsety: "28px",
+  scale: "60%"
+}, {
+  rotation: "22deg",
+  offsetx: "-35px",
+  offsety: "62px",
+  scale: "52%"
+}, {
+  rotation: "-25deg",
+  offsetx: "86px",
+  offsety: "-15px",
+  scale: "68%"
+}];
+const PLACEHOLDER_IMAGE_COLORS_ARRAY = "#0090ED #FF4F5F #2AC3A2 #FF7139 #A172FF #FFA437 #FF2A8A".split(" ");
+
+function generateIndex({
+  keyCode,
+  max
+}) {
+  if (!keyCode) {
+    // Just grab a random index if we cannot generate an index from a key.
+    return Math.floor(Math.random() * max);
+  }
+
+  const hashStr = str => {
+    let hash = 0;
+
+    for (let i = 0; i < str.length; i++) {
+      let charCode = str.charCodeAt(i);
+      hash += charCode;
+    }
+
+    return hash;
+  };
+
+  const hash = hashStr(keyCode);
+  return hash % max;
+}
+
+function PlaceholderImage({
+  urlKey,
+  titleKey
+}) {
+  const dataIndex = generateIndex({
+    keyCode: urlKey,
+    max: PLACEHOLDER_IMAGE_DATA_ARRAY.length
+  });
+  const colorIndex = generateIndex({
+    keyCode: titleKey,
+    max: PLACEHOLDER_IMAGE_COLORS_ARRAY.length
+  });
+  const {
+    rotation,
+    offsetx,
+    offsety,
+    scale
+  } = PLACEHOLDER_IMAGE_DATA_ARRAY[dataIndex];
+  const color = PLACEHOLDER_IMAGE_COLORS_ARRAY[colorIndex];
+  const style = {
+    "--placeholderBackgroundColor": color,
+    "--placeholderBackgroundRotation": rotation,
+    "--placeholderBackgroundOffsetx": offsetx,
+    "--placeholderBackgroundOffsety": offsety,
+    "--placeholderBackgroundScale": scale
+  };
+  return /*#__PURE__*/external_React_default().createElement("div", {
+    style: style,
+    className: "placeholder-image"
+  });
+}
 class DSImage extends (external_React_default()).PureComponent {
   constructor(props) {
     super(props);
@@ -6144,7 +6422,7 @@ class DSImage extends (external_React_default()).PureComponent {
           src: baseSource,
           srcSet: srcSetRules.join(",")
         });
-      } else if (!this.state.nonOptimizedImageFailed) {
+      } else if (this.props.source && !this.state.nonOptimizedImageFailed) {
         img = /*#__PURE__*/external_React_default().createElement("img", {
           loading: "lazy",
           alt: this.props.alt_text,
@@ -6154,10 +6432,20 @@ class DSImage extends (external_React_default()).PureComponent {
           src: this.props.source
         });
       } else {
-        // Remove the img element if both sources fail. Render a placeholder instead.
-        img = /*#__PURE__*/external_React_default().createElement("div", {
-          className: "broken-image"
-        });
+        // We consider a failed to load img or source without an image as loaded.
+        classNames = `${classNames} loaded`; // Remove the img element if we have no source. Render a placeholder instead.
+        // This only happens for recent saves without a source.
+
+        if (this.props.isRecentSave && !this.props.rawSource && !this.props.source) {
+          img = /*#__PURE__*/external_React_default().createElement(PlaceholderImage, {
+            urlKey: this.props.url,
+            titleKey: this.props.title
+          });
+        } else {
+          img = /*#__PURE__*/external_React_default().createElement("div", {
+            className: "broken-image"
+          });
+        }
       }
     }
 
@@ -6361,7 +6649,8 @@ class _ContextMenuItem extends (external_React_default()).PureComponent {
       onClick: this.onClick,
       onKeyDown: this.onKeyDown,
       onKeyUp: this.onKeyUp,
-      ref: option.first ? this.focusFirst : null
+      ref: option.first ? this.focusFirst : null,
+      "aria-haspopup": option.id === "newtab-menu-edit-topsites" ? "dialog" : null
     }, /*#__PURE__*/external_React_default().createElement("span", {
       "data-l10n-id": option.string_id || option.id
     })));
@@ -6449,7 +6738,8 @@ const LinkMenuOptions = {
       data: {
         referrer: site.referrer,
         typedBonus: site.typedBonus,
-        url: site.url
+        url: site.url,
+        sponsored_tile_id: site.sponsored_tile_id
       }
     }),
     userEvent: "OPEN_NEW_WINDOW"
@@ -6692,7 +6982,8 @@ class _LinkMenu extends (external_React_default()).PureComponent {
       source,
       isPrivateBrowsingEnabled,
       siteInfo,
-      platform
+      platform,
+      userEvent = actionCreators.UserEvent
     } = props; // Handle special case of default site
 
     const propOptions = site.isDefault && !site.searchTopSite && !site.sponsored_position ? DEFAULT_SITE_MENU_OPTIONS : props.options;
@@ -6702,7 +6993,7 @@ class _LinkMenu extends (external_React_default()).PureComponent {
         impression,
         id,
         type,
-        userEvent
+        userEvent: eventName
       } = option;
 
       if (!type && id) {
@@ -6727,13 +7018,16 @@ class _LinkMenu extends (external_React_default()).PureComponent {
 
           props.dispatch(action);
 
-          if (userEvent) {
+          if (eventName) {
             const userEventData = Object.assign({
-              event: userEvent,
+              event: eventName,
               source,
-              action_position: index
+              action_position: index,
+              value: {
+                card_type: site.flight_id ? "spoc" : "organic"
+              }
             }, siteInfo);
-            props.dispatch(actionCreators.UserEvent(userEventData));
+            props.dispatch(userEvent(userEventData));
           }
 
           if (impression && props.shouldSendImpressionStats) {
@@ -6852,6 +7146,7 @@ class ContextMenuButton extends (external_React_default()).PureComponent {
 
 
 
+
 class DSLinkMenu extends (external_React_default()).PureComponent {
   render() {
     const {
@@ -6859,12 +7154,16 @@ class DSLinkMenu extends (external_React_default()).PureComponent {
       dispatch
     } = this.props;
     let pocketMenuOptions = [];
+    let TOP_STORIES_CONTEXT_MENU_OPTIONS = ["OpenInNewWindow", "OpenInPrivateWindow"];
 
-    if (this.props.pocket_button_enabled) {
-      pocketMenuOptions = this.props.saveToPocketCard ? ["CheckDeleteFromPocket"] : ["CheckSavedToPocket"];
+    if (!this.props.isRecentSave) {
+      if (this.props.pocket_button_enabled) {
+        pocketMenuOptions = this.props.saveToPocketCard ? ["CheckDeleteFromPocket"] : ["CheckSavedToPocket"];
+      }
+
+      TOP_STORIES_CONTEXT_MENU_OPTIONS = ["CheckBookmark", "CheckArchiveFromPocket", ...pocketMenuOptions, "Separator", "OpenInNewWindow", "OpenInPrivateWindow", "Separator", "BlockUrl", ...(this.props.showPrivacyInfo ? ["ShowPrivacyInfo"] : [])];
     }
 
-    const TOP_STORIES_CONTEXT_MENU_OPTIONS = ["CheckBookmark", "CheckArchiveFromPocket", ...pocketMenuOptions, "Separator", "OpenInNewWindow", "OpenInPrivateWindow", "Separator", "BlockUrl", ...(this.props.showPrivacyInfo ? ["ShowPrivacyInfo"] : [])];
     const type = this.props.type || "DISCOVERY_STREAM";
     const title = this.props.title || this.props.source;
     return /*#__PURE__*/external_React_default().createElement("div", {
@@ -6882,6 +7181,7 @@ class DSLinkMenu extends (external_React_default()).PureComponent {
       onShow: this.props.onMenuShow,
       options: TOP_STORIES_CONTEXT_MENU_OPTIONS,
       shouldSendImpressionStats: true,
+      userEvent: actionCreators.DiscoveryStreamUserEvent,
       site: {
         referrer: "https://getpocket.com/recommendations",
         title: this.props.title,
@@ -6897,10 +7197,25 @@ class DSLinkMenu extends (external_React_default()).PureComponent {
   }
 
 }
+;// CONCATENATED MODULE: ./content-src/components/TopSites/TopSitesConstants.js
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+const TOP_SITES_SOURCE = "TOP_SITES";
+const TOP_SITES_CONTEXT_MENU_OPTIONS = ["CheckPinTopSite", "EditTopSite", "Separator", "OpenInNewWindow", "OpenInPrivateWindow", "Separator", "BlockUrl", "DeleteUrl"];
+const TOP_SITES_SPOC_CONTEXT_MENU_OPTIONS = ["OpenInNewWindow", "OpenInPrivateWindow", "Separator", "BlockUrl", "ShowPrivacyInfo"];
+const TOP_SITES_SPONSORED_POSITION_CONTEXT_MENU_OPTIONS = ["OpenInNewWindow", "OpenInPrivateWindow", "Separator", "BlockUrl", "AboutSponsored"]; // the special top site for search shortcut experiment can only have the option to unpin (which removes) the topsite
+
+const TOP_SITES_SEARCH_SHORTCUTS_CONTEXT_MENU_OPTIONS = ["CheckPinTopSite", "Separator", "BlockUrl"]; // minimum size necessary to show a rich icon instead of a screenshot
+
+const MIN_RICH_FAVICON_SIZE = 96; // minimum size necessary to show any icon
+
+const MIN_SMALL_FAVICON_SIZE = 16;
 ;// CONCATENATED MODULE: ./content-src/components/DiscoveryStreamImpressionStats/ImpressionStats.jsx
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
 
 
 const ImpressionStats_VISIBLE = "visible";
@@ -6957,7 +7272,23 @@ class ImpressionStats_ImpressionStats extends (external_React_default()).PureCom
         data: {
           flightId: this.props.flightId
         }
-      }));
+      })); // Record sponsored topsites impressions if the source is `TOP_SITES_SOURCE`.
+
+      if (this.props.source === TOP_SITES_SOURCE) {
+        for (const card of cards) {
+          this.props.dispatch(actionCreators.OnlyToMain({
+            type: actionTypes.TOP_SITES_IMPRESSION_STATS,
+            data: {
+              type: "impression",
+              tile_id: card.id,
+              source: "newtab",
+              advertiser: card.advertiser,
+              position: card.pos + 1 // positions are 1-based for telemetry
+
+            }
+          }));
+        }
+      }
     }
 
     if (this._needsImpressionStats(cards)) {
@@ -6968,6 +7299,7 @@ class ImpressionStats_ImpressionStats extends (external_React_default()).PureCom
         tiles: cards.map(link => ({
           id: link.id,
           pos: link.pos,
+          type: this.props.flightId ? "spoc" : "organic",
           ...(link.shim ? {
             shim: link.shim
           } : {})
@@ -7270,25 +7602,21 @@ const ANIMATION_DURATION = 3000;
 const DSMessageLabel = props => {
   const {
     context,
-    context_type,
-    display_engagement_labels,
-    engagement
+    context_type
   } = props;
   const {
     icon,
     fluentID
   } = cardContextTypes[context_type] || {};
 
-  if (!context && (context_type || display_engagement_labels && engagement)) {
+  if (!context && context_type) {
     return /*#__PURE__*/external_React_default().createElement(external_ReactTransitionGroup_namespaceObject.TransitionGroup, {
       component: null
     }, /*#__PURE__*/external_React_default().createElement(external_ReactTransitionGroup_namespaceObject.CSSTransition, {
       key: fluentID,
       timeout: ANIMATION_DURATION,
       classNames: "story-animate"
-    }, engagement && !context_type ? /*#__PURE__*/external_React_default().createElement("div", {
-      className: "story-view-count"
-    }, engagement) : /*#__PURE__*/external_React_default().createElement(StatusMessage, {
+    }, /*#__PURE__*/external_React_default().createElement(StatusMessage, {
       icon: icon,
       fluentID: fluentID
     })));
@@ -7346,12 +7674,9 @@ const SponsorLabel = ({
 };
 class DSContextFooter extends (external_React_default()).PureComponent {
   render() {
-    // display_engagement_labels is based on pref `browser.newtabpage.activity-stream.discoverystream.engagementLabelEnabled`
     const {
       context,
       context_type,
-      engagement,
-      display_engagement_labels,
       sponsor,
       sponsored_by_override
     } = this.props;
@@ -7362,9 +7687,7 @@ class DSContextFooter extends (external_React_default()).PureComponent {
     });
     const dsMessageLabel = DSMessageLabel({
       context,
-      context_type,
-      display_engagement_labels,
-      engagement
+      context_type
     });
 
     if (sponsorLabel || dsMessageLabel) {
@@ -7381,15 +7704,11 @@ const DSMessageFooter = props => {
   const {
     context,
     context_type,
-    engagement,
-    display_engagement_labels,
     saveToPocketCard
   } = props;
   const dsMessageLabel = DSMessageLabel({
     context,
-    context_type,
-    engagement,
-    display_engagement_labels
+    context_type
   }); // This case is specific and already displayed to the user elsewhere.
 
   if (!dsMessageLabel || saveToPocketCard && context_type === "pocket") {
@@ -7464,10 +7783,8 @@ const DSSource = ({
   return /*#__PURE__*/external_React_default().createElement("p", {
     className: "source clamp"
   }, source);
-}; // Default Meta that displays CTA as link if cta_variant in layout is set as "link"
-
+};
 const DefaultMeta = ({
-  display_engagement_labels,
   source,
   title,
   excerpt,
@@ -7475,12 +7792,10 @@ const DefaultMeta = ({
   newSponsoredLabel,
   context,
   context_type,
-  cta,
-  engagement,
-  cta_variant,
   sponsor,
   sponsored_by_override,
-  saveToPocketCard
+  saveToPocketCard,
+  isRecentSave
 }) => /*#__PURE__*/external_React_default().createElement("div", {
   className: "meta"
 }, /*#__PURE__*/external_React_default().createElement("div", {
@@ -7497,62 +7812,15 @@ const DefaultMeta = ({
   className: "title clamp"
 }, title), excerpt && /*#__PURE__*/external_React_default().createElement("p", {
   className: "excerpt clamp"
-}, excerpt), cta_variant === "link" && cta && /*#__PURE__*/external_React_default().createElement("div", {
-  role: "link",
-  className: "cta-link icon icon-arrow",
-  tabIndex: "0"
-}, cta)), !newSponsoredLabel && /*#__PURE__*/external_React_default().createElement(DSContextFooter, {
+}, excerpt)), !newSponsoredLabel && /*#__PURE__*/external_React_default().createElement(DSContextFooter, {
   context_type: context_type,
   context: context,
   sponsor: sponsor,
-  sponsored_by_override: sponsored_by_override,
-  display_engagement_labels: display_engagement_labels,
-  engagement: engagement
+  sponsored_by_override: sponsored_by_override
 }), newSponsoredLabel && /*#__PURE__*/external_React_default().createElement(DSMessageFooter, {
   context_type: context_type,
   context: null,
-  display_engagement_labels: display_engagement_labels,
-  engagement: engagement,
   saveToPocketCard: saveToPocketCard
-}));
-const CTAButtonMeta = ({
-  display_engagement_labels,
-  source,
-  title,
-  excerpt,
-  context,
-  context_type,
-  cta,
-  engagement,
-  sponsor,
-  sponsored_by_override
-}) => /*#__PURE__*/external_React_default().createElement("div", {
-  className: "meta"
-}, /*#__PURE__*/external_React_default().createElement("div", {
-  className: "info-wrap"
-}, /*#__PURE__*/external_React_default().createElement("p", {
-  className: "source clamp"
-}, context && /*#__PURE__*/external_React_default().createElement(FluentOrText, {
-  message: {
-    id: `newtab-label-sponsored`,
-    values: {
-      sponsorOrSource: sponsor ? sponsor : source
-    }
-  }
-}), !context && (sponsor ? sponsor : source)), /*#__PURE__*/external_React_default().createElement("header", {
-  title: title,
-  className: "title clamp"
-}, title), excerpt && /*#__PURE__*/external_React_default().createElement("p", {
-  className: "excerpt clamp"
-}, excerpt)), context && cta && /*#__PURE__*/external_React_default().createElement("button", {
-  className: "button cta-button"
-}, cta), !context && /*#__PURE__*/external_React_default().createElement(DSContextFooter, {
-  context_type: context_type,
-  context: context,
-  sponsor: sponsor,
-  sponsored_by_override: sponsored_by_override,
-  display_engagement_labels: display_engagement_labels,
-  engagement: engagement
 }));
 class _DSCard extends (external_React_default()).PureComponent {
   constructor(props) {
@@ -7604,16 +7872,16 @@ class _DSCard extends (external_React_default()).PureComponent {
 
   onLinkClick(event) {
     if (this.props.dispatch) {
-      this.props.dispatch(actionCreators.UserEvent({
+      this.props.dispatch(actionCreators.DiscoveryStreamUserEvent({
         event: "CLICK",
-        source: this.props.is_video ? "CARDGRID_VIDEO" : this.props.type.toUpperCase(),
+        source: this.props.type.toUpperCase(),
         action_position: this.props.pos,
         value: {
           card_type: this.props.flightId ? "spoc" : "organic"
         }
       }));
       this.props.dispatch(actionCreators.ImpressionStats({
-        source: this.props.is_video ? "CARDGRID_VIDEO" : this.props.type.toUpperCase(),
+        source: this.props.type.toUpperCase(),
         click: 0,
         window_inner_width: this.props.windowObj.innerWidth,
         window_inner_height: this.props.windowObj.innerHeight,
@@ -7622,7 +7890,8 @@ class _DSCard extends (external_React_default()).PureComponent {
           pos: this.props.pos,
           ...(this.props.shim && this.props.shim.click ? {
             shim: this.props.shim.click
-          } : {})
+          } : {}),
+          type: this.props.flightId ? "spoc" : "organic"
         }]
       }));
     }
@@ -7639,10 +7908,13 @@ class _DSCard extends (external_React_default()).PureComponent {
           }
         }
       }));
-      this.props.dispatch(actionCreators.UserEvent({
+      this.props.dispatch(actionCreators.DiscoveryStreamUserEvent({
         event: "SAVE_TO_POCKET",
         source: "CARDGRID_HOVER",
-        action_position: this.props.pos
+        action_position: this.props.pos,
+        value: {
+          card_type: this.props.flightId ? "spoc" : "organic"
+        }
       }));
       this.props.dispatch(actionCreators.ImpressionStats({
         source: "CARDGRID_HOVER",
@@ -7740,42 +8012,21 @@ class _DSCard extends (external_React_default()).PureComponent {
       });
     }
 
-    if (this.props.lastCard) {
-      return /*#__PURE__*/external_React_default().createElement("div", {
-        className: "ds-card last-card-message"
-      }, /*#__PURE__*/external_React_default().createElement("div", {
-        className: "img-wrapper"
-      }, /*#__PURE__*/external_React_default().createElement("picture", {
-        className: "ds-image img loaded"
-      }, /*#__PURE__*/external_React_default().createElement("img", {
-        "data-l10n-id": "newtab-pocket-last-card-image",
-        className: "last-card-message-image",
-        src: "chrome://activity-stream/content/data/content/assets/caught-up-illustration.svg",
-        alt: "You\u2019re all caught up"
-      }))), /*#__PURE__*/external_React_default().createElement("div", {
-        className: "meta"
-      }, /*#__PURE__*/external_React_default().createElement("div", {
-        className: "info-wrap"
-      }, /*#__PURE__*/external_React_default().createElement("header", {
-        className: "title clamp",
-        "data-l10n-id": "newtab-pocket-last-card-title"
-      }), /*#__PURE__*/external_React_default().createElement("p", {
-        className: "ds-last-card-desc",
-        "data-l10n-id": "newtab-pocket-last-card-desc"
-      }))));
-    }
-
-    const isButtonCTA = this.props.cta_variant === "button";
     const {
-      is_video,
-      saveToPocketCard,
+      isRecentSave,
+      DiscoveryStream,
+      saveToPocketCard
+    } = this.props;
+    const {
+      pocketButtonEnabled,
       hideDescriptions,
       compactImages,
       imageGradient,
+      newSponsoredLabel,
       titleLines = 3,
       descLines = 3,
-      displayReadTime
-    } = this.props;
+      readTime: displayReadTime
+    } = DiscoveryStream;
     const excerpt = !hideDescriptions ? this.props.excerpt : "";
     let timeToRead;
 
@@ -7783,13 +8034,28 @@ class _DSCard extends (external_React_default()).PureComponent {
       timeToRead = this.props.time_to_read || readTimeFromWordCount(this.props.word_count);
     }
 
-    const videoCardClassName = is_video ? `video-card` : ``;
     const compactImagesClassName = compactImages ? `ds-card-compact-image` : ``;
     const imageGradientClassName = imageGradient ? `ds-card-image-gradient` : ``;
     const titleLinesName = `ds-card-title-lines-${titleLines}`;
     const descLinesClassName = `ds-card-desc-lines-${descLines}`;
+
+    let stpButton = () => {
+      return /*#__PURE__*/external_React_default().createElement("button", {
+        className: "card-stp-button",
+        onClick: this.onSaveClick
+      }, this.props.context_type === "pocket" ? /*#__PURE__*/external_React_default().createElement((external_React_default()).Fragment, null, /*#__PURE__*/external_React_default().createElement("span", {
+        className: "story-badge-icon icon icon-pocket"
+      }), /*#__PURE__*/external_React_default().createElement("span", {
+        "data-l10n-id": "newtab-pocket-saved"
+      })) : /*#__PURE__*/external_React_default().createElement((external_React_default()).Fragment, null, /*#__PURE__*/external_React_default().createElement("span", {
+        className: "story-badge-icon icon icon-pocket-save"
+      }), /*#__PURE__*/external_React_default().createElement("span", {
+        "data-l10n-id": "newtab-pocket-save"
+      })));
+    };
+
     return /*#__PURE__*/external_React_default().createElement("div", {
-      className: `ds-card ${videoCardClassName} ${videoCardClassName} ${compactImagesClassName} ${imageGradientClassName} ${titleLinesName} ${descLinesClassName}`,
+      className: `ds-card ${compactImagesClassName} ${imageGradientClassName} ${titleLinesName} ${descLinesClassName}`,
       ref: this.setContextMenuButtonHostRef
     }, /*#__PURE__*/external_React_default().createElement(SafeAnchor, {
       className: "ds-card-link",
@@ -7802,33 +8068,18 @@ class _DSCard extends (external_React_default()).PureComponent {
       extraClassNames: "img",
       source: this.props.image_src,
       rawSource: this.props.raw_image_src,
-      sizes: this.dsImageSizes
-    }), this.props.is_video && /*#__PURE__*/external_React_default().createElement("div", {
-      className: "playhead"
-    }, /*#__PURE__*/external_React_default().createElement("span", null, "Video Content"))), isButtonCTA ? /*#__PURE__*/external_React_default().createElement(CTAButtonMeta, {
-      display_engagement_labels: this.props.display_engagement_labels,
+      sizes: this.dsImageSizes,
+      url: this.props.url,
+      title: this.props.title,
+      isRecentSave: isRecentSave
+    })), /*#__PURE__*/external_React_default().createElement(DefaultMeta, {
       source: this.props.source,
       title: this.props.title,
       excerpt: excerpt,
+      newSponsoredLabel: newSponsoredLabel,
       timeToRead: timeToRead,
       context: this.props.context,
       context_type: this.props.context_type,
-      engagement: this.props.engagement,
-      cta: this.props.cta,
-      sponsor: this.props.sponsor,
-      sponsored_by_override: this.props.sponsored_by_override
-    }) : /*#__PURE__*/external_React_default().createElement(DefaultMeta, {
-      display_engagement_labels: this.props.display_engagement_labels,
-      source: this.props.source,
-      title: this.props.title,
-      excerpt: excerpt,
-      newSponsoredLabel: this.props.newSponsoredLabel,
-      timeToRead: timeToRead,
-      context: this.props.context,
-      engagement: this.props.engagement,
-      context_type: this.props.context_type,
-      cta: this.props.cta,
-      cta_variant: this.props.cta_variant,
       sponsor: this.props.sponsor,
       sponsored_by_override: this.props.sponsored_by_override,
       saveToPocketCard: saveToPocketCard
@@ -7842,23 +8093,12 @@ class _DSCard extends (external_React_default()).PureComponent {
         } : {})
       }],
       dispatch: this.props.dispatch,
-      source: this.props.is_video ? "CARDGRID_VIDEO" : this.props.type
+      source: this.props.type
     })), saveToPocketCard && /*#__PURE__*/external_React_default().createElement("div", {
       className: "card-stp-button-hover-background"
     }, /*#__PURE__*/external_React_default().createElement("div", {
       className: "card-stp-button-position-wrapper"
-    }, /*#__PURE__*/external_React_default().createElement("button", {
-      className: "card-stp-button",
-      onClick: this.onSaveClick
-    }, this.props.context_type === "pocket" ? /*#__PURE__*/external_React_default().createElement((external_React_default()).Fragment, null, /*#__PURE__*/external_React_default().createElement("span", {
-      className: "story-badge-icon icon icon-pocket"
-    }), /*#__PURE__*/external_React_default().createElement("span", {
-      "data-l10n-id": "newtab-pocket-saved-to-pocket"
-    })) : /*#__PURE__*/external_React_default().createElement((external_React_default()).Fragment, null, /*#__PURE__*/external_React_default().createElement("span", {
-      className: "story-badge-icon icon icon-pocket-save"
-    }), /*#__PURE__*/external_React_default().createElement("span", {
-      "data-l10n-id": "newtab-pocket-save-to-pocket"
-    }))), /*#__PURE__*/external_React_default().createElement(DSLinkMenu, {
+    }, !this.props.flightId && stpButton(), /*#__PURE__*/external_React_default().createElement(DSLinkMenu, {
       id: this.props.id,
       index: this.props.pos,
       dispatch: this.props.dispatch,
@@ -7874,7 +8114,8 @@ class _DSCard extends (external_React_default()).PureComponent {
       onMenuUpdate: this.onMenuUpdate,
       onMenuShow: this.onMenuShow,
       saveToPocketCard: saveToPocketCard,
-      pocket_button_enabled: this.props.pocket_button_enabled
+      pocket_button_enabled: pocketButtonEnabled,
+      isRecentSave: isRecentSave
     }))), !saveToPocketCard && /*#__PURE__*/external_React_default().createElement(DSLinkMenu, {
       id: this.props.id,
       index: this.props.pos,
@@ -7891,7 +8132,8 @@ class _DSCard extends (external_React_default()).PureComponent {
       hostRef: this.contextMenuButtonHostRef,
       onMenuUpdate: this.onMenuUpdate,
       onMenuShow: this.onMenuShow,
-      pocket_button_enabled: this.props.pocket_button_enabled
+      pocket_button_enabled: pocketButtonEnabled,
+      isRecentSave: isRecentSave
     }));
   }
 
@@ -7901,13 +8143,11 @@ _DSCard.defaultProps = {
 
 };
 const DSCard = (0,external_ReactRedux_namespaceObject.connect)(state => ({
-  App: state.App
+  App: state.App,
+  DiscoveryStream: state.DiscoveryStream
 }))(_DSCard);
 const PlaceholderDSCard = props => /*#__PURE__*/external_React_default().createElement(DSCard, {
   placeholder: true
-});
-const LastCardMessage = props => /*#__PURE__*/external_React_default().createElement(DSCard, {
-  lastCard: true
 });
 ;// CONCATENATED MODULE: ./content-src/components/DiscoveryStreamComponents/DSEmptyState/DSEmptyState.jsx
 /* This Source Code Form is subject to the terms of the Mozilla Public
@@ -8008,11 +8248,124 @@ class DSEmptyState extends (external_React_default()).PureComponent {
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-function TopicsWidget(props) {
+
+
+
+
+function _TopicsWidget(props) {
+  const {
+    id,
+    source,
+    position,
+    DiscoveryStream,
+    dispatch
+  } = props;
+  const {
+    utmCampaign,
+    utmContent,
+    utmSource
+  } = DiscoveryStream.experimentData;
+  let queryParams = `?utm_source=${utmSource}`;
+
+  if (utmCampaign && utmContent) {
+    queryParams += `&utm_content=${utmContent}&utm_campaign=${utmCampaign}`;
+  }
+
+  const topics = [{
+    label: "Technology",
+    name: "technology"
+  }, {
+    label: "Science",
+    name: "science"
+  }, {
+    label: "Self-Improvement",
+    name: "self-improvement"
+  }, {
+    label: "Travel",
+    name: "travel"
+  }, {
+    label: "Career",
+    name: "career"
+  }, {
+    label: "Entertainment",
+    name: "entertainment"
+  }, {
+    label: "Food",
+    name: "food"
+  }, {
+    label: "Health",
+    name: "health"
+  }, {
+    label: "Must-Reads",
+    name: "must-reads",
+    url: `https://getpocket.com/collections${queryParams}`
+  }];
+
+  function onLinkClick(topic, positionInCard) {
+    if (dispatch) {
+      dispatch(actionCreators.DiscoveryStreamUserEvent({
+        event: "CLICK",
+        source,
+        action_position: position,
+        value: {
+          card_type: "topics_widget",
+          topic,
+          ...(positionInCard || positionInCard === 0 ? {
+            position_in_card: positionInCard
+          } : {})
+        }
+      }));
+      dispatch(actionCreators.ImpressionStats({
+        source,
+        click: 0,
+        window_inner_width: props.windowObj.innerWidth,
+        window_inner_height: props.windowObj.innerHeight,
+        tiles: [{
+          id,
+          pos: position
+        }]
+      }));
+    }
+  }
+
+  function mapTopicItem(topic, index) {
+    return /*#__PURE__*/external_React_default().createElement("li", {
+      key: topic.name,
+      className: topic.overflow ? "ds-topics-widget-list-overflow-item" : ""
+    }, /*#__PURE__*/external_React_default().createElement(SafeAnchor, {
+      url: topic.url || `https://getpocket.com/explore/${topic.name}${queryParams}`,
+      dispatch: dispatch,
+      onLinkClick: () => onLinkClick(topic.name, index)
+    }, topic.label));
+  }
+
   return /*#__PURE__*/external_React_default().createElement("div", {
     className: "ds-topics-widget"
-  });
+  }, /*#__PURE__*/external_React_default().createElement("header", {
+    className: "ds-topics-widget-header"
+  }, "Popular Topics"), /*#__PURE__*/external_React_default().createElement("hr", null), /*#__PURE__*/external_React_default().createElement("div", {
+    className: "ds-topics-widget-list-container"
+  }, /*#__PURE__*/external_React_default().createElement("ul", null, topics.map(mapTopicItem))), /*#__PURE__*/external_React_default().createElement(SafeAnchor, {
+    className: "ds-topics-widget-button button primary",
+    url: `https://getpocket.com/${queryParams}`,
+    dispatch: dispatch,
+    onLinkClick: () => onLinkClick("more-topics")
+  }, "More Topics"), /*#__PURE__*/external_React_default().createElement(ImpressionStats_ImpressionStats, {
+    dispatch: dispatch,
+    rows: [{
+      id,
+      pos: position
+    }],
+    source: source
+  }));
 }
+_TopicsWidget.defaultProps = {
+  windowObj: window // Added to support unit tests
+
+};
+const TopicsWidget = (0,external_ReactRedux_namespaceObject.connect)(state => ({
+  DiscoveryStream: state.DiscoveryStream
+}))(_TopicsWidget);
 ;// CONCATENATED MODULE: ./content-src/components/DiscoveryStreamComponents/CardGrid/CardGrid.jsx
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
@@ -8023,81 +8376,206 @@ function TopicsWidget(props) {
 
 
 
-class CardGrid extends (external_React_default()).PureComponent {
-  constructor(props) {
-    super(props);
-    this.state = {
-      moreLoaded: false
+
+
+const WIDGET_IDS = {
+  TOPICS: 1
+};
+function DSSubHeader({
+  children
+}) {
+  return /*#__PURE__*/external_React_default().createElement("div", {
+    className: "section-top-bar ds-sub-header"
+  }, /*#__PURE__*/external_React_default().createElement("h3", {
+    className: "section-title-container"
+  }, children));
+}
+function CardGrid_IntersectionObserver({
+  children,
+  windowObj = window,
+  onIntersecting
+}) {
+  const intersectionElement = (0,external_React_namespaceObject.useRef)(null);
+  (0,external_React_namespaceObject.useEffect)(() => {
+    let observer;
+
+    if (!observer && onIntersecting && intersectionElement.current) {
+      observer = new windowObj.IntersectionObserver(entries => {
+        const entry = entries.find(e => e.isIntersecting);
+
+        if (entry) {
+          // Stop observing since element has been seen
+          if (observer && intersectionElement.current) {
+            observer.unobserve(intersectionElement.current);
+          }
+
+          onIntersecting();
+        }
+      });
+      observer.observe(intersectionElement.current);
+    } // Cleanup
+
+
+    return () => {
+      var _observer;
+
+      return (_observer = observer) === null || _observer === void 0 ? void 0 : _observer.disconnect();
     };
-    this.loadMoreClicked = this.loadMoreClicked.bind(this);
+  }, [windowObj, onIntersecting]);
+  return /*#__PURE__*/external_React_default().createElement("div", {
+    ref: intersectionElement
+  }, children);
+}
+function RecentSavesContainer({
+  gridClassName = "",
+  dispatch,
+  windowObj = window,
+  items = 3,
+  source = "CARDGRID_RECENT_SAVES"
+}) {
+  const {
+    recentSavesData,
+    isUserLoggedIn,
+    experimentData: {
+      utmCampaign,
+      utmContent,
+      utmSource
+    }
+  } = (0,external_ReactRedux_namespaceObject.useSelector)(state => state.DiscoveryStream);
+  const [visible, setVisible] = (0,external_React_namespaceObject.useState)(false);
+  const onIntersecting = (0,external_React_namespaceObject.useCallback)(() => setVisible(true), []);
+  (0,external_React_namespaceObject.useEffect)(() => {
+    if (visible) {
+      dispatch(actionCreators.AlsoToMain({
+        type: actionTypes.DISCOVERY_STREAM_POCKET_STATE_INIT
+      }));
+    }
+  }, [visible, dispatch]); // The user has not yet scrolled to this section,
+  // so wait before potentially requesting Pocket data.
+
+  if (!visible) {
+    return /*#__PURE__*/external_React_default().createElement(CardGrid_IntersectionObserver, {
+      windowObj: windowObj,
+      onIntersecting: onIntersecting
+    });
+  } // Intersection observer has finished, but we're not yet logged in.
+
+
+  if (visible && !isUserLoggedIn) {
+    return null;
   }
 
-  loadMoreClicked() {
-    this.props.dispatch(actionCreators.UserEvent({
-      event: "CLICK",
-      source: "DS_LOAD_MORE_BUTTON"
-    }));
-    this.setState({
-      moreLoaded: true
+  let queryParams = `?utm_source=${utmSource}`; // We really only need to add these params to urls we own.
+
+  if (utmCampaign && utmContent) {
+    queryParams += `&utm_content=${utmContent}&utm_campaign=${utmCampaign}`;
+  }
+
+  function renderCard(rec, index) {
+    const url = new URL(rec.url);
+    const urlSearchParams = new URLSearchParams(queryParams);
+
+    if (rec !== null && rec !== void 0 && rec.id && !url.href.match(/getpocket\.com\/read/)) {
+      url.href = `https://getpocket.com/read/${rec.id}`;
+    }
+
+    for (let [key, val] of urlSearchParams.entries()) {
+      url.searchParams.set(key, val);
+    }
+
+    return /*#__PURE__*/external_React_default().createElement(DSCard, {
+      key: `dscard-${(rec === null || rec === void 0 ? void 0 : rec.id) || index}`,
+      id: rec.id,
+      pos: index,
+      type: source,
+      image_src: rec.image_src,
+      raw_image_src: rec.raw_image_src,
+      word_count: rec.word_count,
+      time_to_read: rec.time_to_read,
+      title: rec.title,
+      excerpt: rec.excerpt,
+      url: url.href,
+      source: rec.domain,
+      isRecentSave: true,
+      dispatch: dispatch
     });
   }
 
-  get showLoadMore() {
-    const {
-      loadMore,
-      data,
-      loadMoreThreshold
-    } = this.props;
-    return loadMore && data.recommendations.length > loadMoreThreshold && !this.state.moreLoaded;
+  function onMyListClicked() {
+    dispatch(actionCreators.DiscoveryStreamUserEvent({
+      event: "CLICK",
+      source: `${source}_VIEW_LIST`
+    }));
   }
 
-  renderDSSubHeader(title) {
-    return /*#__PURE__*/external_React_default().createElement("div", {
-      className: "section-top-bar ds-sub-header"
-    }, /*#__PURE__*/external_React_default().createElement("h3", {
-      className: "section-title-container"
-    }, /*#__PURE__*/external_React_default().createElement("span", {
-      className: "section-title"
-    }, /*#__PURE__*/external_React_default().createElement(FluentOrText, {
-      message: title
-    }))));
-  }
+  const recentSavesCards = []; // We fill the cards with a for loop over an inline map because
+  // we want empty placeholders if there are not enough cards.
 
+  for (let index = 0; index < items; index++) {
+    const recentSave = recentSavesData[index];
+
+    if (!recentSave) {
+      recentSavesCards.push( /*#__PURE__*/external_React_default().createElement(PlaceholderDSCard, {
+        key: `dscard-${index}`
+      }));
+    } else {
+      var _recentSave$domain_me;
+
+      recentSavesCards.push(renderCard({
+        id: recentSave.id,
+        image_src: recentSave.top_image_url,
+        raw_image_src: recentSave.top_image_url,
+        word_count: recentSave.word_count,
+        time_to_read: recentSave.time_to_read,
+        title: recentSave.resolved_title || recentSave.given_title,
+        url: recentSave.resolved_url || recentSave.given_url,
+        domain: (_recentSave$domain_me = recentSave.domain_metadata) === null || _recentSave$domain_me === void 0 ? void 0 : _recentSave$domain_me.name,
+        excerpt: recentSave.excerpt
+      }, index));
+    }
+  } // We are visible and logged in.
+
+
+  return /*#__PURE__*/external_React_default().createElement((external_React_default()).Fragment, null, /*#__PURE__*/external_React_default().createElement(DSSubHeader, null, /*#__PURE__*/external_React_default().createElement("span", {
+    className: "section-title"
+  }, /*#__PURE__*/external_React_default().createElement(FluentOrText, {
+    message: "Recently Saved to your List"
+  })), /*#__PURE__*/external_React_default().createElement(SafeAnchor, {
+    onLinkClick: onMyListClicked,
+    className: "section-sub-link",
+    url: `https://getpocket.com/a${queryParams}`
+  }, /*#__PURE__*/external_React_default().createElement(FluentOrText, {
+    message: "View My List"
+  }))), /*#__PURE__*/external_React_default().createElement("div", {
+    className: `ds-card-grid-recent-saves ${gridClassName}`
+  }, recentSavesCards));
+}
+class _CardGrid extends (external_React_default()).PureComponent {
   renderCards() {
-    var _widgets$positions, _widgets$data;
+    var _widgets$positions, _widgets$data, _essentialReadsCards, _editorsPicksCards;
 
-    let {
-      items
-    } = this.props;
+    const prefs = this.props.Prefs.values;
     const {
+      items,
       hybridLayout,
       hideCardBackground,
       fourCardLayout,
-      hideDescriptions,
-      lastCardMessageEnabled,
-      saveToPocketCard,
-      loadMoreThreshold,
       compactGrid,
-      compactImages,
-      imageGradient,
-      newSponsoredLabel,
-      titleLines,
-      descLines,
-      readTime,
       essentialReadsHeader,
       editorsPicksHeader,
-      widgets
+      widgets,
+      recentSavesEnabled,
+      hideDescriptions,
+      DiscoveryStream
     } = this.props;
-    let showLastCardMessage = lastCardMessageEnabled;
-
-    if (this.showLoadMore) {
-      items = loadMoreThreshold; // We don't want to show this until after load more has been clicked.
-
-      showLastCardMessage = false;
-    }
-
+    const {
+      saveToPocketCard
+    } = DiscoveryStream;
+    const showRecentSaves = prefs.showRecentSaves && recentSavesEnabled;
     const recs = this.props.data.recommendations.slice(0, items);
     const cards = [];
+    let essentialReadsCards = [];
+    let editorsPicksCards = [];
 
     for (let index = 0; index < items; index++) {
       const rec = recs[index];
@@ -8111,7 +8589,6 @@ class CardGrid extends (external_React_default()).PureComponent {
         raw_image_src: rec.raw_image_src,
         word_count: rec.word_count,
         time_to_read: rec.time_to_read,
-        displayReadTime: readTime,
         title: rec.title,
         excerpt: rec.excerpt,
         url: rec.url,
@@ -8126,43 +8603,14 @@ class CardGrid extends (external_React_default()).PureComponent {
         pocket_id: rec.pocket_id,
         context_type: rec.context_type,
         bookmarkGuid: rec.bookmarkGuid,
-        engagement: rec.engagement,
-        pocket_button_enabled: this.props.pocket_button_enabled,
-        display_engagement_labels: this.props.display_engagement_labels,
-        hideDescriptions: hideDescriptions,
-        saveToPocketCard: saveToPocketCard,
-        compactImages: compactImages,
-        imageGradient: imageGradient,
-        newSponsoredLabel: newSponsoredLabel,
-        titleLines: titleLines,
-        descLines: descLines,
-        cta: rec.cta,
-        cta_variant: this.props.cta_variant,
-        is_video: this.props.enable_video_playheads && rec.is_video,
-        is_collection: this.props.is_collection
-      }));
-    } // If we have both header, inject the second one after the second row.
-    // For now this is English only.
-
-
-    if (essentialReadsHeader && editorsPicksHeader) {
-      // For 4 card row layouts, second row is 8 cards, and regular it is 6 cards.
-      if (fourCardLayout) {
-        cards.splice(8, 0, this.renderDSSubHeader("Editor’s Picks"));
-      } else {
-        cards.splice(6, 0, this.renderDSSubHeader("Editor’s Picks"));
-      }
-    } // Replace last card with "you are all caught up card"
-
-
-    if (showLastCardMessage) {
-      cards.splice(cards.length - 1, 1, /*#__PURE__*/external_React_default().createElement(LastCardMessage, {
-        key: `dscard-last-${cards.length - 1}`
+        is_collection: this.props.is_collection,
+        saveToPocketCard: saveToPocketCard
       }));
     }
 
     if (widgets !== null && widgets !== void 0 && (_widgets$positions = widgets.positions) !== null && _widgets$positions !== void 0 && _widgets$positions.length && widgets !== null && widgets !== void 0 && (_widgets$data = widgets.data) !== null && _widgets$data !== void 0 && _widgets$data.length) {
       let positionIndex = 0;
+      const source = "CARDGRID_WIDGET";
 
       for (const widget of widgets.data) {
         let widgetComponent = null;
@@ -8174,7 +8622,12 @@ class CardGrid extends (external_React_default()).PureComponent {
 
         switch (widget === null || widget === void 0 ? void 0 : widget.type) {
           case "TopicsWidget":
-            widgetComponent = /*#__PURE__*/external_React_default().createElement(TopicsWidget, null);
+            widgetComponent = /*#__PURE__*/external_React_default().createElement(TopicsWidget, {
+              position: position.index,
+              dispatch: this.props.dispatch,
+              source: source,
+              id: WIDGET_IDS.TOPICS
+            });
             break;
         }
 
@@ -8185,18 +8638,51 @@ class CardGrid extends (external_React_default()).PureComponent {
           cards.splice(position.index, 1, widgetComponent);
         }
       }
-    } // Used for CSS overrides to default styling (eg: "hero")
+    }
+
+    let moreRecsHeader = ""; // For now this is English only.
+
+    if (showRecentSaves || essentialReadsHeader && editorsPicksHeader) {
+      let spliceAt = 6; // For 4 card row layouts, second row is 8 cards, and regular it is 6 cards.
+
+      if (fourCardLayout) {
+        spliceAt = 8;
+      } // If we have a custom header, ensure the more recs section also has a header.
 
 
-    const variantClass = this.props.display_variant ? `ds-card-grid-${this.props.display_variant}` : ``;
+      moreRecsHeader = "More Recommendations"; // Put the first 2 rows into essentialReadsCards.
+
+      essentialReadsCards = [...cards.splice(0, spliceAt)]; // Put the rest into editorsPicksCards.
+
+      if (essentialReadsHeader && editorsPicksHeader) {
+        editorsPicksCards = [...cards.splice(0, cards.length)];
+      }
+    }
+
     const hideCardBackgroundClass = hideCardBackground ? `ds-card-grid-hide-background` : ``;
     const fourCardLayoutClass = fourCardLayout ? `ds-card-grid-four-card-variant` : ``;
     const hideDescriptionsClassName = !hideDescriptions ? `ds-card-grid-include-descriptions` : ``;
     const compactGridClassName = compactGrid ? `ds-card-grid-compact` : ``;
     const hybridLayoutClassName = hybridLayout ? `ds-card-grid-hybrid-layout` : ``;
-    return /*#__PURE__*/external_React_default().createElement("div", {
-      className: `ds-card-grid ds-card-grid-${this.props.border} ${variantClass} ${hybridLayoutClassName} ${hideCardBackgroundClass} ${fourCardLayoutClass} ${hideDescriptionsClassName} ${compactGridClassName}`
-    }, cards);
+    const gridClassName = `ds-card-grid ds-card-grid-border ${hybridLayoutClassName} ${hideCardBackgroundClass} ${fourCardLayoutClass} ${hideDescriptionsClassName} ${compactGridClassName}`;
+    return /*#__PURE__*/external_React_default().createElement((external_React_default()).Fragment, null, ((_essentialReadsCards = essentialReadsCards) === null || _essentialReadsCards === void 0 ? void 0 : _essentialReadsCards.length) > 0 && /*#__PURE__*/external_React_default().createElement("div", {
+      className: gridClassName
+    }, essentialReadsCards), showRecentSaves && /*#__PURE__*/external_React_default().createElement(RecentSavesContainer, {
+      gridClassName: gridClassName,
+      dispatch: this.props.dispatch
+    }), ((_editorsPicksCards = editorsPicksCards) === null || _editorsPicksCards === void 0 ? void 0 : _editorsPicksCards.length) > 0 && /*#__PURE__*/external_React_default().createElement((external_React_default()).Fragment, null, /*#__PURE__*/external_React_default().createElement(DSSubHeader, null, /*#__PURE__*/external_React_default().createElement("span", {
+      className: "section-title"
+    }, /*#__PURE__*/external_React_default().createElement(FluentOrText, {
+      message: "Editor\u2019s Picks"
+    }))), /*#__PURE__*/external_React_default().createElement("div", {
+      className: gridClassName
+    }, editorsPicksCards)), (cards === null || cards === void 0 ? void 0 : cards.length) > 0 && /*#__PURE__*/external_React_default().createElement((external_React_default()).Fragment, null, moreRecsHeader && /*#__PURE__*/external_React_default().createElement(DSSubHeader, null, /*#__PURE__*/external_React_default().createElement("span", {
+      className: "section-title"
+    }, /*#__PURE__*/external_React_default().createElement(FluentOrText, {
+      message: moreRecsHeader
+    }))), /*#__PURE__*/external_React_default().createElement("div", {
+      className: gridClassName
+    }, cards)));
   }
 
   render() {
@@ -8224,23 +8710,18 @@ class CardGrid extends (external_React_default()).PureComponent {
       status: data.status,
       dispatch: this.props.dispatch,
       feed: this.props.feed
-    })) : this.renderCards(), this.showLoadMore && /*#__PURE__*/external_React_default().createElement("button", {
-      className: "ASRouterButton primary ds-card-grid-load-more-button",
-      onClick: this.loadMoreClicked,
-      "data-l10n-id": "newtab-pocket-load-more-stories-button"
-    }));
+    })) : this.renderCards());
   }
 
 }
-CardGrid.defaultProps = {
-  border: `border`,
-  items: 4,
-  // Number of stories to display
-  enable_video_playheads: false,
-  lastCardMessageEnabled: false,
-  saveToPocketCard: false,
-  loadMoreThreshold: 12
+_CardGrid.defaultProps = {
+  items: 4 // Number of stories to display
+
 };
+const CardGrid = (0,external_ReactRedux_namespaceObject.connect)(state => ({
+  Prefs: state.Prefs,
+  DiscoveryStream: state.DiscoveryStream
+}))(_CardGrid);
 ;// CONCATENATED MODULE: ./content-src/components/DiscoveryStreamComponents/DSDismiss/DSDismiss.jsx
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
@@ -8338,7 +8819,7 @@ class CollectionCardGrid extends (external_React_default()).PureComponent {
         userEvent
       } = blockUrlOption;
       this.props.dispatch(action);
-      this.props.dispatch(actionCreators.UserEvent({
+      this.props.dispatch(actionCreators.DiscoveryStreamUserEvent({
         event: userEvent,
         source,
         action_position: pos
@@ -8422,7 +8903,6 @@ class CollectionCardGrid extends (external_React_default()).PureComponent {
       context: sponsoredByMessage,
       data: recsData,
       feed: feed,
-      border: this.props.border,
       type: type,
       is_collection: true,
       dispatch: this.props.dispatch,
@@ -8772,7 +9252,7 @@ class DSPrivacyModal extends (external_React_default()).PureComponent {
   }
 
   onLearnLinkClick(event) {
-    this.props.dispatch(actionCreators.UserEvent({
+    this.props.dispatch(actionCreators.DiscoveryStreamUserEvent({
       event: "CLICK_PRIVACY_INFO",
       source: "DS_PRIVACY_MODAL"
     }));
@@ -8882,7 +9362,7 @@ class DSSignup extends (external_React_default()).PureComponent {
       const source = this.props.type.toUpperCase(); // Grab the first item in the array as we only have 1 spoc position.
 
       const [spoc] = data.spocs;
-      this.props.dispatch(actionCreators.UserEvent({
+      this.props.dispatch(actionCreators.DiscoveryStreamUserEvent({
         event: "CLICK",
         source,
         action_position: 0
@@ -8957,6 +9437,7 @@ class DSSignup extends (external_React_default()).PureComponent {
       onShow: this.onMenuShow,
       options: SIGNUP_CONTEXT_MENU_OPTIONS,
       shouldSendImpressionStats: true,
+      userEvent: actionCreators.DiscoveryStreamUserEvent,
       site: {
         referrer: "https://getpocket.com/recommendations",
         title,
@@ -9001,7 +9482,7 @@ class DSTextPromo extends (external_React_default()).PureComponent {
       const source = this.props.type.toUpperCase(); // Grab the first item in the array as we only have 1 spoc position.
 
       const [spoc] = data.spocs;
-      this.props.dispatch(actionCreators.UserEvent({
+      this.props.dispatch(actionCreators.DiscoveryStreamUserEvent({
         event: "CLICK",
         source,
         action_position: 0
@@ -9042,7 +9523,7 @@ class DSTextPromo extends (external_React_default()).PureComponent {
         userEvent
       } = blockUrlOption;
       this.props.dispatch(action);
-      this.props.dispatch(actionCreators.UserEvent({
+      this.props.dispatch(actionCreators.DiscoveryStreamUserEvent({
         event: userEvent,
         source,
         action_position: index
@@ -9869,20 +10350,6 @@ class Topics extends (external_React_default()).PureComponent {
   }
 
 }
-;// CONCATENATED MODULE: ./content-src/components/TopSites/TopSitesConstants.js
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
-const TOP_SITES_SOURCE = "TOP_SITES";
-const TOP_SITES_CONTEXT_MENU_OPTIONS = ["CheckPinTopSite", "EditTopSite", "Separator", "OpenInNewWindow", "OpenInPrivateWindow", "Separator", "BlockUrl", "DeleteUrl"];
-const TOP_SITES_SPOC_CONTEXT_MENU_OPTIONS = ["PinTopSite", "Separator", "OpenInNewWindow", "OpenInPrivateWindow", "Separator", "BlockUrl", "ShowPrivacyInfo"];
-const TOP_SITES_SPONSORED_POSITION_CONTEXT_MENU_OPTIONS = ["OpenInNewWindow", "OpenInPrivateWindow", "Separator", "BlockUrl", "AboutSponsored"]; // the special top site for search shortcut experiment can only have the option to unpin (which removes) the topsite
-
-const TOP_SITES_SEARCH_SHORTCUTS_CONTEXT_MENU_OPTIONS = ["CheckPinTopSite", "Separator", "BlockUrl"]; // minimum size necessary to show a rich icon instead of a screenshot
-
-const MIN_RICH_FAVICON_SIZE = 96; // minimum size necessary to show any icon
-
-const MIN_SMALL_FAVICON_SIZE = 16;
 ;// CONCATENATED MODULE: ./content-src/components/TopSites/SearchShortcutsForm.jsx
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
@@ -10062,10 +10529,11 @@ class SearchShortcutsForm extends (external_React_default()).PureComponent {
   }
 
 }
-;// CONCATENATED MODULE: ./common/Dedupe.jsm
+;// CONCATENATED MODULE: ./common/Dedupe.sys.mjs
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
 class Dedupe {
   constructor(createKey) {
     this.createKey = createKey || this.defaultCreateKey;
@@ -10074,38 +10542,32 @@ class Dedupe {
   defaultCreateKey(item) {
     return item;
   }
+
   /**
    * Dedupe any number of grouped elements favoring those from earlier groups.
    *
    * @param {Array} groups Contains an arbitrary number of arrays of elements.
    * @returns {Array} A matching array of each provided group deduped.
    */
-
-
   group(...groups) {
     const globalKeys = new Set();
     const result = [];
-
     for (const values of groups) {
       const valueMap = new Map();
-
       for (const value of values) {
         const key = this.createKey(value);
-
         if (!globalKeys.has(key) && !valueMap.has(key)) {
           valueMap.set(key, value);
         }
       }
-
       result.push(valueMap);
       valueMap.forEach((value, key) => globalKeys.add(key));
     }
-
     return result.map(m => Array.from(m.values()));
   }
-
 }
-;// CONCATENATED MODULE: ./common/Reducers.jsm
+
+;// CONCATENATED MODULE: ./common/Reducers.sys.mjs
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -10116,19 +10578,17 @@ class Dedupe {
 const TOP_SITES_DEFAULT_ROWS = 1;
 const TOP_SITES_MAX_SITES_PER_ROW = 8;
 const PREF_COLLECTION_DISMISSIBLE = "discoverystream.isCollectionDismissible";
+
 const dedupe = new Dedupe(site => site && site.url);
+
 const INITIAL_STATE = {
   App: {
     // Have we received real data from the app yet?
     initialized: false,
-    locale: ""
+    locale: "",
   },
-  ASRouter: {
-    initialized: false
-  },
-  Snippets: {
-    initialized: false
-  },
+  ASRouter: { initialized: false },
+  Snippets: { initialized: false },
   TopSites: {
     // Have we received real data from history yet?
     initialized: false,
@@ -10139,55 +10599,60 @@ const INITIAL_STATE = {
     // Used in content only to open the SearchShortcutsForm modal.
     showSearchShortcutsForm: false,
     // The list of available search shortcuts.
-    searchShortcuts: []
+    searchShortcuts: [],
   },
   Prefs: {
     initialized: false,
-    values: {
-      featureConfig: {}
-    }
+    values: { featureConfig: {} },
   },
   Dialog: {
     visible: false,
-    data: {}
+    data: {},
   },
   Sections: [],
   Pocket: {
     isUserLoggedIn: null,
     pocketCta: {},
-    waitingForSpoc: true
+    waitingForSpoc: true,
   },
   // This is the new pocket configurable layout state.
   DiscoveryStream: {
     // This is a JSON-parsed copy of the discoverystream.config pref value.
-    config: {
-      enabled: false,
-      layout_endpoint: ""
-    },
+    config: { enabled: false, layout_endpoint: "" },
     layout: [],
     lastUpdated: null,
     isPrivacyInfoModalVisible: false,
     isCollectionDismissible: false,
     feeds: {
-      data: {// "https://foo.com/feed1": {lastUpdated: 123, data: []}
+      data: {
+        // "https://foo.com/feed1": {lastUpdated: 123, data: []}
       },
-      loaded: false
+      loaded: false,
     },
     spocs: {
       spocs_endpoint: "",
       lastUpdated: null,
-      data: {// "spocs": {title: "", context: "", items: []},
+      data: {
+        // "spocs": {title: "", context: "", items: []},
         // "placement1": {title: "", context: "", items: []},
       },
       loaded: false,
       frequency_caps: [],
       blocked: [],
-      placements: []
-    }
+      placements: [],
+    },
+    experimentData: {
+      utmSource: "pocket-newtab",
+      utmCampaign: undefined,
+      utmContent: undefined,
+    },
+    recentSavesData: [],
+    isUserLoggedIn: false,
+    recentSavesEnabled: false,
   },
   Personalization: {
     lastUpdated: null,
-    initialized: false
+    initialized: false,
   },
   Search: {
     // When search hand-off is enabled, we render a big button that is styled to
@@ -10196,17 +10661,16 @@ const INITIAL_STATE = {
     // really focus the awesomebar without the focus styles ("hidden focus").
     fakeFocus: false,
     // Hide the search box after handing off to AwesomeBar and user starts typing.
-    hide: false
-  }
+    hide: false,
+  },
 };
 
 function App(prevState = INITIAL_STATE.App, action) {
   switch (action.type) {
     case actionTypes.INIT:
       return Object.assign({}, prevState, action.data || {}, {
-        initialized: true
+        initialized: true,
       });
-
     default:
       return prevState;
   }
@@ -10215,14 +10679,12 @@ function App(prevState = INITIAL_STATE.App, action) {
 function ASRouter(prevState = INITIAL_STATE.ASRouter, action) {
   switch (action.type) {
     case actionTypes.AS_ROUTER_INITIALIZED:
-      return { ...action.data,
-        initialized: true
-      };
-
+      return { ...action.data, initialized: true };
     default:
       return prevState;
   }
 }
+
 /**
  * insertPinned - Inserts pinned links in their specified slots
  *
@@ -10230,168 +10692,131 @@ function ASRouter(prevState = INITIAL_STATE.ASRouter, action) {
  * @param {array} a list of pinned links
  * @return {array} resulting list of links with pinned links inserted
  */
-
-
 function insertPinned(links, pinned) {
   // Remove any pinned links
   const pinnedUrls = pinned.map(link => link && link.url);
-  let newLinks = links.filter(link => link ? !pinnedUrls.includes(link.url) : false);
+  let newLinks = links.filter(link =>
+    link ? !pinnedUrls.includes(link.url) : false
+  );
   newLinks = newLinks.map(link => {
     if (link && link.isPinned) {
       delete link.isPinned;
       delete link.pinIndex;
     }
-
     return link;
-  }); // Then insert them in their specified location
+  });
 
+  // Then insert them in their specified location
   pinned.forEach((val, index) => {
     if (!val) {
       return;
     }
-
-    let link = Object.assign({}, val, {
-      isPinned: true,
-      pinIndex: index
-    });
-
+    let link = Object.assign({}, val, { isPinned: true, pinIndex: index });
     if (index > newLinks.length) {
       newLinks[index] = link;
     } else {
       newLinks.splice(index, 0, link);
     }
   });
+
   return newLinks;
 }
 
 function TopSites(prevState = INITIAL_STATE.TopSites, action) {
   let hasMatch;
   let newRows;
-
   switch (action.type) {
     case actionTypes.TOP_SITES_UPDATED:
       if (!action.data || !action.data.links) {
         return prevState;
       }
-
-      return Object.assign({}, prevState, {
-        initialized: true,
-        rows: action.data.links
-      }, action.data.pref ? {
-        pref: action.data.pref
-      } : {});
-
+      return Object.assign(
+        {},
+        prevState,
+        { initialized: true, rows: action.data.links },
+        action.data.pref ? { pref: action.data.pref } : {}
+      );
     case actionTypes.TOP_SITES_PREFS_UPDATED:
-      return Object.assign({}, prevState, {
-        pref: action.data.pref
-      });
-
+      return Object.assign({}, prevState, { pref: action.data.pref });
     case actionTypes.TOP_SITES_EDIT:
       return Object.assign({}, prevState, {
         editForm: {
           index: action.data.index,
-          previewResponse: null
-        }
+          previewResponse: null,
+        },
       });
-
     case actionTypes.TOP_SITES_CANCEL_EDIT:
-      return Object.assign({}, prevState, {
-        editForm: null
-      });
-
+      return Object.assign({}, prevState, { editForm: null });
     case actionTypes.TOP_SITES_OPEN_SEARCH_SHORTCUTS_MODAL:
-      return Object.assign({}, prevState, {
-        showSearchShortcutsForm: true
-      });
-
+      return Object.assign({}, prevState, { showSearchShortcutsForm: true });
     case actionTypes.TOP_SITES_CLOSE_SEARCH_SHORTCUTS_MODAL:
-      return Object.assign({}, prevState, {
-        showSearchShortcutsForm: false
-      });
-
+      return Object.assign({}, prevState, { showSearchShortcutsForm: false });
     case actionTypes.PREVIEW_RESPONSE:
-      if (!prevState.editForm || action.data.url !== prevState.editForm.previewUrl) {
+      if (
+        !prevState.editForm ||
+        action.data.url !== prevState.editForm.previewUrl
+      ) {
         return prevState;
       }
-
       return Object.assign({}, prevState, {
         editForm: {
           index: prevState.editForm.index,
           previewResponse: action.data.preview,
-          previewUrl: action.data.url
-        }
+          previewUrl: action.data.url,
+        },
       });
-
     case actionTypes.PREVIEW_REQUEST:
       if (!prevState.editForm) {
         return prevState;
       }
-
       return Object.assign({}, prevState, {
         editForm: {
           index: prevState.editForm.index,
           previewResponse: null,
-          previewUrl: action.data.url
-        }
+          previewUrl: action.data.url,
+        },
       });
-
     case actionTypes.PREVIEW_REQUEST_CANCEL:
       if (!prevState.editForm) {
         return prevState;
       }
-
       return Object.assign({}, prevState, {
         editForm: {
           index: prevState.editForm.index,
-          previewResponse: null
-        }
+          previewResponse: null,
+        },
       });
-
     case actionTypes.SCREENSHOT_UPDATED:
       newRows = prevState.rows.map(row => {
         if (row && row.url === action.data.url) {
           hasMatch = true;
-          return Object.assign({}, row, {
-            screenshot: action.data.screenshot
-          });
+          return Object.assign({}, row, { screenshot: action.data.screenshot });
         }
-
         return row;
       });
-      return hasMatch ? Object.assign({}, prevState, {
-        rows: newRows
-      }) : prevState;
-
+      return hasMatch
+        ? Object.assign({}, prevState, { rows: newRows })
+        : prevState;
     case actionTypes.PLACES_BOOKMARK_ADDED:
       if (!action.data) {
         return prevState;
       }
-
       newRows = prevState.rows.map(site => {
         if (site && site.url === action.data.url) {
-          const {
-            bookmarkGuid,
-            bookmarkTitle,
-            dateAdded
-          } = action.data;
+          const { bookmarkGuid, bookmarkTitle, dateAdded } = action.data;
           return Object.assign({}, site, {
             bookmarkGuid,
             bookmarkTitle,
-            bookmarkDateCreated: dateAdded
+            bookmarkDateCreated: dateAdded,
           });
         }
-
         return site;
       });
-      return Object.assign({}, prevState, {
-        rows: newRows
-      });
-
+      return Object.assign({}, prevState, { rows: newRows });
     case actionTypes.PLACES_BOOKMARKS_REMOVED:
       if (!action.data) {
         return prevState;
       }
-
       newRows = prevState.rows.map(site => {
         if (site && action.data.urls.includes(site.url)) {
           const newSite = Object.assign({}, site);
@@ -10400,33 +10825,21 @@ function TopSites(prevState = INITIAL_STATE.TopSites, action) {
           delete newSite.bookmarkDateCreated;
           return newSite;
         }
-
         return site;
       });
-      return Object.assign({}, prevState, {
-        rows: newRows
-      });
-
+      return Object.assign({}, prevState, { rows: newRows });
     case actionTypes.PLACES_LINKS_DELETED:
       if (!action.data) {
         return prevState;
       }
-
-      newRows = prevState.rows.filter(site => !action.data.urls.includes(site.url));
-      return Object.assign({}, prevState, {
-        rows: newRows
-      });
-
+      newRows = prevState.rows.filter(
+        site => !action.data.urls.includes(site.url)
+      );
+      return Object.assign({}, prevState, { rows: newRows });
     case actionTypes.UPDATE_SEARCH_SHORTCUTS:
-      return { ...prevState,
-        searchShortcuts: action.data.searchShortcuts
-      };
-
+      return { ...prevState, searchShortcuts: action.data.searchShortcuts };
     case actionTypes.SNIPPETS_PREVIEW_MODE:
-      return { ...prevState,
-        rows: []
-      };
-
+      return { ...prevState, rows: [] };
     default:
       return prevState;
   }
@@ -10435,19 +10848,11 @@ function TopSites(prevState = INITIAL_STATE.TopSites, action) {
 function Dialog(prevState = INITIAL_STATE.Dialog, action) {
   switch (action.type) {
     case actionTypes.DIALOG_OPEN:
-      return Object.assign({}, prevState, {
-        visible: true,
-        data: action.data
-      });
-
+      return Object.assign({}, prevState, { visible: true, data: action.data });
     case actionTypes.DIALOG_CANCEL:
-      return Object.assign({}, prevState, {
-        visible: false
-      });
-
+      return Object.assign({}, prevState, { visible: false });
     case actionTypes.DELETE_HISTORY_URL:
       return Object.assign({}, INITIAL_STATE.Dialog);
-
     default:
       return prevState;
   }
@@ -10455,21 +10860,16 @@ function Dialog(prevState = INITIAL_STATE.Dialog, action) {
 
 function Prefs(prevState = INITIAL_STATE.Prefs, action) {
   let newValues;
-
   switch (action.type) {
     case actionTypes.PREFS_INITIAL_VALUES:
       return Object.assign({}, prevState, {
         initialized: true,
-        values: action.data
+        values: action.data,
       });
-
     case actionTypes.PREF_CHANGED:
       newValues = Object.assign({}, prevState.values);
       newValues[action.data.name] = action.data.value;
-      return Object.assign({}, prevState, {
-        values: newValues
-      });
-
+      return Object.assign({}, prevState, { values: newValues });
     default:
       return prevState;
   }
@@ -10478,11 +10878,9 @@ function Prefs(prevState = INITIAL_STATE.Prefs, action) {
 function Sections(prevState = INITIAL_STATE.Sections, action) {
   let hasMatch;
   let newState;
-
   switch (action.type) {
     case actionTypes.SECTION_DEREGISTER:
       return prevState.filter(section => section.id !== action.data);
-
     case actionTypes.SECTION_REGISTER:
       // If section exists in prevState, update it
       newState = prevState.map(section => {
@@ -10490,35 +10888,33 @@ function Sections(prevState = INITIAL_STATE.Sections, action) {
           hasMatch = true;
           return Object.assign({}, section, action.data);
         }
-
         return section;
-      }); // Otherwise, append it
-
+      });
+      // Otherwise, append it
       if (!hasMatch) {
         const initialized = !!(action.data.rows && !!action.data.rows.length);
-        const section = Object.assign({
-          title: "",
-          rows: [],
-          enabled: false
-        }, action.data, {
-          initialized
-        });
+        const section = Object.assign(
+          { title: "", rows: [], enabled: false },
+          action.data,
+          { initialized }
+        );
         newState.push(section);
       }
-
       return newState;
-
     case actionTypes.SECTION_UPDATE:
       newState = prevState.map(section => {
         if (section && section.id === action.data.id) {
           // If the action is updating rows, we should consider initialized to be true.
           // This can be overridden if initialized is defined in the action.data
-          const initialized = action.data.rows ? {
-            initialized: true
-          } : {}; // Make sure pinned cards stay at their current position when rows are updated.
-          // Disabling a section (SECTION_UPDATE with empty rows) does not retain pinned cards.
+          const initialized = action.data.rows ? { initialized: true } : {};
 
-          if (action.data.rows && !!action.data.rows.length && section.rows.find(card => card.pinned)) {
+          // Make sure pinned cards stay at their current position when rows are updated.
+          // Disabling a section (SECTION_UPDATE with empty rows) does not retain pinned cards.
+          if (
+            action.data.rows &&
+            !!action.data.rows.length &&
+            section.rows.find(card => card.pinned)
+          ) {
             const rows = Array.from(action.data.rows);
             section.rows.forEach((card, index) => {
               if (card.pinned) {
@@ -10528,14 +10924,16 @@ function Sections(prevState = INITIAL_STATE.Sections, action) {
                 }
               }
             });
-            return Object.assign({}, section, initialized, Object.assign({}, action.data, {
-              rows
-            }));
+            return Object.assign(
+              {},
+              section,
+              initialized,
+              Object.assign({}, action.data, { rows })
+            );
           }
 
           return Object.assign({}, section, initialized, action.data);
         }
-
         return section;
       });
 
@@ -10546,21 +10944,25 @@ function Sections(prevState = INITIAL_STATE.Sections, action) {
       action.data.dedupeConfigurations.forEach(dedupeConf => {
         newState = newState.map(section => {
           if (section.id === dedupeConf.id) {
-            const dedupedRows = dedupeConf.dedupeFrom.reduce((rows, dedupeSectionId) => {
-              const dedupeSection = newState.find(s => s.id === dedupeSectionId);
-              const [, newRows] = dedupe.group(dedupeSection.rows, rows);
-              return newRows;
-            }, section.rows);
-            return Object.assign({}, section, {
-              rows: dedupedRows
-            });
+            const dedupedRows = dedupeConf.dedupeFrom.reduce(
+              (rows, dedupeSectionId) => {
+                const dedupeSection = newState.find(
+                  s => s.id === dedupeSectionId
+                );
+                const [, newRows] = dedupe.group(dedupeSection.rows, rows);
+                return newRows;
+              },
+              section.rows
+            );
+
+            return Object.assign({}, section, { rows: dedupedRows });
           }
 
           return section;
         });
       });
-      return newState;
 
+      return newState;
     case actionTypes.SECTION_UPDATE_CARD:
       return prevState.map(section => {
         if (section && section.id === action.data.id && section.rows) {
@@ -10568,117 +10970,105 @@ function Sections(prevState = INITIAL_STATE.Sections, action) {
             if (card.url === action.data.url) {
               return Object.assign({}, card, action.data.options);
             }
-
             return card;
           });
-          return Object.assign({}, section, {
-            rows: newRows
-          });
+          return Object.assign({}, section, { rows: newRows });
         }
-
         return section;
       });
-
     case actionTypes.PLACES_BOOKMARK_ADDED:
       if (!action.data) {
         return prevState;
       }
-
-      return prevState.map(section => Object.assign({}, section, {
-        rows: section.rows.map(item => {
-          // find the item within the rows that is attempted to be bookmarked
-          if (item.url === action.data.url) {
-            const {
-              bookmarkGuid,
-              bookmarkTitle,
-              dateAdded
-            } = action.data;
-            return Object.assign({}, item, {
-              bookmarkGuid,
-              bookmarkTitle,
-              bookmarkDateCreated: dateAdded,
-              type: "bookmark"
-            });
-          }
-
-          return item;
+      return prevState.map(section =>
+        Object.assign({}, section, {
+          rows: section.rows.map(item => {
+            // find the item within the rows that is attempted to be bookmarked
+            if (item.url === action.data.url) {
+              const { bookmarkGuid, bookmarkTitle, dateAdded } = action.data;
+              return Object.assign({}, item, {
+                bookmarkGuid,
+                bookmarkTitle,
+                bookmarkDateCreated: dateAdded,
+                type: "bookmark",
+              });
+            }
+            return item;
+          }),
         })
-      }));
-
+      );
     case actionTypes.PLACES_SAVED_TO_POCKET:
       if (!action.data) {
         return prevState;
       }
-
-      return prevState.map(section => Object.assign({}, section, {
-        rows: section.rows.map(item => {
-          if (item.url === action.data.url) {
-            return Object.assign({}, item, {
-              open_url: action.data.open_url,
-              pocket_id: action.data.pocket_id,
-              title: action.data.title,
-              type: "pocket"
-            });
-          }
-
-          return item;
+      return prevState.map(section =>
+        Object.assign({}, section, {
+          rows: section.rows.map(item => {
+            if (item.url === action.data.url) {
+              return Object.assign({}, item, {
+                open_url: action.data.open_url,
+                pocket_id: action.data.pocket_id,
+                title: action.data.title,
+                type: "pocket",
+              });
+            }
+            return item;
+          }),
         })
-      }));
-
+      );
     case actionTypes.PLACES_BOOKMARKS_REMOVED:
       if (!action.data) {
         return prevState;
       }
-
-      return prevState.map(section => Object.assign({}, section, {
-        rows: section.rows.map(item => {
-          // find the bookmark within the rows that is attempted to be removed
-          if (action.data.urls.includes(item.url)) {
-            const newSite = Object.assign({}, item);
-            delete newSite.bookmarkGuid;
-            delete newSite.bookmarkTitle;
-            delete newSite.bookmarkDateCreated;
-
-            if (!newSite.type || newSite.type === "bookmark") {
-              newSite.type = "history";
+      return prevState.map(section =>
+        Object.assign({}, section, {
+          rows: section.rows.map(item => {
+            // find the bookmark within the rows that is attempted to be removed
+            if (action.data.urls.includes(item.url)) {
+              const newSite = Object.assign({}, item);
+              delete newSite.bookmarkGuid;
+              delete newSite.bookmarkTitle;
+              delete newSite.bookmarkDateCreated;
+              if (!newSite.type || newSite.type === "bookmark") {
+                newSite.type = "history";
+              }
+              return newSite;
             }
-
-            return newSite;
-          }
-
-          return item;
+            return item;
+          }),
         })
-      }));
-
+      );
     case actionTypes.PLACES_LINKS_DELETED:
       if (!action.data) {
         return prevState;
       }
-
-      return prevState.map(section => Object.assign({}, section, {
-        rows: section.rows.filter(site => !action.data.urls.includes(site.url))
-      }));
-
+      return prevState.map(section =>
+        Object.assign({}, section, {
+          rows: section.rows.filter(
+            site => !action.data.urls.includes(site.url)
+          ),
+        })
+      );
     case actionTypes.PLACES_LINK_BLOCKED:
       if (!action.data) {
         return prevState;
       }
-
-      return prevState.map(section => Object.assign({}, section, {
-        rows: section.rows.filter(site => site.url !== action.data.url)
-      }));
-
+      return prevState.map(section =>
+        Object.assign({}, section, {
+          rows: section.rows.filter(site => site.url !== action.data.url),
+        })
+      );
     case actionTypes.DELETE_FROM_POCKET:
     case actionTypes.ARCHIVE_FROM_POCKET:
-      return prevState.map(section => Object.assign({}, section, {
-        rows: section.rows.filter(site => site.pocket_id !== action.data.pocket_id)
-      }));
-
+      return prevState.map(section =>
+        Object.assign({}, section, {
+          rows: section.rows.filter(
+            site => site.pocket_id !== action.data.pocket_id
+          ),
+        })
+      );
     case actionTypes.SNIPPETS_PREVIEW_MODE:
-      return prevState.map(section => ({ ...section,
-        rows: []
-      }));
-
+      return prevState.map(section => ({ ...section, rows: [] }));
     default:
       return prevState;
   }
@@ -10687,23 +11077,15 @@ function Sections(prevState = INITIAL_STATE.Sections, action) {
 function Snippets(prevState = INITIAL_STATE.Snippets, action) {
   switch (action.type) {
     case actionTypes.SNIPPETS_DATA:
-      return Object.assign({}, prevState, {
-        initialized: true
-      }, action.data);
-
+      return Object.assign({}, prevState, { initialized: true }, action.data);
     case actionTypes.SNIPPET_BLOCKED:
       return Object.assign({}, prevState, {
-        blockList: prevState.blockList.concat(action.data)
+        blockList: prevState.blockList.concat(action.data),
       });
-
     case actionTypes.SNIPPETS_BLOCKLIST_CLEARED:
-      return Object.assign({}, prevState, {
-        blockList: []
-      });
-
+      return Object.assign({}, prevState, { blockList: [] });
     case actionTypes.SNIPPETS_RESET:
       return INITIAL_STATE.Snippets;
-
     default:
       return prevState;
   }
@@ -10712,193 +11094,231 @@ function Snippets(prevState = INITIAL_STATE.Snippets, action) {
 function Pocket(prevState = INITIAL_STATE.Pocket, action) {
   switch (action.type) {
     case actionTypes.POCKET_WAITING_FOR_SPOC:
-      return { ...prevState,
-        waitingForSpoc: action.data
-      };
-
+      return { ...prevState, waitingForSpoc: action.data };
     case actionTypes.POCKET_LOGGED_IN:
-      return { ...prevState,
-        isUserLoggedIn: !!action.data
-      };
-
+      return { ...prevState, isUserLoggedIn: !!action.data };
     case actionTypes.POCKET_CTA:
-      return { ...prevState,
+      return {
+        ...prevState,
         pocketCta: {
           ctaButton: action.data.cta_button,
           ctaText: action.data.cta_text,
           ctaUrl: action.data.cta_url,
-          useCta: action.data.use_cta
-        }
+          useCta: action.data.use_cta,
+        },
       };
-
     default:
       return prevState;
   }
 }
 
-function Reducers_Personalization(prevState = INITIAL_STATE.Personalization, action) {
+function Reducers_sys_Personalization(prevState = INITIAL_STATE.Personalization, action) {
   switch (action.type) {
     case actionTypes.DISCOVERY_STREAM_PERSONALIZATION_LAST_UPDATED:
-      return { ...prevState,
-        lastUpdated: action.data.lastUpdated
+      return {
+        ...prevState,
+        lastUpdated: action.data.lastUpdated,
       };
-
     case actionTypes.DISCOVERY_STREAM_PERSONALIZATION_INIT:
-      return { ...prevState,
-        initialized: true
+      return {
+        ...prevState,
+        initialized: true,
       };
-
     default:
       return prevState;
   }
-} // eslint-disable-next-line complexity
+}
 
-
+// eslint-disable-next-line complexity
 function DiscoveryStream(prevState = INITIAL_STATE.DiscoveryStream, action) {
   // Return if action data is empty, or spocs or feeds data is not loaded
-  const isNotReady = () => !action.data || !prevState.spocs.loaded || !prevState.feeds.loaded;
+  const isNotReady = () =>
+    !action.data || !prevState.spocs.loaded || !prevState.feeds.loaded;
 
   const handlePlacements = handleSites => {
-    const {
-      data,
-      placements
-    } = prevState.spocs;
+    const { data, placements } = prevState.spocs;
     const result = {};
 
     const forPlacement = placement => {
       const placementSpocs = data[placement.name];
 
-      if (!placementSpocs || !placementSpocs.items || !placementSpocs.items.length) {
+      if (
+        !placementSpocs ||
+        !placementSpocs.items ||
+        !placementSpocs.items.length
+      ) {
         return;
       }
 
-      result[placement.name] = { ...placementSpocs,
-        items: handleSites(placementSpocs.items)
+      result[placement.name] = {
+        ...placementSpocs,
+        items: handleSites(placementSpocs.items),
       };
     };
 
     if (!placements || !placements.length) {
-      [{
-        name: "spocs"
-      }].forEach(forPlacement);
+      [{ name: "spocs" }].forEach(forPlacement);
     } else {
       placements.forEach(forPlacement);
     }
-
     return result;
   };
 
-  const nextState = handleSites => ({ ...prevState,
-    spocs: { ...prevState.spocs,
-      data: handlePlacements(handleSites)
+  const nextState = handleSites => ({
+    ...prevState,
+    spocs: {
+      ...prevState.spocs,
+      data: handlePlacements(handleSites),
     },
-    feeds: { ...prevState.feeds,
-      data: Object.keys(prevState.feeds.data).reduce((accumulator, feed_url) => {
-        accumulator[feed_url] = {
-          data: { ...prevState.feeds.data[feed_url].data,
-            recommendations: handleSites(prevState.feeds.data[feed_url].data.recommendations)
-          }
-        };
-        return accumulator;
-      }, {})
-    }
+    feeds: {
+      ...prevState.feeds,
+      data: Object.keys(prevState.feeds.data).reduce(
+        (accumulator, feed_url) => {
+          accumulator[feed_url] = {
+            data: {
+              ...prevState.feeds.data[feed_url].data,
+              recommendations: handleSites(
+                prevState.feeds.data[feed_url].data.recommendations
+              ),
+            },
+          };
+          return accumulator;
+        },
+        {}
+      ),
+    },
   });
 
   switch (action.type) {
-    case actionTypes.DISCOVERY_STREAM_CONFIG_CHANGE: // Fall through to a separate action is so it doesn't trigger a listener update on init
-
+    case actionTypes.DISCOVERY_STREAM_CONFIG_CHANGE:
+    // Fall through to a separate action is so it doesn't trigger a listener update on init
     case actionTypes.DISCOVERY_STREAM_CONFIG_SETUP:
-      return { ...prevState,
-        config: action.data || {}
-      };
-
+      return { ...prevState, config: action.data || {} };
+    case actionTypes.DISCOVERY_STREAM_EXPERIMENT_DATA:
+      return { ...prevState, experimentData: action.data || {} };
     case actionTypes.DISCOVERY_STREAM_LAYOUT_UPDATE:
-      return { ...prevState,
+      return {
+        ...prevState,
         lastUpdated: action.data.lastUpdated || null,
-        layout: action.data.layout || []
+        layout: action.data.layout || [],
       };
-
     case actionTypes.DISCOVERY_STREAM_COLLECTION_DISMISSIBLE_TOGGLE:
-      return { ...prevState,
-        isCollectionDismissible: action.data.value
+      return {
+        ...prevState,
+        isCollectionDismissible: action.data.value,
       };
-
+    case actionTypes.DISCOVERY_STREAM_PREFS_SETUP:
+      return {
+        ...prevState,
+        recentSavesEnabled: action.data.recentSavesEnabled,
+        pocketButtonEnabled: action.data.pocketButtonEnabled,
+        saveToPocketCard: action.data.saveToPocketCard,
+        hideDescriptions: action.data.hideDescriptions,
+        compactImages: action.data.compactImages,
+        imageGradient: action.data.imageGradient,
+        newSponsoredLabel: action.data.newSponsoredLabel,
+        titleLines: action.data.titleLines,
+        descLines: action.data.descLines,
+        readTime: action.data.readTime,
+      };
+    case actionTypes.DISCOVERY_STREAM_RECENT_SAVES:
+      return {
+        ...prevState,
+        recentSavesData: action.data.recentSaves,
+      };
+    case actionTypes.DISCOVERY_STREAM_POCKET_STATE_SET:
+      return {
+        ...prevState,
+        isUserLoggedIn: action.data.isUserLoggedIn,
+      };
     case actionTypes.HIDE_PRIVACY_INFO:
-      return { ...prevState,
-        isPrivacyInfoModalVisible: false
+      return {
+        ...prevState,
+        isPrivacyInfoModalVisible: false,
       };
-
     case actionTypes.SHOW_PRIVACY_INFO:
-      return { ...prevState,
-        isPrivacyInfoModalVisible: true
+      return {
+        ...prevState,
+        isPrivacyInfoModalVisible: true,
       };
-
     case actionTypes.DISCOVERY_STREAM_LAYOUT_RESET:
-      return { ...INITIAL_STATE.DiscoveryStream,
-        config: prevState.config
-      };
-
+      return { ...INITIAL_STATE.DiscoveryStream, config: prevState.config };
     case actionTypes.DISCOVERY_STREAM_FEEDS_UPDATE:
-      return { ...prevState,
-        feeds: { ...prevState.feeds,
-          loaded: true
-        }
+      return {
+        ...prevState,
+        feeds: {
+          ...prevState.feeds,
+          loaded: true,
+        },
       };
-
     case actionTypes.DISCOVERY_STREAM_FEED_UPDATE:
       const newData = {};
       newData[action.data.url] = action.data.feed;
-      return { ...prevState,
-        feeds: { ...prevState.feeds,
-          data: { ...prevState.feeds.data,
-            ...newData
-          }
-        }
+      return {
+        ...prevState,
+        feeds: {
+          ...prevState.feeds,
+          data: {
+            ...prevState.feeds.data,
+            ...newData,
+          },
+        },
       };
-
     case actionTypes.DISCOVERY_STREAM_SPOCS_CAPS:
-      return { ...prevState,
-        spocs: { ...prevState.spocs,
-          frequency_caps: [...prevState.spocs.frequency_caps, ...action.data]
-        }
+      return {
+        ...prevState,
+        spocs: {
+          ...prevState.spocs,
+          frequency_caps: [...prevState.spocs.frequency_caps, ...action.data],
+        },
       };
-
     case actionTypes.DISCOVERY_STREAM_SPOCS_ENDPOINT:
-      return { ...prevState,
-        spocs: { ...INITIAL_STATE.DiscoveryStream.spocs,
-          spocs_endpoint: action.data.url || INITIAL_STATE.DiscoveryStream.spocs.spocs_endpoint
-        }
+      return {
+        ...prevState,
+        spocs: {
+          ...INITIAL_STATE.DiscoveryStream.spocs,
+          spocs_endpoint:
+            action.data.url ||
+            INITIAL_STATE.DiscoveryStream.spocs.spocs_endpoint,
+        },
       };
-
     case actionTypes.DISCOVERY_STREAM_SPOCS_PLACEMENTS:
-      return { ...prevState,
-        spocs: { ...prevState.spocs,
-          placements: action.data.placements || INITIAL_STATE.DiscoveryStream.spocs.placements
-        }
+      return {
+        ...prevState,
+        spocs: {
+          ...prevState.spocs,
+          placements:
+            action.data.placements ||
+            INITIAL_STATE.DiscoveryStream.spocs.placements,
+        },
       };
-
     case actionTypes.DISCOVERY_STREAM_SPOCS_UPDATE:
       if (action.data) {
-        return { ...prevState,
-          spocs: { ...prevState.spocs,
+        return {
+          ...prevState,
+          spocs: {
+            ...prevState.spocs,
             lastUpdated: action.data.lastUpdated,
             data: action.data.spocs,
-            loaded: true
-          }
+            loaded: true,
+          },
         };
       }
-
       return prevState;
-
     case actionTypes.DISCOVERY_STREAM_SPOC_BLOCKED:
-      return { ...prevState,
-        spocs: { ...prevState.spocs,
-          blocked: [...prevState.spocs.blocked, action.data.url]
-        }
+      return {
+        ...prevState,
+        spocs: {
+          ...prevState.spocs,
+          blocked: [...prevState.spocs.blocked, action.data.url],
+        },
       };
-
     case actionTypes.DISCOVERY_STREAM_LINK_BLOCKED:
-      return isNotReady() ? prevState : nextState(items => items.filter(item => item.url !== action.data.url));
+      return isNotReady()
+        ? prevState
+        : nextState(items =>
+            items.filter(item => item.url !== action.data.url)
+          );
 
     case actionTypes.PLACES_SAVED_TO_POCKET:
       const addPocketInfo = item => {
@@ -10906,39 +11326,39 @@ function DiscoveryStream(prevState = INITIAL_STATE.DiscoveryStream, action) {
           return Object.assign({}, item, {
             open_url: action.data.open_url,
             pocket_id: action.data.pocket_id,
-            context_type: "pocket"
+            context_type: "pocket",
           });
         }
-
         return item;
       };
-
-      return isNotReady() ? prevState : nextState(items => items.map(addPocketInfo));
+      return isNotReady()
+        ? prevState
+        : nextState(items => items.map(addPocketInfo));
 
     case actionTypes.DELETE_FROM_POCKET:
     case actionTypes.ARCHIVE_FROM_POCKET:
-      return isNotReady() ? prevState : nextState(items => items.filter(item => item.pocket_id !== action.data.pocket_id));
+      return isNotReady()
+        ? prevState
+        : nextState(items =>
+            items.filter(item => item.pocket_id !== action.data.pocket_id)
+          );
 
     case actionTypes.PLACES_BOOKMARK_ADDED:
       const updateBookmarkInfo = item => {
         if (item.url === action.data.url) {
-          const {
-            bookmarkGuid,
-            bookmarkTitle,
-            dateAdded
-          } = action.data;
+          const { bookmarkGuid, bookmarkTitle, dateAdded } = action.data;
           return Object.assign({}, item, {
             bookmarkGuid,
             bookmarkTitle,
             bookmarkDateCreated: dateAdded,
-            context_type: "bookmark"
+            context_type: "bookmark",
           });
         }
-
         return item;
       };
-
-      return isNotReady() ? prevState : nextState(items => items.map(updateBookmarkInfo));
+      return isNotReady()
+        ? prevState
+        : nextState(items => items.map(updateBookmarkInfo));
 
     case actionTypes.PLACES_BOOKMARKS_REMOVED:
       const removeBookmarkInfo = item => {
@@ -10947,28 +11367,24 @@ function DiscoveryStream(prevState = INITIAL_STATE.DiscoveryStream, action) {
           delete newSite.bookmarkGuid;
           delete newSite.bookmarkTitle;
           delete newSite.bookmarkDateCreated;
-
           if (!newSite.context_type || newSite.context_type === "bookmark") {
             newSite.context_type = "removedBookmark";
           }
-
           return newSite;
         }
-
         return item;
       };
-
-      return isNotReady() ? prevState : nextState(items => items.map(removeBookmarkInfo));
-
+      return isNotReady()
+        ? prevState
+        : nextState(items => items.map(removeBookmarkInfo));
     case actionTypes.PREF_CHANGED:
       if (action.data.name === PREF_COLLECTION_DISMISSIBLE) {
-        return { ...prevState,
-          isCollectionDismissible: action.data.value
+        return {
+          ...prevState,
+          isCollectionDismissible: action.data.value,
         };
       }
-
       return prevState;
-
     default:
       return prevState;
   }
@@ -10977,27 +11393,17 @@ function DiscoveryStream(prevState = INITIAL_STATE.DiscoveryStream, action) {
 function Search(prevState = INITIAL_STATE.Search, action) {
   switch (action.type) {
     case actionTypes.DISABLE_SEARCH:
-      return Object.assign({ ...prevState,
-        disable: true
-      });
-
+      return Object.assign({ ...prevState, disable: true });
     case actionTypes.FAKE_FOCUS_SEARCH:
-      return Object.assign({ ...prevState,
-        fakeFocus: true
-      });
-
+      return Object.assign({ ...prevState, fakeFocus: true });
     case actionTypes.SHOW_SEARCH:
-      return Object.assign({ ...prevState,
-        disable: false,
-        fakeFocus: false
-      });
-
+      return Object.assign({ ...prevState, disable: false, fakeFocus: false });
     default:
       return prevState;
   }
 }
 
-var reducers = {
+const reducers = {
   TopSites,
   App,
   ASRouter,
@@ -11006,10 +11412,11 @@ var reducers = {
   Dialog,
   Sections,
   Pocket,
-  Personalization: Reducers_Personalization,
+  Personalization: Reducers_sys_Personalization,
   DiscoveryStream,
-  Search
+  Search,
 };
+
 ;// CONCATENATED MODULE: ./content-src/components/TopSites/TopSiteFormInput.jsx
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
@@ -11108,7 +11515,7 @@ class TopSiteFormInput extends (external_React_default()).PureComponent {
       "data-l10n-id": this.props.placeholderId // Set focus on error if the url field is valid or when the input is first rendered and is empty
       // eslint-disable-next-line jsx-a11y/no-autofocus
       ,
-      autoFocus: this.props.shouldFocus,
+      autoFocus: this.props.autoFocusOnOpen,
       disabled: this.props.loading
     }), this.renderLoadingOrCloseButton(), validationError && /*#__PURE__*/external_React_default().createElement("aside", {
       className: "error-tooltip",
@@ -11265,7 +11672,16 @@ function TopSite_extends() { TopSite_extends = Object.assign || function (target
 
 
 const SPOC_TYPE = "SPOC";
-const NEWTAB_SOURCE = "newtab";
+const NEWTAB_SOURCE = "newtab"; // For cases if we want to know if this is sponsored by either sponsored_position or type.
+// We have two sources for sponsored topsites, and
+// sponsored_position is set by one sponsored source, and type is set by another.
+// This is not called in all cases, sometimes we want to know if it's one source
+// or the other. This function is only applicable in cases where we only care if it's either.
+
+function isSponsored(link) {
+  return (link === null || link === void 0 ? void 0 : link.sponsored_position) || (link === null || link === void 0 ? void 0 : link.type) === SPOC_TYPE;
+}
+
 class TopSiteLink extends (external_React_default()).PureComponent {
   constructor(props) {
     super(props);
@@ -11283,7 +11699,7 @@ class TopSiteLink extends (external_React_default()).PureComponent {
 
 
   _allowDrop(e) {
-    return (this.dragged || !this.props.link.sponsored_position) && e.dataTransfer.types.includes("text/topsite-index");
+    return (this.dragged || !isSponsored(this.props.link)) && e.dataTransfer.types.includes("text/topsite-index");
   }
 
   onDragEvent(event) {
@@ -11299,7 +11715,7 @@ class TopSiteLink extends (external_React_default()).PureComponent {
       case "dragstart":
         event.target.blur();
 
-        if (this.props.link.sponsored_position) {
+        if (isSponsored(this.props.link)) {
           event.preventDefault();
           break;
         }
@@ -11468,7 +11884,7 @@ class TopSiteLink extends (external_React_default()).PureComponent {
       imageClassName = "top-site-icon rich-icon";
       imageStyle = {
         backgroundColor: link.backgroundColor,
-        backgroundImage: hasScreenshotImage ? `url(${this.state.screenshotImage.url})` : `url(${spocImgURL})`
+        backgroundImage: hasScreenshotImage ? `url(${this.state.screenshotImage.url})` : `url('${spocImgURL}')`
       };
     } else if (tippyTopIcon || faviconSize >= MIN_RICH_FAVICON_SIZE) {
       // styles and class names for top sites with rich icons
@@ -11532,8 +11948,6 @@ class TopSiteLink extends (external_React_default()).PureComponent {
       onDragEnter: this.onDragEvent,
       onDragLeave: this.onDragEvent
     }, draggableProps), /*#__PURE__*/external_React_default().createElement("div", {
-      className: "background"
-    }), /*#__PURE__*/external_React_default().createElement("div", {
       className: "top-site-inner"
     }, /*#__PURE__*/external_React_default().createElement("a", {
       className: "top-site-button",
@@ -11541,7 +11955,8 @@ class TopSiteLink extends (external_React_default()).PureComponent {
       tabIndex: "0",
       onKeyPress: this.onKeyPress,
       onClick: onClick,
-      draggable: true
+      draggable: true,
+      "data-is-sponsored-link": !!link.sponsored_tile_id
     }, /*#__PURE__*/external_React_default().createElement("div", {
       className: "tile",
       "aria-hidden": true
@@ -11574,7 +11989,8 @@ class TopSiteLink extends (external_React_default()).PureComponent {
       rows: [{
         id: link.id,
         pos: link.pos,
-        shim: link.shim && link.shim.impression
+        shim: link.shim && link.shim.impression,
+        advertiser: title.toLocaleLowerCase()
       }],
       dispatch: this.props.dispatch,
       source: TOP_SITES_SOURCE
@@ -11625,7 +12041,7 @@ class TopSite extends (external_React_default()).PureComponent {
       value.search_vendor = this.props.link.hostname;
     }
 
-    if (this.props.link.type === SPOC_TYPE || this.props.link.sponsored_position) {
+    if (isSponsored(this.props.link)) {
       value.card_type = "spoc";
     }
 
@@ -11670,6 +12086,7 @@ class TopSite extends (external_React_default()).PureComponent {
       })); // Fire off a spoc specific impression.
 
       if (this.props.link.type === SPOC_TYPE) {
+        // Record a Pocket click.
         this.props.dispatch(actionCreators.ImpressionStats({
           source: TOP_SITES_SOURCE,
           click: 0,
@@ -11678,6 +12095,18 @@ class TopSite extends (external_React_default()).PureComponent {
             pos: this.props.link.pos,
             shim: this.props.link.shim && this.props.link.shim.click
           }]
+        })); // Record a click for sponsored topsites.
+
+        const title = this.props.link.label || this.props.link.hostname;
+        this.props.dispatch(actionCreators.OnlyToMain({
+          type: actionTypes.TOP_SITES_IMPRESSION_STATS,
+          data: {
+            type: "click",
+            position: this.props.link.pos + 1,
+            tile_id: this.props.link.id,
+            advertiser: title.toLocaleLowerCase(),
+            source: NEWTAB_SOURCE
+          }
         }));
       }
 
@@ -11794,7 +12223,7 @@ class TopSitePlaceholder extends (external_React_default()).PureComponent {
       className: `placeholder ${this.props.className || ""}`,
       isDraggable: false
     }), /*#__PURE__*/external_React_default().createElement("button", {
-      "aria-haspopup": "true",
+      "aria-haspopup": "dialog",
       className: "context-menu-button edit-button icon",
       "data-l10n-id": "newtab-menu-topsites-placeholder-tooltip",
       onClick: this.onEditButtonClick
@@ -11916,8 +12345,8 @@ class TopSiteList extends (external_React_default()).PureComponent {
     const topSites = this._getTopSites();
 
     topSites[this.state.draggedIndex] = null;
-    const preview = topSites.map(site => site && (site.isPinned || site.sponsored_position) ? site : null);
-    const unpinned = topSites.filter(site => site && !site.isPinned && !site.sponsored_position);
+    const preview = topSites.map(site => site && (site.isPinned || isSponsored(site)) ? site : null);
+    const unpinned = topSites.filter(site => site && !site.isPinned && !isSponsored(site));
     const siteToInsert = Object.assign({}, this.state.draggedSite, {
       isPinned: true,
       isDragged: true
@@ -11941,7 +12370,7 @@ class TopSiteList extends (external_React_default()).PureComponent {
       while (index > this.state.draggedIndex ? holeIndex < index : holeIndex > index) {
         let nextIndex = holeIndex + shiftingStep;
 
-        while (preview[nextIndex] && preview[nextIndex].sponsored_position) {
+        while (isSponsored(preview[nextIndex])) {
           nextIndex += shiftingStep;
         }
 
@@ -12273,7 +12702,8 @@ class TopSiteForm extends (external_React_default()).PureComponent {
       onChange: this.onLabelChange,
       value: this.state.label,
       titleId: "newtab-topsites-title-label",
-      placeholderId: "newtab-topsites-title-input"
+      placeholderId: "newtab-topsites-title-input",
+      autoFocusOnOpen: true
     }), /*#__PURE__*/external_React_default().createElement(TopSiteFormInput, {
       onChange: this.onUrlChange,
       shouldFocus: this.state.validationError && !this.validateUrl(this.state.url),
@@ -12908,7 +13338,7 @@ class Navigation_Topic extends (external_React_default()).PureComponent {
 
   onLinkClick(event) {
     if (this.props.dispatch) {
-      this.props.dispatch(actionCreators.UserEvent({
+      this.props.dispatch(actionCreators.DiscoveryStreamUserEvent({
         event: "CLICK",
         source: "POPULAR_TOPICS",
         action_position: 0,
@@ -13255,7 +13685,6 @@ const selectLayoutRender = ({
 
 
 
-
 class TopSites_TopSites_TopSites extends (external_React_default()).PureComponent {
   // Find a SPOC that doesn't already exist in User's TopSites
   getFirstAvailableSpoc(topSites, data) {
@@ -13271,40 +13700,17 @@ class TopSites_TopSites_TopSites extends (external_React_default()).PureComponen
     // Spoc domains are in the format 'sponsorname.com'
 
     return spocs.find(spoc => !userTopSites.has(spoc.url) && !userTopSites.has(`http://${spoc.domain}`) && !userTopSites.has(`https://${spoc.domain}`) && !userTopSites.has(`http://www.${spoc.domain}`) && !userTopSites.has(`https://www.${spoc.domain}`));
-  } // Find the first empty or unpinned index we can place the SPOC in.
-  // Return -1 if no available index and we should push it at the end.
-
-
-  getFirstAvailableIndex(topSites, promoAlignment) {
-    if (promoAlignment === "left") {
-      return topSites.findIndex(topSite => !topSite || !topSite.isPinned);
-    } // The row isn't full so we can push it to the end of the row.
-
-
-    if (topSites.length < TOP_SITES_MAX_SITES_PER_ROW) {
-      return -1;
-    } // If the row is full, we can check the row first for unpinned topsites to replace.
-    // Else we can check after the row. This behavior is how unpinned topsites move while drag and drop.
-
-
-    let endOfRow = TOP_SITES_MAX_SITES_PER_ROW - 1;
-
-    for (let i = endOfRow; i >= 0; i--) {
-      if (!topSites[i] || !topSites[i].isPinned) {
-        return i;
-      }
-    }
-
-    for (let i = endOfRow + 1; i < topSites.length; i++) {
-      if (!topSites[i] || !topSites[i].isPinned) {
-        return i;
-      }
-    }
-
-    return -1;
   }
 
-  insertSpocContent(TopSites, data, promoAlignment) {
+  reformatImageURL(url, width, height) {
+    // Change the image URL to request a size tailored for the parent container width
+    // Also: force JPEG, quality 60, no upscaling, no EXIF data
+    // Uses Thumbor: https://thumbor.readthedocs.io/en/latest/usage.html
+    return `https://img-getpocket.cdn.mozilla.net/${width}x${height}/filters:format(jpeg):quality(60):no_upscale():strip_exif()/${encodeURIComponent(url)}`;
+  } // For the time being we only support 1 position.
+
+
+  insertSpocContent(TopSites, data, promoPosition) {
     if (!TopSites.rows || TopSites.rows.length === 0 || !data.spocs || data.spocs.length === 0) {
       return null;
     }
@@ -13317,10 +13723,10 @@ class TopSites_TopSites_TopSites extends (external_React_default()).PureComponen
     }
 
     const link = {
-      customScreenshotURL: topSiteSpoc.image_src,
+      customScreenshotURL: this.reformatImageURL(topSiteSpoc.raw_image_src, 40, 40),
       type: "SPOC",
-      label: topSiteSpoc.sponsor,
-      title: topSiteSpoc.sponsor,
+      label: topSiteSpoc.title || topSiteSpoc.sponsor,
+      title: topSiteSpoc.title || topSiteSpoc.sponsor,
       url: topSiteSpoc.url,
       flightId: topSiteSpoc.flight_id,
       id: topSiteSpoc.id,
@@ -13329,36 +13735,17 @@ class TopSites_TopSites_TopSites extends (external_React_default()).PureComponen
       // For now we are assuming position based on intended position.
       // Actual position can shift based on other content.
       // We also hard code left and right to be 0 and 7.
-      // We send the intended postion in the ping.
-      pos: promoAlignment === "left" ? 0 : 7
-    };
-    const firstAvailableIndex = this.getFirstAvailableIndex(topSites, promoAlignment);
+      // We send the intended position in the ping.
+      pos: promoPosition
+    }; // Remove first contile or regular topsite, then insert new spoc into position.
 
-    if (firstAvailableIndex === -1) {
-      topSites.push(link);
-    } else {
-      // Normal insertion will not work since pinned topsites are in their correct index already
-      // Similar logic is done to handle drag and drop with pinned topsites in TopSite.jsx
-      let shiftedTopSite = topSites[firstAvailableIndex];
-      let index = firstAvailableIndex + 1; // Shift unpinned topsites to the right by finding the next unpinned topsite to replace
+    const replaceIndex = topSites.findIndex((topSite, index) => index >= promoPosition && (!topSite || topSite.show_sponsored_label || !(topSite.isPinned || topSite.searchTopSite))); // If we found something to replace, first remove it.
 
-      while (shiftedTopSite) {
-        if (index === topSites.length) {
-          topSites.push(shiftedTopSite);
-          shiftedTopSite = null;
-        } else if (topSites[index] && topSites[index].isPinned) {
-          index += 1;
-        } else {
-          const nextTopSite = topSites[index];
-          topSites[index] = shiftedTopSite;
-          shiftedTopSite = nextTopSite;
-          index += 1;
-        }
-      }
-
-      topSites[firstAvailableIndex] = link;
+    if (replaceIndex !== -1) {
+      topSites.splice(replaceIndex, 1);
     }
 
+    topSites.splice(promoPosition, 0, link);
     return { ...TopSites,
       rows: topSites
     };
@@ -13368,10 +13755,10 @@ class TopSites_TopSites_TopSites extends (external_React_default()).PureComponen
     const {
       header = {},
       data,
-      promoAlignment,
+      promoPositions,
       TopSites
     } = this.props;
-    const TopSitesWithSpoc = TopSites && data && promoAlignment ? this.insertSpocContent(TopSites, data, promoAlignment) : null;
+    const TopSitesWithSpoc = TopSites && data && promoPositions !== null && promoPositions !== void 0 && promoPositions.length ? this.insertSpocContent(TopSites, data, promoPositions[0].index) : null;
     return /*#__PURE__*/external_React_default().createElement("div", {
       className: `ds-top-sites ${TopSitesWithSpoc ? "top-sites-spoc" : ""}`
     }, /*#__PURE__*/external_React_default().createElement(TopSites_TopSites, {
@@ -13457,8 +13844,7 @@ class _DiscoveryStreamBase extends (external_React_default()).PureComponent {
             const value = rule.style[property];
 
             if (!isAllowedCSS(property, value)) {
-              console.error(`Bad CSS declaration ${property}: ${value}`); // eslint-disable-line no-console
-
+              console.error(`Bad CSS declaration ${property}: ${value}`);
               rule.style.removeProperty(property);
             }
           }); // Set the actual desired selectors scoped to the component
@@ -13470,7 +13856,7 @@ class _DiscoveryStreamBase extends (external_React_default()).PureComponent {
           selector[0] === ":" ? "" : " ") + selector).join(","); // CSSOM silently ignores bad selectors, so we'll be noisy instead
 
           if (rule.selectorText === DUMMY_CSS_SELECTOR) {
-            console.error(`Bad CSS selector ${selectors}`); // eslint-disable-line no-console
+            console.error(`Bad CSS selector ${selectors}`);
           }
         });
       });
@@ -13478,23 +13864,23 @@ class _DiscoveryStreamBase extends (external_React_default()).PureComponent {
   }
 
   renderComponent(component, embedWidth) {
-    const ENGAGEMENT_LABEL_ENABLED = this.props.Prefs.values[`discoverystream.engagementLabelEnabled`];
+    var _component$spocs, _component$spocs$posi;
 
     switch (component.type) {
       case "Highlights":
         return /*#__PURE__*/external_React_default().createElement(Highlights, null);
 
       case "TopSites":
-        let promoAlignment;
+        let positions = [];
 
-        if (component.spocs && component.spocs.positions && component.spocs.positions.length) {
-          promoAlignment = component.spocs.positions[0].index === 0 ? "left" : "right";
+        if (component !== null && component !== void 0 && (_component$spocs = component.spocs) !== null && _component$spocs !== void 0 && (_component$spocs$posi = _component$spocs.positions) !== null && _component$spocs$posi !== void 0 && _component$spocs$posi.length) {
+          positions = component.spocs.positions;
         }
 
         return /*#__PURE__*/external_React_default().createElement(DiscoveryStreamComponents_TopSites_TopSites_TopSites, {
           header: component.header,
           data: component.data,
-          promoAlignment: promoAlignment
+          promoPositions: positions
         });
 
       case "TextPromo":
@@ -13533,7 +13919,6 @@ class _DiscoveryStreamBase extends (external_React_default()).PureComponent {
           links: component.properties.links,
           extraLinks: component.properties.extraLinks,
           alignment: component.properties.alignment,
-          display_variant: component.properties.display_variant,
           explore_topics: component.properties.explore_topics,
           header: component.header,
           locale: this.props.App.locale,
@@ -13550,47 +13935,29 @@ class _DiscoveryStreamBase extends (external_React_default()).PureComponent {
           feed: component.feed,
           spocs: DiscoveryStream.spocs,
           placement: component.placement,
-          border: component.properties.border,
           type: component.type,
           items: component.properties.items,
-          cta_variant: component.cta_variant,
-          pocket_button_enabled: component.pocketButtonEnabled,
-          display_engagement_labels: ENGAGEMENT_LABEL_ENABLED,
           dismissible: this.props.DiscoveryStream.isCollectionDismissible,
           dispatch: this.props.dispatch
         });
 
       case "CardGrid":
         return /*#__PURE__*/external_React_default().createElement(CardGrid, {
-          enable_video_playheads: !!component.properties.enable_video_playheads,
           title: component.header && component.header.title,
-          display_variant: component.properties.display_variant,
           data: component.data,
           feed: component.feed,
           widgets: component.widgets,
-          border: component.properties.border,
           type: component.type,
           dispatch: this.props.dispatch,
           items: component.properties.items,
           hybridLayout: component.properties.hybridLayout,
           hideCardBackground: component.properties.hideCardBackground,
           fourCardLayout: component.properties.fourCardLayout,
-          hideDescriptions: component.properties.hideDescriptions,
           compactGrid: component.properties.compactGrid,
-          compactImages: component.properties.compactImages,
-          imageGradient: component.properties.imageGradient,
-          newSponsoredLabel: component.properties.newSponsoredLabel,
-          titleLines: component.properties.titleLines,
-          descLines: component.properties.descLines,
           essentialReadsHeader: component.properties.essentialReadsHeader,
           editorsPicksHeader: component.properties.editorsPicksHeader,
-          readTime: component.properties.readTime,
-          loadMore: component.loadMore,
-          lastCardMessageEnabled: component.lastCardMessageEnabled,
-          saveToPocketCard: component.saveToPocketCard,
-          cta_variant: component.cta_variant,
-          pocket_button_enabled: component.pocketButtonEnabled,
-          display_engagement_labels: ENGAGEMENT_LABEL_ENABLED
+          recentSavesEnabled: this.props.DiscoveryStream.recentSavesEnabled,
+          hideDescriptions: this.props.DiscoveryStream.hideDescriptions
         });
 
       case "HorizontalRule":
@@ -13777,7 +14144,10 @@ class BackgroundsSection extends (external_React_default()).PureComponent {
 class ContentSection extends (external_React_default()).PureComponent {
   constructor(props) {
     super(props);
-    this.onPreferenceSelect = this.onPreferenceSelect.bind(this);
+    this.onPreferenceSelect = this.onPreferenceSelect.bind(this); // Refs are necessary for dynamically measuring drawer heights for slide animations
+
+    this.topSitesDrawerRef = /*#__PURE__*/external_React_default().createRef();
+    this.pocketDrawerRef = /*#__PURE__*/external_React_default().createRef();
   }
 
   inputUserEvent(eventSource, status) {
@@ -13793,7 +14163,8 @@ class ContentSection extends (external_React_default()).PureComponent {
 
   onPreferenceSelect(e) {
     let prefName = e.target.getAttribute("preference");
-    const eventSource = e.target.getAttribute("eventSource");
+    const eventSource = e.target.getAttribute("eventSource"); // TOP_SITES, TOP_STORIES, HIGHLIGHTS
+
     let value;
 
     if (e.target.nodeName === "SELECT") {
@@ -13809,15 +14180,63 @@ class ContentSection extends (external_React_default()).PureComponent {
     this.props.setPref(prefName, value);
   }
 
+  componentDidMount() {
+    this.setDrawerMargins();
+  }
+
+  componentDidUpdate() {
+    this.setDrawerMargins();
+  }
+
+  setDrawerMargins() {
+    this.setDrawerMargin(`TOP_SITES`, this.props.enabledSections.topSitesEnabled);
+    this.setDrawerMargin(`TOP_STORIES`, this.props.enabledSections.pocketEnabled);
+  }
+
+  setDrawerMargin(drawerID, isOpen) {
+    let drawerRef;
+
+    if (drawerID === `TOP_SITES`) {
+      drawerRef = this.topSitesDrawerRef.current;
+    } else if (drawerID === `TOP_STORIES`) {
+      drawerRef = this.pocketDrawerRef.current;
+    } else {
+      return;
+    }
+
+    let drawerHeight;
+
+    if (drawerRef) {
+      var _window$getComputedSt;
+
+      drawerHeight = parseFloat((_window$getComputedSt = window.getComputedStyle(drawerRef)) === null || _window$getComputedSt === void 0 ? void 0 : _window$getComputedSt.height);
+
+      if (isOpen) {
+        drawerRef.style.marginTop = `0`;
+      } else {
+        drawerRef.style.marginTop = `-${drawerHeight}px`;
+      }
+    }
+  }
+
   render() {
+    const {
+      enabledSections,
+      mayHaveSponsoredTopSites,
+      pocketRegion,
+      mayHaveSponsoredStories,
+      mayHaveRecentSaves,
+      openPreferences
+    } = this.props;
     const {
       topSitesEnabled,
       pocketEnabled,
       highlightsEnabled,
       showSponsoredTopSitesEnabled,
       showSponsoredPocketEnabled,
+      showRecentSavesEnabled,
       topSitesRowsCount
-    } = this.props.enabledSections;
+    } = enabledSections;
     return /*#__PURE__*/external_React_default().createElement("div", {
       className: "home-section"
     }, /*#__PURE__*/external_React_default().createElement("div", {
@@ -13848,9 +14267,10 @@ class ContentSection extends (external_React_default()).PureComponent {
       className: "subtitle",
       "data-l10n-id": "newtab-custom-shortcuts-subtitle"
     }), /*#__PURE__*/external_React_default().createElement("div", {
-      className: `more-info-top-wrapper ${topSitesEnabled ? "" : "shrink"}`
+      className: "more-info-top-wrapper"
     }, /*#__PURE__*/external_React_default().createElement("div", {
-      className: `more-information ${topSitesEnabled ? "expand" : "shrink"}`
+      className: "more-information",
+      ref: this.topSitesDrawerRef
     }, /*#__PURE__*/external_React_default().createElement("select", {
       id: "row-selector",
       className: "selector",
@@ -13876,7 +14296,7 @@ class ContentSection extends (external_React_default()).PureComponent {
       value: "4",
       "data-l10n-id": "newtab-custom-row-selector",
       "data-l10n-args": "{\"num\": 4}"
-    })), this.props.mayHaveSponsoredTopSites && /*#__PURE__*/external_React_default().createElement("div", {
+    })), mayHaveSponsoredTopSites && /*#__PURE__*/external_React_default().createElement("div", {
       className: "check-wrapper",
       role: "presentation"
     }, /*#__PURE__*/external_React_default().createElement("input", {
@@ -13892,7 +14312,7 @@ class ContentSection extends (external_React_default()).PureComponent {
       className: "sponsored",
       htmlFor: "sponsored-shortcuts",
       "data-l10n-id": "newtab-custom-sponsored-sites"
-    })))))), this.props.pocketRegion && /*#__PURE__*/external_React_default().createElement("div", {
+    })))))), pocketRegion && /*#__PURE__*/external_React_default().createElement("div", {
       id: "pocket-section",
       className: "section"
     }, /*#__PURE__*/external_React_default().createElement("label", {
@@ -13919,11 +14339,12 @@ class ContentSection extends (external_React_default()).PureComponent {
       id: "custom-pocket-subtitle",
       className: "subtitle",
       "data-l10n-id": "newtab-custom-pocket-subtitle"
-    }), this.props.mayHaveSponsoredStories && /*#__PURE__*/external_React_default().createElement("div", {
-      className: `more-info-pocket-wrapper ${pocketEnabled ? "" : "shrink"}`
+    }), (mayHaveSponsoredStories || mayHaveRecentSaves) && /*#__PURE__*/external_React_default().createElement("div", {
+      className: "more-info-pocket-wrapper"
     }, /*#__PURE__*/external_React_default().createElement("div", {
-      className: `more-information ${pocketEnabled ? "expand" : "shrink"}`
-    }, /*#__PURE__*/external_React_default().createElement("div", {
+      className: "more-information",
+      ref: this.pocketDrawerRef
+    }, mayHaveSponsoredStories && /*#__PURE__*/external_React_default().createElement("div", {
       className: "check-wrapper",
       role: "presentation"
     }, /*#__PURE__*/external_React_default().createElement("input", {
@@ -13939,6 +14360,22 @@ class ContentSection extends (external_React_default()).PureComponent {
       className: "sponsored",
       htmlFor: "sponsored-pocket",
       "data-l10n-id": "newtab-custom-pocket-sponsored"
+    })), mayHaveRecentSaves && /*#__PURE__*/external_React_default().createElement("div", {
+      className: "check-wrapper",
+      role: "presentation"
+    }, /*#__PURE__*/external_React_default().createElement("input", {
+      id: "recent-saves-pocket",
+      className: "sponsored-checkbox",
+      disabled: !pocketEnabled,
+      checked: showRecentSavesEnabled,
+      type: "checkbox",
+      onChange: this.onPreferenceSelect,
+      preference: "showRecentSaves",
+      eventSource: "POCKET_RECENT_SAVES"
+    }), /*#__PURE__*/external_React_default().createElement("label", {
+      className: "sponsored",
+      htmlFor: "recent-saves-pocket",
+      "data-l10n-id": "newtab-custom-pocket-show-recent-saves"
     })))))), /*#__PURE__*/external_React_default().createElement("div", {
       id: "recent-section",
       className: "section"
@@ -13972,7 +14409,7 @@ class ContentSection extends (external_React_default()).PureComponent {
     }), /*#__PURE__*/external_React_default().createElement("div", null, /*#__PURE__*/external_React_default().createElement("button", {
       id: "settings-link",
       className: "external-link",
-      onClick: this.props.openPreferences,
+      onClick: openPreferences,
       "data-l10n-id": "newtab-custom-settings"
     })));
   }
@@ -14040,6 +14477,7 @@ class _CustomizeMenu extends (external_React_default()).PureComponent {
       pocketRegion: this.props.pocketRegion,
       mayHaveSponsoredTopSites: this.props.mayHaveSponsoredTopSites,
       mayHaveSponsoredStories: this.props.DiscoveryStream.config.show_spocs,
+      mayHaveRecentSaves: this.props.DiscoveryStream.recentSavesEnabled,
       dispatch: this.props.dispatch
     }))));
   }
@@ -14254,30 +14692,12 @@ class _Search extends (external_React_default()).PureComponent {
 const Search_Search = (0,external_ReactRedux_namespaceObject.connect)(state => ({
   Prefs: state.Prefs
 }))(_Search);
-;// CONCATENATED MODULE: ./content-src/components/Background/Background.jsx
-
-const imgLength = 100;
-function Background(props) {
-  let imgSrc = "";
-  if (props.className == "random_image") [imgSrc] = (0,external_React_namespaceObject.useState)(`chrome://browser/skin/newtabbg-${Math.floor(Math.random() * imgLength)}.webp`);
-  if (props.className == "selected_folder" && props.imageList != undefined) imgSrc = props.imageList.length != 0 ? props.imageList[Math.floor(Math.random() * props.imageList.length)] : "";
-  return /*#__PURE__*/external_React_default().createElement("div", {
-    id: "background_back",
-    className: props.className
-  }, /*#__PURE__*/external_React_default().createElement("div", {
-    id: "background",
-    style: {
-      "--background-url": `url(${imgSrc})`
-    }
-  }));
-}
 ;// CONCATENATED MODULE: ./content-src/components/Base/Base.jsx
 function Base_extends() { Base_extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return Base_extends.apply(this, arguments); }
 
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
-
 
 
 
@@ -14384,11 +14804,8 @@ class BaseContent extends (external_React_default()).PureComponent {
   }
 
   componentDidMount() {
-    var _document$querySelect;
-
     __webpack_require__.g.addEventListener("scroll", this.onWindowScroll);
     __webpack_require__.g.addEventListener("keydown", this.handleOnKeyDown);
-    (_document$querySelect = document.querySelector(".darkreader")) === null || _document$querySelect === void 0 ? void 0 : _document$querySelect.remove();
   }
 
   componentWillUnmount() {
@@ -14473,6 +14890,7 @@ class BaseContent extends (external_React_default()).PureComponent {
       highlightsEnabled: prefs["feeds.section.highlights"],
       showSponsoredTopSitesEnabled: prefs.showSponsoredTopSites,
       showSponsoredPocketEnabled: prefs.showSponsored,
+      showRecentSavesEnabled: prefs.showRecentSaves,
       topSitesRowsCount: prefs.topSitesRows
     };
     const pocketRegion = prefs["feeds.system.topstories"];
@@ -14481,30 +14899,7 @@ class BaseContent extends (external_React_default()).PureComponent {
     } = prefs;
     const outerClassName = ["outer-wrapper", isDiscoveryStream && pocketEnabled && "ds-outer-wrapper-search-alignment", isDiscoveryStream && "ds-outer-wrapper-breakpoint-override", prefs.showSearch && this.state.fixedSearch && !noSectionsEnabled && "fixed-search", prefs.showSearch && noSectionsEnabled && "only-search", prefs["logowordmark.alwaysVisible"] && "visible-logo"].filter(v => v).join(" ");
     const hasSnippet = prefs["feeds.snippets"] && this.props.adminContent && this.props.adminContent.message && this.props.adminContent.message.id;
-    let Background_ClassName = "";
-
-    switch (prefs["floorp.background.type"]) {
-      case 1:
-        Background_ClassName = "random_image";
-        break;
-
-      case 2:
-        Background_ClassName = "gradation";
-        break;
-
-      case 3:
-        Background_ClassName = "selected_folder";
-        break;
-
-      default:
-        Background_ClassName = "not_background";
-        break;
-    }
-
-    return /*#__PURE__*/external_React_default().createElement("div", null, /*#__PURE__*/external_React_default().createElement(Background, {
-      className: Background_ClassName,
-      imageList: prefs["backgroundPaths"]
-    }), /*#__PURE__*/external_React_default().createElement(CustomizeMenu, {
+    return /*#__PURE__*/external_React_default().createElement("div", null, /*#__PURE__*/external_React_default().createElement(CustomizeMenu, {
       onClose: this.closeCustomizationMenu,
       onOpen: this.openCustomizationMenu,
       openPreferences: this.openPreferences,
@@ -14534,28 +14929,7 @@ class BaseContent extends (external_React_default()).PureComponent {
       className: "borderless-error"
     }, /*#__PURE__*/external_React_default().createElement(DiscoveryStreamBase, {
       locale: props.App.locale
-    })) : /*#__PURE__*/external_React_default().createElement(Sections_Sections, null)), /*#__PURE__*/external_React_default().createElement(ConfirmDialog, null))), /*#__PURE__*/external_React_default().createElement("div", {
-      id: "floorp"
-    }, /*#__PURE__*/external_React_default().createElement("a", {
-      class: "releasenote",
-      href: "https://support.ablaze.one",
-      target: "_blank"
-    }, "Support"), /*#__PURE__*/external_React_default().createElement("br", null), /*#__PURE__*/external_React_default().createElement("br", null), /*#__PURE__*/external_React_default().createElement("a", {
-      class: "releasenote",
-      href: "https://blog.ablaze.one/category/ablaze/ablaze-project/floorp",
-      target: "_blank"
-    }, "Release Note")), /*#__PURE__*/external_React_default().createElement("a", {
-      href: "https://unsplash.com/",
-      style: {
-        position: "fixed",
-        bottom: "1em",
-        left: "1em",
-        fontSize: "16px",
-        color: "#ffffff"
-      },
-      target: "_blank",
-      id: "unsplash"
-    }, "Unsplash"));
+    })) : /*#__PURE__*/external_React_default().createElement(Sections_Sections, null)), /*#__PURE__*/external_React_default().createElement(ConfirmDialog, null))));
   }
 
 }
@@ -14645,7 +15019,7 @@ const external_Redux_namespaceObject = Redux;
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-/* eslint-env mozilla/frame-script */
+/* eslint-env mozilla/remote-page */
 
 
 const MERGE_STORE_ACTION = "NEW_TAB_INITIAL_STATE";
@@ -14793,8 +15167,7 @@ function initStore(reducers, initialState) {
       try {
         store.dispatch(msg.data);
       } catch (ex) {
-        console.error("Content msg:", msg, "Dispatch error: ", ex); // eslint-disable-line no-console
-
+        console.error("Content msg:", msg, "Dispatch error: ", ex);
         dump(`Content msg: ${JSON.stringify(msg)}\nDispatch error: ${ex}\n${ex.stack}`);
       }
     });

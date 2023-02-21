@@ -76,7 +76,7 @@ function hideStatusbar() {
     document.getElementsByTagName("head")[0].insertAdjacentElement("beforeend", Tag);
 
     //revert statustext to statuspanel
-    document.getElementById("statuspanel-inner").appendChild(document.getElementById("statuspanel-label"));
+    document.getElementById("statuspanel").appendChild(document.getElementById("statuspanel-label"));
 
     //remove CSS
     document.getElementById("statuspanel-label").removeAttribute("style");

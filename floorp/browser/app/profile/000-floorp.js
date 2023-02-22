@@ -262,6 +262,8 @@ pref("extensions.checkCompatibility.102.14", false);
 pref("extensions.checkCompatibility.102.15", false);
 pref("extensions.checkCompatibility.nightly", false);
 
+// カラーテーマクローゼットを無効化
+pref("browser.theme.colorway-closet", false);
 /*-----------------------------------------------------------------------------------all.js の設定-----------------------------------------------------------------------------------*/
 
 pref("extensions.htmlaboutaddons.recommendations.enabled", false, locked);

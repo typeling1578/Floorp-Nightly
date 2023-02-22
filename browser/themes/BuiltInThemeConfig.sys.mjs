@@ -488,15 +488,15 @@ export const BuiltInThemeConfig = new Map([
 const ColorwayCollections = [
   {
     id: "life-in-color",
-    expiry: "2022-02-08",
+    expiry: "3000-02-08",
   },
   {
     id: "true-colors",
-    expiry: "2022-05-03",
+    expiry: "3000-05-03",
   },
   {
     id: "independent-voices",
-    expiry: "2023-01-17",
+    expiry: "3000-01-17",
     l10nId: {
       title: "colorway-collection-independent-voices",
       description: "colorway-collection-independent-voices-description",

@@ -55,7 +55,7 @@ function setSidebarWidth(webpanel_id){
 
     const panelWidth = BROWSER_SIDEBAR_DATA.data[webpanel_id].width ?? Services.prefs.getIntPref("floorp.browser.sidebar2.global.webpanel.width", undefined);
 
-    document.getElementById("sidebar2-box").setAttribute("width", panelWidth);
+    document.getElementById("sidebar2-box").style.width = `${panelWidth}px`;
 }
 }
 

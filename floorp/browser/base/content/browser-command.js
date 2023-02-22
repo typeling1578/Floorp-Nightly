@@ -420,12 +420,12 @@ function setSidebarIconView() {
 
 function keepSidebar2boxWidth() {
   const pref = Services.prefs.getStringPref("floorp.browser.sidebar2.page");
-  BROWSER_SIDEBAR_DATA.data[pref].width = document.getElementById("sidebar2-box").width
+  BROWSER_SIDEBAR_DATA.data[pref].width = document.getElementById("sidebar2-box").clientWidth
   Services.prefs.setStringPref(`floorp.browser.sidebar2.data`, JSON.stringify(BROWSER_SIDEBAR_DATA) );
 }
 
 function keepSidebar2boxWidthForGlobal() {
-  Services.prefs.setIntPref("floorp.browser.sidebar2.global.webpanel.width", document.getElementById("sidebar2-box").width);
+  Services.prefs.setIntPref("floorp.browser.sidebar2.global.webpanel.width", document.getElementById("sidebar2-box").clientWidth);
 }
 
 function getSelectedNode(){

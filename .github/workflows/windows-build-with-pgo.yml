@@ -297,7 +297,7 @@ jobs:
 
     - name: Copy 📂
       run: |
-        mkdir ~/output
+        mkdir $RUNNER_USERDIR/output
         cp obj-x86_64-pc-mingw32/dist/install/sea/floorp-*.en-US.win64.installer-stub.exe ~/output/
         cp obj-x86_64-pc-mingw32/dist/install/sea/floorp-*.en-US.win64.installer.exe ~/output/
         cp obj-x86_64-pc-mingw32/dist/floorp-*.en-US.win64.zip ~/output/
@@ -311,10 +311,10 @@ jobs:
     - name: Clean up (Self-hosted only)
       if: contains(matrix.runs-on, 'self-hosted')
       run: |
-        rm -rf ~/output
-        rm -rf ~/win-cross
-        rm -rf ~/.mozbuild
-        rm -rf ~/.cargo
-        rm -rf ~/l10n-central
+        rm -rf $RUNNER_USERDIR/output
+        rm -rf $RUNNER_USERDIR/win-cross
+        rm -rf $RUNNER_USERDIR/.mozbuild
+        rm -rf $RUNNER_USERDIR/.cargo
+        rm -rf $RUNNER_USERDIR/l10n-central
         rm -rf $GITHUB_WORKSPACE
         mkdir $GITHUB_WORKSPACE

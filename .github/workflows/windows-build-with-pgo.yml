@@ -84,7 +84,7 @@ jobs:
         cp build/vs/pack_vs.py pack_vs.py
         cp build/vs/vs2017.yaml vs2017.yaml
         python3 pack_vs.py -o ~/win-crosstool/vs2017.tar.zst vs2017.yaml
-        tar --zstd -xvf ~/win-crosstool/vs2017.tar.zst -C ~/win-crosstool
+        tar --zstd -xvf ~/win-crosstool/vs2017.tar.zst -C ~/win-crosstool > /dev/null
         rm ~/win-crosstool/vs2017.tar.zst
         chmod -R +x "~/win-crosstool/vs2017/dia sdk"
         chmod -R +x ~/win-crosstool/vs2017/vc
@@ -262,7 +262,7 @@ jobs:
         cp build/vs/pack_vs.py pack_vs.py
         cp build/vs/vs2017.yaml vs2017.yaml
         python3 pack_vs.py -o ~/win-crosstool/vs2017.tar.zst vs2017.yaml
-        tar --zstd -xvf ~/win-crosstool/vs2017.tar.zst -C ~/win-crosstool
+        tar --zstd -xvf ~/win-crosstool/vs2017.tar.zst -C ~/win-crosstool > /dev/null
         rm ~/win-crosstool/vs2017.tar.zst
         chmod -R +x "~/win-crosstool/vs2017/dia sdk"
         chmod -R +x ~/win-crosstool/vs2017/vc

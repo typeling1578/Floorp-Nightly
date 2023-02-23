@@ -71,7 +71,7 @@ jobs:
 
     - name: Setup 🪛
       run: |
-        mkdir -p ~/win-cross
+        mkdir -p $RUNNER_USERDIR/win-cross
 
         cp ./.github/mozconfig_win_pgo_base mozconfig
         echo 'ac_add_options --with-branding=browser/branding/official' >> mozconfig
@@ -81,7 +81,7 @@ jobs:
 
         echo Setup wine
         aria2c "https://firefox-ci-tc.services.mozilla.com/api/index/v1/task/gecko.cache.level-1.toolchains.v3.linux64-wine.latest/artifacts/public%2Fbuild%2Fwine.tar.zst" -o wine.tar.zst
-        tar --zstd -xvf wine.tar.zst -C $RUNNER_USERDIR/win-cross > /dev/null
+        tar --zstd -xvf wine.tar.zst -C $RUNNER_USERDIR/win-cross
         rm wine.tar.zst
         
         echo Setup Visual Studio
@@ -91,7 +91,7 @@ jobs:
         cp build/vs/pack_vs.py pack_vs.py
         cp build/vs/vs2017.yaml vs2017.yaml
         python3 pack_vs.py -o $RUNNER_USERDIR/win-cross/vs2017.tar.zst vs2017.yaml
-        tar --zstd -xvf $RUNNER_USERDIR/win-cross/vs2017.tar.zst -C ~/win-cross > /dev/null
+        tar --zstd -xvf $RUNNER_USERDIR/win-cross/vs2017.tar.zst -C $RUNNER_USERDIR/win-cross
         rm $RUNNER_USERDIR/win-cross/vs2017.tar.zst
         chmod -R +x "$RUNNER_USERDIR/win-cross/vs2017/dia sdk"
         chmod -R +x $RUNNER_USERDIR/win-cross/vs2017/vc
@@ -253,7 +253,7 @@ jobs:
 
     - name: Setup 🪛
       run: |
-        mkdir -p ~/win-cross
+        mkdir -p $RUNNER_USERDIR/win-cross
 
         cp ./.github/mozconfig_win_pgo_base mozconfig
         echo 'ac_add_options --with-branding=browser/branding/official' >> mozconfig
@@ -266,7 +266,7 @@ jobs:
 
         echo Setup wine
         aria2c "https://firefox-ci-tc.services.mozilla.com/api/index/v1/task/gecko.cache.level-1.toolchains.v3.linux64-wine.latest/artifacts/public%2Fbuild%2Fwine.tar.zst" -o wine.tar.zst
-        tar --zstd -xvf wine.tar.zst -C $RUNNER_USERDIR/win-cross > /dev/null
+        tar --zstd -xvf wine.tar.zst -C $RUNNER_USERDIR/win-cross
         rm wine.tar.zst
 
         echo Setup Visual Studio
@@ -276,7 +276,7 @@ jobs:
         cp build/vs/pack_vs.py pack_vs.py
         cp build/vs/vs2017.yaml vs2017.yaml
         python3 pack_vs.py -o $RUNNER_USERDIR/win-cross/vs2017.tar.zst vs2017.yaml
-        tar --zstd -xvf $RUNNER_USERDIR/win-cross/vs2017.tar.zst -C ~/win-cross > /dev/null
+        tar --zstd -xvf $RUNNER_USERDIR/win-cross/vs2017.tar.zst -C $RUNNER_USERDIR/win-cross
         rm $RUNNER_USERDIR/win-cross/vs2017.tar.zst
         chmod -R +x "$RUNNER_USERDIR/win-cross/vs2017/dia sdk"
         chmod -R +x $RUNNER_USERDIR/win-cross/vs2017/vc

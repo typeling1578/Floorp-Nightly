@@ -20,10 +20,10 @@ ac_add_options --with-mozilla-api-keyfile="$PWD/floorp/apis/api-mozilla-key"
 ac_add_options --with-google-location-service-api-keyfile="$PWD/floorp/apis/api-google-location-service-key"
 ac_add_options --with-google-safebrowsing-api-keyfile="$PWD/floorp/apis/api-google-safe-browsing-key"
 
-export WINSYSROOT="~/win-cross/vs2017/vs"
+export WINSYSROOT="$RUNNER_USERDIR/win-cross/vs2017/vs"
 
-export MIDL="~/win-cross/wine/bin/widl"
-export WINE="~/win-cross/wine/bin/wine64"
+export MIDL="$RUNNER_USERDIR/win-cross/wine/bin/widl"
+export WINE="$RUNNER_USERDIR/win-cross/wine/bin/wine64"
 export WINEDEBUG=-all
 
 ac_add_options --target=x86_64-pc-mingw32

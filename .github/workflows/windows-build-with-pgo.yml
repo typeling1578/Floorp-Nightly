@@ -96,6 +96,7 @@ jobs:
         chmod -R +x "$RUNNER_USERDIR/win-cross/vs2017"
 
         ./mach --no-interactive bootstrap --application-choice browser
+        echo "export LIB=\"$(cd $RUNNER_USERDIR/.mozbuild/clang/lib/clang/* && cd lib/windows && pwd)\"" >> mozconfig
         $RUNNER_USERDIR/.cargo/bin/rustup target add x86_64-pc-windows-msvc
 
         export DISPLAY_VERSION=`cat browser/config/version_display.txt`
@@ -279,6 +280,7 @@ jobs:
         chmod -R +x "$RUNNER_USERDIR/win-cross/vs2017"
 
         ./mach --no-interactive bootstrap --application-choice browser
+        echo "export LIB=\"$(cd $RUNNER_USERDIR/.mozbuild/clang/lib/clang/* && cd lib/windows && pwd)\"" >> mozconfig
         $RUNNER_USERDIR/.cargo/bin/rustup target add x86_64-pc-windows-msvc
 
         export DISPLAY_VERSION=`cat browser/config/version_display.txt`

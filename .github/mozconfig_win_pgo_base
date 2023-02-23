@@ -3,7 +3,7 @@ ac_add_options --with-app-basename=Floorp
 ac_add_options --disable-crashreporter
 ac_add_options --disable-maintenance-service
 ac_add_options --enable-proxy-bypass-protection
-ac_add_options --disable-verify-mar
+ac_add_options --enable-unverified-updates
 ac_add_options --enable-update-channel=release
 ac_add_options --enable-optimize="-O2 -Qvec -w -clang:-ftree-vectorize -clang:-msse3 -clang:-mssse3 -clang:-msse4.1 -clang:-mtune=haswell"
 ac_add_options --disable-tests
@@ -20,19 +20,11 @@ ac_add_options --with-mozilla-api-keyfile="$PWD/floorp/apis/api-mozilla-key"
 ac_add_options --with-google-location-service-api-keyfile="$PWD/floorp/apis/api-google-location-service-key"
 ac_add_options --with-google-safebrowsing-api-keyfile="$PWD/floorp/apis/api-google-safe-browsing-key"
 
-export WINDOWSSDKDIR="$RUNNER_USERDIR/win-crosstool/vs2017/windows kits/10"
-export WIN32_REDIST_DIR="$RUNNER_USERDIR/win-crosstool/vs2017/vc/redist/msvc/${WIN32_REDIST_VERSION}/x64/microsoft.vc141.crt/"
-export WIN_UCRT_REDIST_DIR="${WINDOWSSDKDIR}/redist/ucrt/dlls/x64"
-export DIA_SDK_PATH="$RUNNER_USERDIR/win-crosstool/vs2017/dia sdk"
+export WINSYSROOT="$RUNNER_USERDIR/win-cross/vs2017"
 
-export MIDL="$RUNNER_USERDIR/win-crosstool/wine/bin/widl"
-export WINE="$RUNNER_USERDIR/win-crosstool/wine/bin/wine64"
+export MIDL="$RUNNER_USERDIR/win-cross/wine/bin/widl"
+export WINE="$RUNNER_USERDIR/win-cross/wine/bin/wine64"
 export WINEDEBUG=-all
-
-export RUSTC="$RUNNER_USERDIR/win-crosstool/rustc/bin/rustc"
-
-mk_add_options "export LD_PRELOAD=$RUNNER_USERDIR/win-crosstool/liblowercase/liblowercase.so"
-mk_add_options "export LOWERCASE_DIRS=$RUNNER_USERDIR/win-crosstool"
 
 ac_add_options --target=x86_64-pc-mingw32
 

@@ -93,9 +93,7 @@ jobs:
         python3 pack_vs.py -o $RUNNER_USERDIR/win-cross/vs2017.tar.zst vs2017.yaml
         tar --zstd -xvf $RUNNER_USERDIR/win-cross/vs2017.tar.zst -C $RUNNER_USERDIR/win-cross
         rm $RUNNER_USERDIR/win-cross/vs2017.tar.zst
-        chmod -R +x "$RUNNER_USERDIR/win-cross/vs2017/dia sdk"
-        chmod -R +x $RUNNER_USERDIR/win-cross/vs2017/vc
-        chmod -R +x "$RUNNER_USERDIR/win-cross/vs2017/windows kits/10"
+        chmod -R +x "$RUNNER_USERDIR/win-cross/vs2017"
 
         ./mach --no-interactive bootstrap --application-choice browser
         $RUNNER_USERDIR/.cargo/bin/rustup target add x86_64-pc-windows-msvc
@@ -278,9 +276,7 @@ jobs:
         python3 pack_vs.py -o $RUNNER_USERDIR/win-cross/vs2017.tar.zst vs2017.yaml
         tar --zstd -xvf $RUNNER_USERDIR/win-cross/vs2017.tar.zst -C $RUNNER_USERDIR/win-cross
         rm $RUNNER_USERDIR/win-cross/vs2017.tar.zst
-        chmod -R +x "$RUNNER_USERDIR/win-cross/vs2017/dia sdk"
-        chmod -R +x $RUNNER_USERDIR/win-cross/vs2017/vc
-        chmod -R +x "$RUNNER_USERDIR/win-cross/vs2017/windows kits/10"
+        chmod -R +x "$RUNNER_USERDIR/win-cross/vs2017"
 
         ./mach --no-interactive bootstrap --application-choice browser
         $RUNNER_USERDIR/.cargo/bin/rustup target add x86_64-pc-windows-msvc

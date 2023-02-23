@@ -26,6 +26,8 @@ export MIDL="$RUNNER_USERDIR/win-cross/wine/bin/widl"
 export WINE="$RUNNER_USERDIR/win-cross/wine/bin/wine64"
 export WINEDEBUG=-all
 
+export LIB="$(cd $RUNNER_USERDIR/.mozbuild/clang/lib/clang/* && cd lib/windows && pwd)"
+
 ac_add_options --target=x86_64-pc-mingw32
 
 export MOZ_STUB_INSTALLER=1

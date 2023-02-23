@@ -22,8 +22,8 @@ ac_add_options --with-google-safebrowsing-api-keyfile="$PWD/floorp/apis/api-goog
 
 export WINSYSROOT="~/win-cross/vs2017/vs"
 
-export MIDL="$RUNNER_USERDIR/win-crosstool/wine/bin/widl"
-export WINE="$RUNNER_USERDIR/win-crosstool/wine/bin/wine64"
+export MIDL="~/win-cross/wine/bin/widl"
+export WINE="~/win-cross/wine/bin/wine64"
 export WINEDEBUG=-all
 
 ac_add_options --target=x86_64-pc-mingw32

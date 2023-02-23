@@ -37,7 +37,7 @@ jobs:
         sudo rm -rf /opt/ghc
         sudo rm -rf /usr/local/share/boost
         sudo rm -rf "$AGENT_TOOLSDIRECTORY"
-        sudo fallocate -l 20G /home/runner/swapfile2
+        sudo fallocate -l 10G /home/runner/swapfile2
         sudo chmod 600 /home/runner/swapfile2
         sudo mkswap /home/runner/swapfile2
         sudo swapon /home/runner/swapfile2

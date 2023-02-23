@@ -16,7 +16,7 @@ jobs:
       if: contains(matrix.runs-on, 'self-hosted')
       run: |
         rm -rf ~/output
-        rm -rf ~/win-crosstool
+        rm -rf ~/win-cross
         rm -rf ~/.mozbuild
         rm -rf ~/.cargo
         rm -rf ~/l10n-central
@@ -66,6 +66,8 @@ jobs:
 
     - name: Setup 🪛
       run: |
+        mkdir -p ~/win-cross
+
         cp ./.github/mozconfig_win_pgo_base mozconfig
         echo 'ac_add_options --with-branding=browser/branding/official' >> mozconfig
         echo 'ac_add_options --enable-profile-generate=cross' >> mozconfig
@@ -74,7 +76,7 @@ jobs:
 
         echo Setup wine
         aria2c "https://firefox-ci-tc.services.mozilla.com/api/index/v1/task/gecko.cache.level-1.toolchains.v3.linux64-wine.latest/artifacts/public%2Fbuild%2Fwine.tar.zst" -o wine.tar.zst
-        tar --zstd -xvf wine.tar.zst -C ~/win-crosstool > /dev/null
+        tar --zstd -xvf wine.tar.zst -C ~/win-cross > /dev/null
         rm wine.tar.zst
         
         echo Setup Visual Studio
@@ -83,12 +85,12 @@ jobs:
         cp third_party/python/vsdownload/vsdownload.py vsdownload.py
         cp build/vs/pack_vs.py pack_vs.py
         cp build/vs/vs2017.yaml vs2017.yaml
-        python3 pack_vs.py -o ~/win-crosstool/vs2017.tar.zst vs2017.yaml
-        tar --zstd -xvf ~/win-crosstool/vs2017.tar.zst -C ~/win-crosstool > /dev/null
+        python3 pack_vs.py -o ~/win-cross/vs2017.tar.zst vs2017.yaml
+        tar --zstd -xvf ~/win-cross/vs2017.tar.zst -C ~/win-cross > /dev/null
         rm ~/win-crosstool/vs2017.tar.zst
-        chmod -R +x "~/win-crosstool/vs2017/dia sdk"
-        chmod -R +x ~/win-crosstool/vs2017/vc
-        chmod -R +x "~/win-crosstool/vs2017/windows kits/10"
+        chmod -R +x "~/win-cross/vs2017/dia sdk"
+        chmod -R +x ~/win-cross/vs2017/vc
+        chmod -R +x "~/win-cross/vs2017/windows kits/10"
 
         ./mach --no-interactive bootstrap --application-choice browser
         ~/.cargo/bin/rustup target add x86_64-pc-windows-msvc
@@ -121,7 +123,7 @@ jobs:
       if: contains(matrix.runs-on, 'self-hosted')
       run: |
         rm -rf ~/output
-        rm -rf ~/win-crosstool
+        rm -rf ~/win-cross
         rm -rf ~/.mozbuild
         rm -rf ~/.cargo
         rm -rf ~/l10n-central
@@ -181,7 +183,7 @@ jobs:
       if: contains(matrix.runs-on, 'self-hosted')
       run: |
         rm -rf ~/output
-        rm -rf ~/win-crosstool
+        rm -rf ~/win-cross
         rm -rf ~/.mozbuild
         rm -rf ~/.cargo
         rm -rf ~/l10n-central
@@ -241,6 +243,8 @@ jobs:
 
     - name: Setup 🪛
       run: |
+        mkdir -p ~/win-cross
+
         cp ./.github/mozconfig_win_pgo_base mozconfig
         echo 'ac_add_options --with-branding=browser/branding/official' >> mozconfig
         echo 'ac_add_options --with-l10n-base=~/l10n-central/l10n-central' >> mozconfig
@@ -252,7 +256,7 @@ jobs:
 
         echo Setup wine
         aria2c "https://firefox-ci-tc.services.mozilla.com/api/index/v1/task/gecko.cache.level-1.toolchains.v3.linux64-wine.latest/artifacts/public%2Fbuild%2Fwine.tar.zst" -o wine.tar.zst
-        tar --zstd -xvf wine.tar.zst -C ~/win-crosstool > /dev/null
+        tar --zstd -xvf wine.tar.zst -C ~/win-cross > /dev/null
         rm wine.tar.zst
 
         echo Setup Visual Studio
@@ -261,12 +265,12 @@ jobs:
         cp third_party/python/vsdownload/vsdownload.py vsdownload.py
         cp build/vs/pack_vs.py pack_vs.py
         cp build/vs/vs2017.yaml vs2017.yaml
-        python3 pack_vs.py -o ~/win-crosstool/vs2017.tar.zst vs2017.yaml
-        tar --zstd -xvf ~/win-crosstool/vs2017.tar.zst -C ~/win-crosstool > /dev/null
+        python3 pack_vs.py -o ~/win-cross/vs2017.tar.zst vs2017.yaml
+        tar --zstd -xvf ~/win-cross/vs2017.tar.zst -C ~/win-cross > /dev/null
         rm ~/win-crosstool/vs2017.tar.zst
-        chmod -R +x "~/win-crosstool/vs2017/dia sdk"
-        chmod -R +x ~/win-crosstool/vs2017/vc
-        chmod -R +x "~/win-crosstool/vs2017/windows kits/10"
+        chmod -R +x "~/win-cross/vs2017/dia sdk"
+        chmod -R +x ~/win-cross/vs2017/vc
+        chmod -R +x "~/win-cross/vs2017/windows kits/10"
 
         ./mach --no-interactive bootstrap --application-choice browser
         ~/.cargo/bin/rustup target add x86_64-pc-windows-msvc
@@ -302,7 +306,7 @@ jobs:
       if: contains(matrix.runs-on, 'self-hosted')
       run: |
         rm -rf ~/output
-        rm -rf ~/win-crosstool
+        rm -rf ~/win-cross
         rm -rf ~/.mozbuild
         rm -rf ~/.cargo
         rm -rf ~/l10n-central

@@ -7,11 +7,9 @@
 /* global ExtensionAPI, ExtensionCommon, Services, XPCOMUtils */
 
 
-const jsmScope = ChromeUtils.import(
-  "resource://devtools/shared/loader/Loader.jsm"
-);
-
-const { Localization } = Cu.getGlobalForObject(jsmScope);
+const { Localization } = ChromeUtils.import(
+  "resource:///modules/GlobalsLoader.jsm"
+).globals;
 
 this.browserL10n = class extends ExtensionAPI {
   getAPI(context) {

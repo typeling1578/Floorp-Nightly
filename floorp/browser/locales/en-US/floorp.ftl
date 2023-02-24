@@ -471,6 +471,9 @@ sidebar-forward-button =
 sidebar-reload-button = 
   .tooltiptext = Reload
 
+sidebar-go-index-button =
+  .tooltiptext = Go Home Page
+
 sidebar-muteAndUnmute-button =
   .tooltiptext = Mute/Unmute sidebar
 
@@ -647,3 +650,7 @@ update-portable-notification-success-message = Update succeeded! Hope you enjoy 
 update-portable-notification-failed-title = Update failed.
 update-portable-notification-failed-redirector-message = Update failed. Restarting your browser may solve the problem.
 update-portable-notification-failed-prepare-message = Failed to prepare update.
+
+##################################################################### Floorp System Update ###############################################################
+
+default-bookmark-ablaze-support = Ablaze Support

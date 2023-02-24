@@ -35,7 +35,7 @@
   --in-content-button-text-color: var(--in-content-text-color);
   --in-content-button-text-color-hover: var(--in-content-text-color);
   --in-content-button-text-color-active: var(--in-content-button-text-color-hover);
-  --in-content-button-background: rgba(77,77,77);
+  --in-content-button-background: rgba(207,207,216,.33);
   --in-content-button-background-hover: rgba(207,207,216,.66);
   --in-content-button-background-active: rgb(207,207,216);
   --in-content-button-border-color: transparent;

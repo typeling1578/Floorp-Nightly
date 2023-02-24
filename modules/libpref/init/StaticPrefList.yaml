@@ -2161,7 +2161,7 @@
 # Whether CanvasRenderingContext2D.mozTextStyle is enabled.
 - name: dom.mozTextStyle.enabled
   type: bool
-  value: @IS_NOT_EARLY_BETA_OR_EARLIER@
+  value: false
   mirror: always
 
 # Allow cut/copy
@@ -2634,12 +2634,6 @@
   value: false
   mirror: always
 
-# Whether or not File Handle is enabled.
-- name: dom.fileHandle.enabled
-  type: RelaxedAtomicBool
-  value: false
-  mirror: always
-
 # Support @autocomplete values for form autofill feature.
 - name: dom.forms.autocomplete.formautofill
   type: bool
@@ -3093,7 +3087,7 @@
 # Autoplay Policy Detection https://w3c.github.io/autoplay/
 - name: dom.media.autoplay-policy-detection.enabled
   type: RelaxedAtomicBool
-  value: @IS_NIGHTLY_BUILD@
+  value: true
   mirror: always
 
 # Media Session API
@@ -4840,30 +4834,6 @@
   value: "#FFFFFF"
   mirror: never
 
-# Default length unit of indent blocks with CSS.
-# TODO: Delete this pref after checking the compatibility with the other
-#       browsers.
-- name: editor.css.default_length_unit
-  type: String
-  value: "px"
-  mirror: never
-
-# Allow or disallow to delete `<hr>` element when caret is at start of
-# following line of the element.  If false, Backspace from start of following
-# line of an `<hr>` element causes moving caret to immediatly after the `<hr>`
-# element, and then, another Backspace can delete it.
-- name: editor.hr_element.allow_to_delete_from_following_line
-  type: bool
-  value: true
-  mirror: always
-
-# Whether editor initializes attributes and/or child nodes of newly inserting
-# element before or after connecting to the DOM tree.
-- name: editor.initialize_element_before_connect
-  type: bool
-  value: true
-  mirror: always
-
 # Use compatible range computation when applying inline style.  This is used
 # for making it possible to backout with Normandy Pref Rollout.
 - name: editor.inline_style.range.compatible_with_the_other_browsers
@@ -4895,22 +4865,6 @@
 - name: editor.password.testing.mask_delay
   type: bool
   value: false
-  mirror: always
-
-# When an element becomes absolutely positioned, this offset is applied to
-# both `left` and `top`.
-# TODO: Delete this pref after verifying that nobody uses this pref.
-- name: editor.positioning.offset
-  type: int32_t
-  value: 0
-  mirror: always
-
-# Whether resizer keeps aspect ratio of `<img>` or can change its width/height
-# independently.
-# TODO: Delete this pref after verifying that nobody uses this pref.
-- name: editor.resizing.preserve_ratio
-  type: bool
-  value: true
   mirror: always
 
 # How line breakers are treated in single line editor:
@@ -4950,14 +4904,6 @@
 - name: editor.use_css
   type: bool
   value: false
-  mirror: always
-
-# Whether inserting <div> when typing Enter in a block element which can
-# contain <div>.  If false, inserts <br> instead.
-# TODO: Delete this pref after verifying nobody uses this pref.
-- name: editor.use_div_for_default_newlines
-  type: bool
-  value: true
   mirror: always
 
 # Whether enabling blink compatible white-space normalizer or keep using
@@ -6475,6 +6421,16 @@
 #else
   value: false
 #endif
+  mirror: once
+
+- name: gfx.webrender.scissored-cache-clears.enabled
+  type: bool
+  value: true
+  mirror: once
+
+- name: gfx.webrender.scissored-cache-clears.force-enabled
+  type: bool
+  value: false
   mirror: once
 
 - name: gfx.webrender.compositor.force-enabled
@@ -12003,6 +11959,24 @@
 - name: network.trr.fallback_warning_heuristic_list
   type: String
   value: "canary"
+  mirror: never
+
+# Use Oblivious HTTP when making TRR requests.
+- name: network.trr.use_ohttp
+  type: RelaxedAtomicBool
+  value: false
+  mirror: always
+
+# Oblivious HTTP relay URI for TRR requests.
+- name: network.trr.ohttp.relay_uri
+  type: String
+  value: ""
+  mirror: never
+
+# URI from which to fetch the configuration for the Oblivious HTTP gateway for TRR requests.
+- name: network.trr.ohttp.config_uri
+  type: String
+  value: ""
   mirror: never
 
 # Allow the network changed event to get sent when a network topology or setup

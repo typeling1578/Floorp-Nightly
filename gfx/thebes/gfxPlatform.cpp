@@ -2838,8 +2838,8 @@ void gfxPlatform::InitWebRenderConfig() {
   // Set features that affect WR's RendererOptions
   gfxVars::SetUseGLSwizzle(
       IsFeatureSupported(nsIGfxInfo::FEATURE_GL_SWIZZLE, true));
-  gfxVars::SetUseWebRenderScissoredCacheClears(IsFeatureSupported(
-      nsIGfxInfo::FEATURE_WEBRENDER_SCISSORED_CACHE_CLEARS, true));
+  gfxVars::SetUseWebRenderScissoredCacheClears(gfx::gfxConfig::IsEnabled(
+      gfx::Feature::WEBRENDER_SCISSORED_CACHE_CLEARS));
 
   // The RemoveShaderCacheFromDiskIfNecessary() needs to be called after
   // WebRenderConfig initialization.
@@ -2993,12 +2993,12 @@ void gfxPlatform::InitWebGPUConfig() {
   nsCString message;
   nsCString failureId;
   if (!IsGfxInfoStatusOkay(nsIGfxInfo::FEATURE_WEBGPU, &message, failureId)) {
-    feature.Disable(FeatureStatus::Blocklisted, message.get(), failureId);
-
     if (StaticPrefs::gfx_webgpu_ignore_blocklist_AtStartup()) {
       feature.UserForceEnable(
           "Ignoring blocklist entry because of gfx.webgpu.force-enabled:true.");
     }
+
+    feature.Disable(FeatureStatus::Blocklisted, message.get(), failureId);
   }
 
 #ifdef RELEASE_OR_BETA

@@ -152,6 +152,7 @@
 #include "nsTransitionManager.h"
 #include "nsView.h"
 #include "nsViewManager.h"
+#include "Baseline.h"
 #include "prenv.h"
 #include "RegionBuilder.h"
 #include "RetainedDisplayListBuilder.h"
@@ -5794,8 +5795,8 @@ bool nsLayoutUtils::GetFirstLinePosition(WritingMode aWM,
                0)) {
         // empty grid/flex/table container
         aResult->mBStart = 0;
-        aResult->mBaseline = aFrame->SynthesizeBaselineBOffsetFromBorderBox(
-            aWM, BaselineSharingGroup::First);
+        aResult->mBaseline = Baseline::SynthesizeBOffsetFromBorderBox(
+            aFrame, aWM, BaselineSharingGroup::First);
         aResult->mBEnd = aFrame->BSize(aWM);
         return true;
       }
@@ -6424,8 +6425,7 @@ ImgDrawResult nsLayoutUtils::DrawSingleImage(
     gfxContext& aContext, nsPresContext* aPresContext, imgIContainer* aImage,
     SamplingFilter aSamplingFilter, const nsRect& aDest, const nsRect& aDirty,
     const SVGImageContext& aSVGContext, uint32_t aImageFlags,
-    const nsPoint* aAnchorPoint, const nsRect* aSourceArea) {
-  nscoord appUnitsPerCSSPixel = AppUnitsPerCSSPixel();
+    const nsPoint* aAnchorPoint) {
   // NOTE(emilio): We can hardcode resolution to 1 here, since we're interested
   // in the actual image pixels, for snapping purposes, not on the adjusted
   // size.
@@ -6437,35 +6437,18 @@ ImgDrawResult nsLayoutUtils::DrawSingleImage(
     return ImgDrawResult::SUCCESS;  // no point in drawing a zero size image
   }
 
-  nsSize imageSize(CSSPixel::ToAppUnits(pixelImageSize));
-  nsRect source;
-  nsCOMPtr<imgIContainer> image;
-  if (aSourceArea) {
-    source = *aSourceArea;
-    nsIntRect subRect(source.x, source.y, source.width, source.height);
-    subRect.ScaleInverseRoundOut(appUnitsPerCSSPixel);
-    image = ImageOps::Clip(aImage, subRect);
-
-    nsRect imageRect;
-    imageRect.SizeTo(imageSize);
-    nsRect clippedSource = imageRect.Intersect(source);
-
-    source -= clippedSource.TopLeft();
-    imageSize = clippedSource.Size();
-  } else {
-    source.SizeTo(imageSize);
-    image = aImage;
-  }
-
-  nsRect dest = GetWholeImageDestination(imageSize, source, aDest);
+  const nsSize imageSize(CSSPixel::ToAppUnits(pixelImageSize));
+  const nsRect source(nsPoint(), imageSize);
+  const nsRect dest = GetWholeImageDestination(imageSize, source, aDest);
 
   // Ensure that only a single image tile is drawn. If aSourceArea extends
   // outside the image bounds, we want to honor the aSourceArea-to-aDest
   // transform but we don't want to actually tile the image.
   nsRect fill;
   fill.IntersectRect(aDest, dest);
-  return DrawImageInternal(aContext, aPresContext, image, aSamplingFilter, dest,
-                           fill, aAnchorPoint ? *aAnchorPoint : fill.TopLeft(),
+  return DrawImageInternal(aContext, aPresContext, aImage, aSamplingFilter,
+                           dest, fill,
+                           aAnchorPoint ? *aAnchorPoint : fill.TopLeft(),
                            aDirty, aSVGContext, aImageFlags);
 }
 
@@ -7155,9 +7138,6 @@ static RefPtr<SourceSurface> ScaleSourceSurface(SourceSurface& aSurface,
   if (!dt || !dt->IsValid()) {
     return nullptr;
   }
-
-  RefPtr<gfxContext> context = gfxContext::CreateOrNull(dt);
-  MOZ_ASSERT(context);
 
   dt->DrawSurface(&aSurface, Rect(Point(), Size(aTargetSize)),
                   Rect(Point(), Size(surfaceSize)));
@@ -8154,9 +8134,12 @@ bool nsLayoutUtils::GetContentViewerSize(
 }
 
 bool nsLayoutUtils::UpdateCompositionBoundsForRCDRSF(
-    ParentLayerRect& aCompBounds, const nsPresContext* aPresContext) {
+    ParentLayerRect& aCompBounds, const nsPresContext* aPresContext,
+    IncludeDynamicToolbar aIncludeDynamicToolbar) {
   SubtractDynamicToolbar shouldSubtractDynamicToolbar =
-      aPresContext->IsRootContentDocumentCrossProcess() &&
+      aIncludeDynamicToolbar == IncludeDynamicToolbar::Force
+          ? SubtractDynamicToolbar::No
+      : aPresContext->IsRootContentDocumentCrossProcess() &&
               aPresContext->HasDynamicToolbar()
           ? SubtractDynamicToolbar::Yes
           : SubtractDynamicToolbar::No;
@@ -8225,7 +8208,8 @@ nsMargin nsLayoutUtils::ScrollbarAreaToExcludeFromCompositionBoundsFor(
 /* static */
 nsSize nsLayoutUtils::CalculateCompositionSizeForFrame(
     nsIFrame* aFrame, bool aSubtractScrollbars,
-    const nsSize* aOverrideScrollPortSize) {
+    const nsSize* aOverrideScrollPortSize,
+    IncludeDynamicToolbar aIncludeDynamicToolbar) {
   // If we have a scrollable frame, restrict the composition bounds to its
   // scroll port. The scroll port excludes the frame borders and the scroll
   // bars, which we don't want to be part of the composition bounds.
@@ -8243,7 +8227,8 @@ nsSize nsLayoutUtils::CalculateCompositionSizeForFrame(
       aFrame == presShell->GetRootScrollFrame();
   if (isRootContentDocRootScrollFrame) {
     ParentLayerRect compBounds;
-    if (UpdateCompositionBoundsForRCDRSF(compBounds, presContext)) {
+    if (UpdateCompositionBoundsForRCDRSF(compBounds, presContext,
+                                         aIncludeDynamicToolbar)) {
       int32_t auPerDevPixel = presContext->AppUnitsPerDevPixel();
       size = nsSize(compBounds.width * auPerDevPixel,
                     compBounds.height * auPerDevPixel);

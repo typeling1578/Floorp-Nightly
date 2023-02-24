@@ -667,10 +667,14 @@ nsresult Http3Session::ProcessEvents() {
                    "0x%" PRIx64 " cleanup stream rv=0x%" PRIx32 " done=%d.\n",
                    this, stream.get(), stream->StreamId(),
                    static_cast<uint32_t>(rv), stream->Done()));
-              if (mStreamTransactionHash.Contains(stream->Transaction())) {
+              // We need to keep the transaction, so we can use it to remove the
+              // stream from mStreamTransactionHash.
+              nsAHttpTransaction* trans = stream->Transaction();
+              if (mStreamTransactionHash.Contains(trans)) {
                 CloseStream(stream, (rv == NS_BINDING_RETARGETED)
                                         ? NS_BINDING_RETARGETED
                                         : NS_OK);
+                mStreamTransactionHash.Remove(trans);
               } else {
                 stream->GetHttp3WebTransportSession()->TransactionIsDone(
                     (rv == NS_BINDING_RETARGETED) ? NS_BINDING_RETARGETED
@@ -704,11 +708,28 @@ nsresult Http3Session::ProcessEvents() {
             RefPtr<Http3WebTransportSession> wt =
                 stream->GetHttp3WebTransportSession();
             MOZ_RELEASE_ASSERT(wt, "It must be a WebTransport session");
-            // TODO read status and reason properly.
-            // TODO we do not hanlde the case when a WebTransport session stream
-            // is closed before headers are send.
+
+            // TODO we do not handle the case when a WebTransport session stream
+            // is closed before headers are sent.
+            SessionCloseReasonExternal& reasonExternal =
+                event.web_transport._0.session_closed.reason;
+            uint32_t status = 0;
             nsCString reason = ""_ns;
-            wt->OnSessionClosed(0, reason);
+            if (reasonExternal.tag == SessionCloseReasonExternal::Tag::Error) {
+              status = reasonExternal.error._0;
+            } else if (reasonExternal.tag ==
+                       SessionCloseReasonExternal::Tag::Status) {
+              status = reasonExternal.status._0;
+            } else {
+              status = reasonExternal.clean._0;
+              reason.Assign(reinterpret_cast<const char*>(data.Elements()),
+                            data.Length());
+            }
+            LOG(("reason.tag=%u err=%u data=%s\n",
+                 static_cast<uint32_t>(reasonExternal.tag), status,
+                 reason.get()));
+            wt->OnSessionClosed(status, reason);
+
           } break;
           case WebTransportEventExternal::Tag::NewStream: {
             LOG(
@@ -1197,15 +1218,15 @@ nsresult Http3Session::TryActivatingWebTransportStream(
 
   MOZ_ASSERT(*aStreamId != UINT64_MAX);
 
-  RefPtr<Http3StreamBase> stream = mStreamIdHash.Get(wtStream->SessionId());
-  MOZ_ASSERT(stream);
-  Http3WebTransportSession* wtSession = stream->GetHttp3WebTransportSession();
+  RefPtr<Http3StreamBase> session = mStreamIdHash.Get(wtStream->SessionId());
+  MOZ_ASSERT(session);
+  Http3WebTransportSession* wtSession = session->GetHttp3WebTransportSession();
   MOZ_ASSERT(wtSession);
 
   wtSession->RemoveWebTransportStream(wtStream);
 
   // WebTransportStream is managed by Http3Session now.
-  mWebTransportStreams.AppendElement(stream);
+  mWebTransportStreams.AppendElement(wtStream);
   mStreamIdHash.InsertOrUpdate(*aStreamId, std::move(wtStream));
   return NS_OK;
 }

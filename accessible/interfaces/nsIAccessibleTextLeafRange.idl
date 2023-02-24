@@ -32,9 +32,12 @@ interface nsIAccessibleTextLeafPoint : nsISupports
   const long DIRECTION_NEXT     = 0x0;
   const long DIRECTION_PREVIOUS = 0x1;
 
+  // Keep these flags up to date with the ones in TextLeafPoint.
   const unsigned long BOUNDARY_FLAG_DEFAULT          = 0x0;
   // If current point is a matching boundary, return unchanged.
   const unsigned long BOUNDARY_FLAG_INCLUDE_ORIGIN   = 0x1;
   // Do not search past end of editables.
   const unsigned long BOUNDARY_FLAG_STOP_IN_EDITABLE = 0x2;
+  // Skip over list items in searches and don't consider them line or paragraph starts.
+  const unsigned long BOUNDARY_FLAG_SKIP_LIST_ITEM_MARKER = 0x4;
 };

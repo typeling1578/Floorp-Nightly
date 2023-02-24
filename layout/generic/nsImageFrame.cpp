@@ -12,6 +12,7 @@
 #include "gfx2DGlue.h"
 #include "gfxContext.h"
 #include "gfxUtils.h"
+#include "mozilla/dom/NameSpaceConstants.h"
 #include "mozilla/intl/BidiEmbeddingLevel.h"
 #include "mozilla/ComputedStyle.h"
 #include "mozilla/DebugOnly.h"
@@ -275,6 +276,11 @@ nsIFrame* NS_NewImageFrame(PresShell* aPresShell, ComputedStyle* aStyle) {
                                        nsImageFrame::Kind::ImageLoadingContent);
 }
 
+nsIFrame* NS_NewXULImageFrame(PresShell* aPresShell, ComputedStyle* aStyle) {
+  return new (aPresShell) nsImageFrame(aStyle, aPresShell->GetPresContext(),
+                                       nsImageFrame::Kind::XULImage);
+}
+
 nsIFrame* NS_NewImageFrameForContentProperty(PresShell* aPresShell,
                                              ComputedStyle* aStyle) {
   return new (aPresShell) nsImageFrame(aStyle, aPresShell->GetPresContext(),
@@ -463,14 +469,32 @@ void nsImageFrame::DidSetComputedStyle(ComputedStyle* aOldStyle) {
     UpdateIntrinsicSize();
   }
 
-  nsCOMPtr<imgIRequest> currentRequest = GetCurrentRequest();
-
-  bool shouldUpdateOrientation = false;
-  auto newOrientation = StyleVisibility()->UsedImageOrientation(currentRequest);
+  // Normal "owned" images reframe when `content` or `list-style-image` change,
+  // but XUL images don't (and we don't really need to). So deal with the
+  // dynamic list-style-image change in that case.
+  //
+  // TODO(emilio): We might want to do the same for regular list-style-image or
+  // even simple content: url() changes.
+  if (mKind == Kind::XULImage) {
+    if (!mContent->AsElement()->HasAttr(nsGkAtoms::src) && aOldStyle &&
+        aOldStyle->StyleList()->mListStyleImage !=
+            StyleList()->mListStyleImage) {
+      UpdateXULImage();
+    }
+    if (!mOwnedRequest && aOldStyle &&
+        aOldStyle->StyleDisplay()->EffectiveAppearance() !=
+            StyleDisplay()->EffectiveAppearance()) {
+      UpdateIntrinsicSize();
+    }
+  }
 
   // We need to update our orientation either if we had no ComputedStyle before
   // because this is the first time it's been set, or if the image-orientation
   // property changed from its previous value.
+  bool shouldUpdateOrientation = false;
+  nsCOMPtr<imgIRequest> currentRequest = GetCurrentRequest();
+  const auto newOrientation =
+      StyleVisibility()->UsedImageOrientation(currentRequest);
   if (mImage) {
     if (aOldStyle) {
       auto oldOrientation =
@@ -512,6 +536,9 @@ const StyleImage* nsImageFrame::GetImageFromStyle() const {
           GetParent()->GetContent()->IsGeneratedContentContainerForMarker());
       MOZ_ASSERT(mContent->IsHTMLElement(nsGkAtoms::mozgeneratedcontentimage));
       return &StyleList()->mListStyleImage;
+    case Kind::XULImage:
+      MOZ_ASSERT(!mContent->AsElement()->HasAttr(nsGkAtoms::src));
+      return &StyleList()->mListStyleImage;
     case Kind::ContentProperty:
     case Kind::ContentPropertyAtIndex: {
       uint32_t contentIndex = 0;
@@ -547,6 +574,45 @@ const StyleImage* nsImageFrame::GetImageFromStyle() const {
   return nullptr;
 }
 
+void nsImageFrame::UpdateXULImage() {
+  MOZ_ASSERT(mKind == Kind::XULImage);
+  DeinitOwnedRequest();
+
+  nsAutoString src;
+  nsPresContext* pc = PresContext();
+  if (mContent->AsElement()->GetAttr(nsGkAtoms::src, src)) {
+    nsContentPolicyType contentPolicyType;
+    nsCOMPtr<nsIPrincipal> triggeringPrincipal;
+    uint64_t requestContextID = 0;
+    nsContentUtils::GetContentPolicyTypeForUIImageLoading(
+        mContent, getter_AddRefs(triggeringPrincipal), contentPolicyType,
+        &requestContextID);
+    nsCOMPtr<nsIURI> uri;
+    nsContentUtils::NewURIWithDocumentCharset(
+        getter_AddRefs(uri), src, pc->Document(), mContent->GetBaseURI());
+    if (uri) {
+      auto referrerInfo = MakeRefPtr<ReferrerInfo>(*mContent->AsElement());
+      nsContentUtils::LoadImage(
+          uri, mContent, pc->Document(), triggeringPrincipal, requestContextID,
+          referrerInfo, mListener, nsIRequest::LOAD_NORMAL, u""_ns,
+          getter_AddRefs(mOwnedRequest), contentPolicyType);
+      SetupOwnedRequest();
+    }
+  } else {
+    const auto* image = GetImageFromStyle();
+    if (image->IsImageRequestType()) {
+      if (imgRequestProxy* proxy = image->GetImageRequest()) {
+        proxy->Clone(mListener, pc->Document(), getter_AddRefs(mOwnedRequest));
+        SetupOwnedRequest();
+      }
+    }
+  }
+
+  if (!mOwnedRequest) {
+    UpdateImage(nullptr, nullptr);
+  }
+}
+
 void nsImageFrame::Init(nsIContent* aContent, nsContainerFrame* aParent,
                         nsIFrame* aPrevInFlow) {
   MOZ_ASSERT_IF(aPrevInFlow,
@@ -578,6 +644,8 @@ void nsImageFrame::Init(nsIContent* aContent, nsContainerFrame* aParent,
       mIsInObjectOrEmbed = bc->IsEmbedderTypeObjectOrEmbed() &&
                            pc->Document()->IsImageDocument();
     }
+  } else if (mKind == Kind::XULImage) {
+    UpdateXULImage();
   } else {
     const StyleImage* image = GetImageFromStyle();
     MOZ_ASSERT(mKind == Kind::ListStyleImage || image->IsImageRequestType(),
@@ -699,7 +767,9 @@ static IntrinsicSize ComputeIntrinsicSize(imgIContainer* aImage,
         }
       }
     }
-    if (aKind == nsImageFrame::Kind::ImageLoadingContent) {
+    if (aKind == nsImageFrame::Kind::ImageLoadingContent ||
+        (aKind == nsImageFrame::Kind::XULImage &&
+         aFrame.GetContent()->AsElement()->HasAttr(nsGkAtoms::src))) {
       ScaleIntrinsicSizeForDensity(aImage, *aFrame.GetContent(), intrinsicSize);
     } else {
       ScaleIntrinsicSizeForDensity(intrinsicSize,
@@ -713,6 +783,17 @@ static IntrinsicSize ComputeIntrinsicSize(imgIContainer* aImage,
     nscoord defaultLength = ListImageDefaultLength(aFrame);
     return containAxes.ContainIntrinsicSize(
         IntrinsicSize(defaultLength, defaultLength), aFrame);
+  }
+
+  if (aKind == nsImageFrame::Kind::XULImage && aFrame.IsThemed()) {
+    nsPresContext* pc = aFrame.PresContext();
+    // FIXME: const_cast here is a bit evil but IsThemed and so does the same.
+    const auto widgetSize = pc->Theme()->GetMinimumWidgetSize(
+        pc, const_cast<nsImageFrame*>(&aFrame),
+        aFrame.StyleDisplay()->EffectiveAppearance());
+    const IntrinsicSize intrinsicSize(
+        LayoutDeviceIntSize::ToAppUnits(widgetSize, pc->AppUnitsPerDevPixel()));
+    return containAxes.ContainIntrinsicSize(intrinsicSize, aFrame);
   }
 
   if (aFrame.ShouldShowBrokenImageIcon()) {
@@ -2048,14 +2129,18 @@ ImgDrawResult nsImageFrame::DisplayAltFeedbackWithoutLayer(
     RefPtr<TextDrawTarget> textDrawer =
         new TextDrawTarget(aBuilder, aResources, aSc, aManager, aItem, inner,
                            /* aCallerDoesSaveRestore = */ true);
-    RefPtr<gfxContext> captureCtx = gfxContext::CreateOrNull(textDrawer);
+    MOZ_ASSERT(textDrawer->IsValid());
+    if (textDrawer->IsValid()) {
+      gfxContext captureCtx(textDrawer);
 
-    nsAutoString altText;
-    nsCSSFrameConstructor::GetAlternateTextFor(*mContent->AsElement(), altText);
-    DisplayAltText(PresContext(), *captureCtx.get(), altText, inner);
+      nsAutoString altText;
+      nsCSSFrameConstructor::GetAlternateTextFor(*mContent->AsElement(),
+                                                 altText);
+      DisplayAltText(PresContext(), captureCtx, altText, inner);
 
-    textDrawer->TerminateShadows();
-    textDrawResult = !textDrawer->CheckHasUnsupportedFeatures();
+      textDrawer->TerminateShadows();
+      textDrawResult = !textDrawer->CheckHasUnsupportedFeatures();
+    }
   }
 
   // Purposely ignore local DrawResult because we handled it not being success
@@ -2380,17 +2465,28 @@ void nsImageFrame::BuildDisplayList(nsDisplayListBuilder* aBuilder,
       aBuilder, this, clipFlags);
 
   if (mComputedSize.width != 0 && mComputedSize.height != 0) {
-    bool imageOK = mKind != Kind::ImageLoadingContent ||
-                   ImageOk(mContent->AsElement()->State());
+    const bool imageOK = mKind != Kind::ImageLoadingContent ||
+                         ImageOk(mContent->AsElement()->State());
 
     nsCOMPtr<imgIRequest> currentRequest = GetCurrentRequest();
 
-    // XXX(seth): The SizeIsAvailable check here should not be necessary - the
-    // intention is that a non-null mImage means we have a size, but there is
-    // currently some code that violates this invariant.
-    if ((mKind == Kind::ImageLoadingContent ||
-         GetImageFromStyle()->IsImageRequestType()) &&
-        (!imageOK || !mImage || !SizeIsAvailable(currentRequest))) {
+    const bool drawAltFeedback = [&] {
+      if (!imageOK) {
+        return true;
+      }
+      // If we're a list-style-image gradient, we don't need to draw alt
+      // feedback.
+      if (mKind == Kind::ListStyleImage &&
+          !GetImageFromStyle()->IsImageRequestType()) {
+        return false;
+      }
+      // XXX(seth): The SizeIsAvailable check here should not be necessary - the
+      // intention is that a non-null mImage means we have a size, but there is
+      // currently some code that violates this invariant.
+      return !mImage || !SizeIsAvailable(currentRequest);
+    }();
+
+    if (drawAltFeedback) {
       // No image yet, or image load failed. Draw the alt-text and an icon
       // indicating the status
       aLists.Content()->AppendNewToTop<nsDisplayAltFeedback>(aBuilder, this);
@@ -2413,7 +2509,7 @@ void nsImageFrame::BuildDisplayList(nsDisplayListBuilder* aBuilder,
       if (mImage) {
         aLists.Content()->AppendNewToTop<nsDisplayImage>(aBuilder, this, mImage,
                                                          mPrevImage);
-      } else if (mKind != Kind::ImageLoadingContent) {
+      } else if (mKind == Kind::ListStyleImage) {
         aLists.Content()->AppendNewToTop<nsDisplayGradient>(aBuilder, this);
       }
 
@@ -2649,7 +2745,10 @@ nsresult nsImageFrame::AttributeChanged(int32_t aNameSpaceID,
     PresShell()->FrameNeedsReflow(
         this, IntrinsicDirty::FrameAncestorsAndDescendants, NS_FRAME_IS_DIRTY);
   }
-
+  if (mKind == Kind::XULImage && aAttribute == nsGkAtoms::src &&
+      aNameSpaceID == kNameSpaceID_None) {
+    UpdateXULImage();
+  }
   return NS_OK;
 }
 

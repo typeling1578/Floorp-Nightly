@@ -73,12 +73,15 @@ bool nsDisplayColumnRule::CreateWebRenderCommands(
     const StackingContextHelper& aSc,
     mozilla::layers::RenderRootStateManager* aManager,
     nsDisplayListBuilder* aDisplayListBuilder) {
-  RefPtr<gfxContext> screenRefCtx = gfxContext::CreateOrNull(
-      gfxPlatform::GetPlatform()->ScreenReferenceDrawTarget().get());
+  RefPtr dt = gfxPlatform::GetPlatform()->ScreenReferenceDrawTarget();
+  if (!dt || !dt->IsValid()) {
+    return false;
+  }
+  gfxContext screenRefCtx(dt);
 
   bool dummy;
   static_cast<nsColumnSetFrame*>(mFrame)->CreateBorderRenderers(
-      mBorderRenderers, screenRefCtx, GetBounds(aDisplayListBuilder, &dummy),
+      mBorderRenderers, &screenRefCtx, GetBounds(aDisplayListBuilder, &dummy),
       ToReferenceFrame());
 
   if (mBorderRenderers.IsEmpty()) {
@@ -632,6 +635,11 @@ nsColumnSetFrame::ColumnBalanceData nsColumnSetFrame::ReflowColumns(
             aReflowInput.mParentReflowInput->mFrame->HasAnyStateBits(
                 NS_FRAME_HAS_MULTI_COLUMN_ANCESTOR);
         if (isNestedMulticol) {
+          if (aConfig.mForceAuto) {
+            // If we are forced to fill columns sequentially, force fit the
+            // content whether we are at top of page or not.
+            return true;
+          }
           if (aReflowInput.mFlags.mIsTopOfPage) {
             // If this is the last balancing reflow in a nested multicol, we
             // want to force fit content to avoid infinite loops.

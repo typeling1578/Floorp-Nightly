@@ -322,7 +322,7 @@ ${RemoveDefaultBrowserAgentShortcut}
     CreateShortCut "$DESKTOP\${BrandShortName}.lnk" "$INSTDIR\${FileMainEXE}"
     ${If} ${FileExists} "$DESKTOP\${BrandShortName}.lnk"
       ShellLink::SetShortCutWorkingDirectory "$DESKTOP\${BrandShortName}.lnk" "$INSTDIR"
-      ${If} ${AtLeastWin7}
+      ${If} ${AtLeastWin10}
       ${AndIf} "$AppUserModelID" != ""
         ApplicationID::Set "$DESKTOP\${BrandShortName}.lnk" "$AppUserModelID" "true"
       ${EndIf}
@@ -333,7 +333,7 @@ ${RemoveDefaultBrowserAgentShortcut}
         ${If} ${FileExists} "$DESKTOP\${BrandShortName}.lnk"
           ShellLink::SetShortCutWorkingDirectory "$DESKTOP\${BrandShortName}.lnk" \
                                                  "$INSTDIR"
-          ${If} ${AtLeastWin7}
+          ${If} ${AtLeastWin10}
           ${AndIf} "$AppUserModelID" != ""
             ApplicationID::Set "$DESKTOP\${BrandShortName}.lnk" "$AppUserModelID" "true"
           ${EndIf}
@@ -348,7 +348,7 @@ ${RemoveDefaultBrowserAgentShortcut}
     ${If} ${FileExists} "$SMPROGRAMS\${BrandShortName}.lnk"
       ShellLink::SetShortCutWorkingDirectory "$SMPROGRAMS\${BrandShortName}.lnk" \
                                              "$INSTDIR"
-      ${If} ${AtLeastWin7}
+      ${If} ${AtLeastWin10}
       ${AndIf} "$AppUserModelID" != ""
         ApplicationID::Set "$SMPROGRAMS\${BrandShortName}.lnk" "$AppUserModelID" "true"
       ${EndIf}
@@ -360,7 +360,7 @@ ${RemoveDefaultBrowserAgentShortcut}
         ${If} ${FileExists} "$SMPROGRAMS\${BrandShortName}.lnk"
           ShellLink::SetShortCutWorkingDirectory "$SMPROGRAMS\${BrandShortName}.lnk" \
                                                  "$INSTDIR"
-          ${If} ${AtLeastWin7}
+          ${If} ${AtLeastWin10}
           ${AndIf} "$AppUserModelID" != ""
             ApplicationID::Set "$SMPROGRAMS\${BrandShortName}.lnk" "$AppUserModelID" "true"
           ${EndIf}
@@ -370,7 +370,7 @@ ${RemoveDefaultBrowserAgentShortcut}
   ${EndUnless}
 
   ; Windows 7 doesn't use the QuickLaunch directory
-  ${Unless} ${AtLeastWin7}
+  ${Unless} ${AtLeastWin10}
   ${AndUnless} ${FileExists} "$QUICKLAUNCH\${BrandShortName}.lnk"
     CreateShortCut "$QUICKLAUNCH\${BrandShortName}.lnk" \
                    "$INSTDIR\${FileMainEXE}"
@@ -1283,7 +1283,7 @@ ${RemoveDefaultBrowserAgentShortcut}
       WriteRegDWORD HKCU \
         "Software\Mozilla\${AppName}\Installer\$AppUserModelID" \
         "WasPinnedToTaskbar" 1
-      ${If} ${AtLeastWin7}
+      ${If} ${AtLeastWin10}
         ${If} "${SHOULD_PIN}" == "1"
           ${PinToTaskBar}
         ${EndIf}
@@ -1301,7 +1301,7 @@ ${RemoveDefaultBrowserAgentShortcut}
 ; model ID removes a pinned pinned Start Menu shortcut this will also add a
 ; pinned Start Menu shortcut.
 !macro PinToTaskBar
-  ${If} ${AtLeastWin7}
+  ${If} ${AtLeastWin10}
     StrCpy $8 "false" ; Whether a shortcut had to be created
     ${IsPinnedToTaskBar} "$INSTDIR\${FileMainEXE}" $R9
     ${If} "$R9" == "false"
@@ -1641,7 +1641,7 @@ FunctionEnd
 
 ; Helper for updating the shortcut application model IDs.
 Function FixShortcutAppModelIDs
-  ${If} ${AtLeastWin7}
+  ${If} ${AtLeastWin10}
   ${AndIf} "$AppUserModelID" != ""
     ${UpdateShortcutAppModelIDs} "$INSTDIR\${FileMainEXE}" "$AppUserModelID" $0
   ${EndIf}

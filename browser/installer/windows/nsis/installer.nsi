@@ -403,7 +403,7 @@ Section "-Application" APP_IDX
   ; Default for creating Quick Launch shortcut (1 = create, 0 = don't create)
   ${If} $AddQuickLaunchSC == ""
     ; Don't install the quick launch shortcut on Windows 7
-    ${If} ${AtLeastWin7}
+    ${If} ${AtLeastWin10}
       StrCpy $AddQuickLaunchSC "0"
     ${Else}
       StrCpy $AddQuickLaunchSC "1"
@@ -677,7 +677,7 @@ Section "-Application" APP_IDX
   ; If elevated the Quick Launch shortcut must be added from the unelevated
   ; original process.
   ${If} $AddQuickLaunchSC == 1
-    ${Unless} ${AtLeastWin7}
+    ${Unless} ${AtLeastWin10}
       ClearErrors
       ${GetParameters} $0
       ${GetOptions} "$0" "/UAC:" $0
@@ -1825,7 +1825,7 @@ Function .onInit
   System::Call "kernel32::IsProcessorFeaturePresent(i 10)i .R7"
 
   ; Windows NT 6.0 (Vista/Server 2008) and lower are not supported.
-  ${Unless} ${AtLeastWin7}
+  ${Unless} ${AtLeastWin10}
     ${If} "$R7" == "0"
       strCpy $R7 "$(WARN_MIN_SUPPORTED_OSVER_CPU_MSG)"
     ${Else}

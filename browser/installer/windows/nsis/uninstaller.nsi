@@ -445,7 +445,7 @@ Section "Uninstall"
 
   ${If} "$AppUserModelID" != ""
     ; Unregister resources associated with Win7 taskbar jump lists.
-    ${If} ${AtLeastWin7}
+    ${If} ${AtLeastWin10}
       ApplicationID::UninstallJumpLists "$AppUserModelID"
     ${EndIf}
     ; Remove the update sync manager's multi-instance lock file
@@ -455,7 +455,7 @@ Section "Uninstall"
   ${EndIf}
 
   ${If} "$AppUserModelIDPrivate" != ""
-    ${If} ${AtLeastWin7}
+    ${If} ${AtLeastWin10}
       ApplicationID::UninstallJumpLists "$AppUserModelIDPrivate"
     ${EndIf}
   ${EndIf}

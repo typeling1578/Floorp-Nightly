@@ -15,12 +15,9 @@ function setBrowserDesign() {
     LeptonUI: `@import url(chrome://browser/skin/lepton/userChrome.css?${updateNumber});`,
     LeptonUIMultitab: `@import url(chrome://browser/skin/lepton/photonChrome-multitab.css?${updateNumber});
                        @import url(chrome://browser/skin/lepton/photonContent-multitab.css?${updateNumber});`,
-    MaterialUI: `@import url(chrome://browser/skin/floorplegacy/floorplegacy.css);`,
-    MaterialUIMultitab: `@import url(chrome://browser/skin/floorplegacy/floorplegacy.css);
-                         .tabbrowser-tab { margin-top: 0.7em !important;  position: relative !important;  top: -0.34em !important; }`,
     fluentUI: `@import url(chrome://browser/skin/fluentUI/fluentUI.css);`,
     gnomeUI: `@import url(chrome://browser/skin/gnomeUI/gnomeUI.css);`,
-    FluerialUI: `@import url(chrome://browser/skin/floorplegacy/test_legacy.css);`,
+    FluerialUI: `@import url(chrome://browser/skin/floorplegacy/fluenial.css);`,
   }
   var Tag = document.createElement('style');
   Tag.setAttribute("id", "browserdesgin");
@@ -34,9 +31,7 @@ function setBrowserDesign() {
     case 3:
       Tag.innerText = Services.prefs.getBoolPref("floorp.enable.multitab", false) ? ThemeCSS.LeptonUIMultitab : ThemeCSS.LeptonUI;
       break;
-    case 4:
-      Tag.innerText = Services.prefs.getBoolPref("floorp.enable.multitab", false) ? ThemeCSS.MaterialUIMultitab : ThemeCSS.MaterialUI;
-      break;
+    //4 is deleted at v11.0.0 because it is MaterialUI.
     case 5:
       if (AppConstants.platform != "linux") Tag.innerText = ThemeCSS.fluentUI;
       break;

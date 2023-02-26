@@ -34,7 +34,7 @@ body{
 }
  
 .promo.below-search{
-  background: var(--in-content-box-background);
+  background: #353535;
   border: 1px solid transparent;
   border-radius: 4px;
   margin-bottom: 8px;

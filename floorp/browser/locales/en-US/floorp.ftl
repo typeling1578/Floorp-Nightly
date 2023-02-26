@@ -86,6 +86,8 @@ display-toolbar-icon-label =
 
 about-display-label = A working of the actual behavior of each button displayed on the toolbar is shown next to it, and the add-on buttons cannot be displayed on the toolbar.
 
+disable-extension-check-compatibility-option =
+ .label = Do not check for compatibility with add-ons
 other-preference = Other Preferences
 
 operation-settings = Browser Operation

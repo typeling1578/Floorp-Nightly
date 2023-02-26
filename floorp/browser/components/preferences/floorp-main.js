@@ -2,7 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-Preferences.addAll([
+ Preferences.addAll([
   { id: "floorp.hide.tabbrowser-tab.enable", type: "bool" },
   { id: "floorp.optimized.verticaltab", type: "bool" },
   { id: "floorp.horizontal.tab.position.shift", type: "bool" },
@@ -153,6 +153,35 @@ window.addEventListener("pageshow", async function() {
   document.getElementById("SetCustomURL").addEventListener("click", function () {
     window.location.href = "about:preferences#bSB";
   });
+
+  {
+    const basePrefName = "extensions.checkCompatibility";
+    const isNightlyPref = ![
+      "aurora",
+      "beta",
+      "release",
+      "esr",
+    ].includes(AppConstants.MOZ_UPDATE_CHANNEL);
+    const appVersion = Services.appinfo.version.replace(/^([^\.]+\.[0-9]+[a-z]*).*/gi, "$1");
+    const appVersionMajor = appVersion.replace(/^([^\.]+)\.[0-9]+[a-z]*/gi, "$1");
+    const prefNameNightly = `${basePrefName}.nightly`;
+    const prefNameVersion = `${basePrefName}.${appVersion}`;
+    const prefName = isNightlyPref
+      ? prefNameNightly
+      : prefNameVersion;
+    let elem = document.getElementById("disableExtensionCheckCompatibility");
+    elem.checked = !Services.prefs.getBoolPref(prefName, true);
+    elem.addEventListener("command", function () {
+      Services.prefs.setBoolPref(prefNameVersion, !elem.checked);
+      Services.prefs.setBoolPref(prefNameNightly, !elem.checked);
+      for (let minor = 0; minor <= 15; minor++) {
+        Services.prefs.setBoolPref(`${basePrefName}.${appVersionMajor}.${minor}`, !elem.checked);
+      }
+    });
+    Services.prefs.addObserver(prefName, function () {
+      elem.checked = !Services.prefs.getBoolPref(prefName, true);
+    });
+  }
 }, { once: true });
 
 // Optimize for portable version

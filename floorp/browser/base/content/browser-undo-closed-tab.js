@@ -26,4 +26,23 @@ async function UCTFirst(){
     }
   });
 }
-UCTFirst()
+UCTFirst();
+
+async function ClockFirst() {
+  let l10n = new Localization(["browser/floorp.ftl"])
+  let l10n_text = await l10n.formatValue("toolbar-clock")
+  CustomizableUI.createWidget({
+    id: 'toolbarItemClock',
+    label: l10n_text,
+    tooltiptext: l10n_text,
+    defaultArea: CustomizableUI.AREA_NAVBAR,
+   });
+   
+   setInterval(function() {
+       setNowTime();
+   }, 1000);
+   
+   //startup function
+   setNowTime();
+}
+ClockFirst();

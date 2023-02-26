@@ -35,14 +35,13 @@ async function ClockFirst() {
     id: 'toolbarItemClock',
     label: l10n_text,
     tooltiptext: l10n_text,
-    defaultArea: CustomizableUI.AREA_NAVBAR,
    });
-   
-   setInterval(function() {
-       setNowTime();
-   }, 1000);
    
    //startup function
    setNowTime();
 }
 ClockFirst();
+
+setInterval(function() {
+  setNowTime();
+}, 1000);

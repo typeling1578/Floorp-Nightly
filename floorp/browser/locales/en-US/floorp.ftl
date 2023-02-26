@@ -657,4 +657,4 @@ default-bookmark-ablaze-support = Ablaze Support
 
 ######################################################################### Clock ###############################################################
 
-toolbar-clock = Time and Date
+toolbar-clock = --:--

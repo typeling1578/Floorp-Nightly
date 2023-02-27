@@ -3,10 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-let { CustomizableUI } = ChromeUtils.import(
-    "resource:///modules/CustomizableUI.jsm"
-);
-let { SessionStore } = ChromeUtils.import("resource:///modules/sessionstore/SessionStore.jsm")
+let { CustomizableUI } = ChromeUtils.import("resource:///modules/CustomizableUI.jsm");
+let { SessionStore } = ChromeUtils.import("resource:///modules/sessionstore/SessionStore.jsm");
+
 async function UCTFirst(){
   let l10n = new Localization(["browser/floorp.ftl"])
   let l10n_text = await l10n.formatValue("undo-closed-tab") ?? "Undo close Tab"

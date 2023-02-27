@@ -615,8 +615,8 @@ function setNowTime() {
   let seconds = now.getSeconds();
   if (hours < 10) hours = "0" + hours;
   if (minutes < 10) minutes = "0" + minutes;
-  let dateAndTime = `${checkBrowserLang()} ${hours}:${minutes}`;
-  let withSeconds = `${checkBrowserLang()} ${hours}:${minutes}:${seconds}`;
+  let dateAndTime = `${checkBrowserLangForLabel()} ${hours}:${minutes}`;
+  let withSeconds = `${checkBrowserLangForToolTipText()} ${hours}:${minutes}:${seconds}`;
   let clock = document.getElementById("toolbarItemClock");
   if (clock) {
       clock.setAttribute("label", dateAndTime);
@@ -624,7 +624,7 @@ function setNowTime() {
   }
 }
 
-function checkBrowserLang() {
+function checkBrowserLangForLabel() {
   let now = new Date();
   let locale = Cc["@mozilla.org/intl/ospreferences;1"].getService(Ci.mozIOSPreferences).regionalPrefsLocales;
   if(locale[0] == "ja-JP"){
@@ -634,6 +634,23 @@ function checkBrowserLang() {
       weekday: 'short',
     }
     return now.toLocaleDateString('ja-JP', options);
+  } else {
+    return now.toLocaleDateString();
+  }
+}
+
+function checkBrowserLangForToolTipText() {
+  let now = new Date();
+  let locale = Cc["@mozilla.org/intl/ospreferences;1"].getService(Ci.mozIOSPreferences).regionalPrefsLocales;
+  if(locale[0] == "ja-JP"){
+    let year = now.getFullYear();
+    let JPYear = year - 2018;
+    const options = {
+      month: 'short',
+      day: 'numeric',
+      weekday: 'short',
+    }
+    return `${year}年`+`(令和${JPYear}年) `+ now.toLocaleDateString('ja-JP', options);
   } else {
     return now.toLocaleDateString();
   }

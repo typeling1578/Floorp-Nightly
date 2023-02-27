@@ -159,6 +159,13 @@ UICustomPrefHandler("floorp.disable.fullscreen.notification", function(event) {
   }
 });
 
+//Need reboot
+if(Services.prefs.getBoolPref("floorp.display.toolbarbutton.label", false)) {
+  var Tag = document.createElement("style");
+  Tag.innerText = `@import url(chrome://browser/skin/options/display_label.css)`;
+  document.head.appendChild(Tag);
+}
+
 /*------------------------------------------- sidebar -------------------------------------------*/
 
 UICustomPrefHandler("floorp.browser.sidebar.right", function(event) {

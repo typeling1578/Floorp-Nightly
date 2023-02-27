@@ -40,11 +40,12 @@ Preferences.addAll([
   { id: "floorp.tabs.showPinnedTabsTitle", type: "bool" },
   { id: "floorp.browser.tabbar.multirow.max.enabled", type: "bool"},
   { id: "floorp.browser.tabbar.multirow.newtab-inside.enabled", type: "bool"},
+  { id: "floorp.display.toolbarbutton.label", type: "bool"},
 ]);
 
 window.addEventListener("pageshow", async function() {
   await gMainPane.initialized;
-  const needreboot = document.getElementsByClassName("needeboot");
+  const needreboot = document.getElementsByClassName("needreboot");
   for (let i = 0; i < needreboot.length; i++) {
     needreboot[i].addEventListener("click", function () {
       if (!Services.prefs.getBoolPref("floorp.enable.auto.restart", false)) {

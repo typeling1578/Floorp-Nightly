@@ -106,6 +106,8 @@ pref("floorp.browser.tabbar.multirow.max.enabled", true);
 pref("floorp.browser.tabbar.multirow.newtab-inside.enabled", false);
 pref("floorp.browser.tabbar.multirow.max.row", 3);
 
+pref("floorp.display.toolbarbutton.label", true);
+
 /*----------------------------------------------------------------------------------------------------------------------------------*/
 
 //検索エンジン

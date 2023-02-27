@@ -80,6 +80,12 @@ show-nav-bar-bottom =
 
 material-effect =
  .label = Allow Mica for Everyone to modify the browser design
+
+display-toolbar-icon-label =
+  .label = Display the Behavior Assistant for Toolbar Buttons
+
+about-display-label = A working of the actual behavior of each button displayed on the toolbar is shown next to it, and the add-on buttons cannot be displayed on the toolbar.
+
 other-preference = Other Preferences
 
 operation-settings = Browser Operation

@@ -282,6 +282,12 @@
   </hbox>
 #endif
 
+  <hbox align="center">
+    <checkbox preference="floorp.display.toolbarbutton.label" class="needreboot"
+              id="displa_label_enable" data-l10n-id="display-toolbar-icon-label"/>
+  </hbox>
+  <description class="indent tip-caption" data-l10n-id="about-display-label"/>
+
     <label>
       <html:h2 data-l10n-id="preferences-theme-appearance-header"/>
     </label>
@@ -938,7 +944,7 @@
               id="autorestart" data-l10n-id="allow-auto-restart" />
     <hbox>  
      <checkbox preference="toolkit.legacyUserProfileCustomizations.script" 
-               id ="legacytoolkit" data-l10n-id="enable-userscript" class="needeboot"/>
+               id ="legacytoolkit" data-l10n-id="enable-userscript" class="needreboot"/>
      <label class="learnMore" is="text-link" href="https://support.ablaze.one/articles/floorp/userChromeJSAndLegacyAddons"
             data-l10n-id="do-not-track-learn-more"/>
     </hbox>  

@@ -3,6 +3,6 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 browser.jar:
-   content/browser/note/note.css                 (content/note.css)
-   content/browser/note/note.html                (content/note.html)
-   content/browser/note/note.js                  (content/note.js)
+   content/browser/notes/notes.css                 (content/notes.css)
+   content/browser/notes/notes.html                (content/notes.html)
+   content/browser/notes/notes.js                  (content/notes.js)

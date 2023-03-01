@@ -49,10 +49,21 @@ static const RedirEntry kRedirMap[] = {
      nsIAboutModule::URI_SAFE_FOR_UNTRUSTED_CONTENT |
          nsIAboutModule::URI_CAN_LOAD_IN_CHILD | nsIAboutModule::ALLOW_SCRIPT |
          nsIAboutModule::HIDE_FROM_ABOUTABOUT},
+   // Floorp Contributor
+    {"contributors", "chrome://browser/skin/contributors.html",
+     nsIAboutModule::ALLOW_SCRIPT | nsIAboutModule::URI_MUST_LOAD_IN_CHILD |
+         nsIAboutModule::URI_CAN_LOAD_IN_PRIVILEGEDABOUT_PROCESS |
+         nsIAboutModule::URI_SAFE_FOR_UNTRUSTED_CONTENT |
+         nsIAboutModule::IS_SECURE_CHROME_UI},
     {"certerror", "chrome://global/content/aboutNetError.xhtml",
      nsIAboutModule::URI_SAFE_FOR_UNTRUSTED_CONTENT |
          nsIAboutModule::URI_CAN_LOAD_IN_CHILD | nsIAboutModule::ALLOW_SCRIPT |
          nsIAboutModule::HIDE_FROM_ABOUTABOUT},
+    {"dino", "chrome://browser/skin/dino.html",
+     nsIAboutModule::ALLOW_SCRIPT | nsIAboutModule::URI_MUST_LOAD_IN_CHILD |
+         nsIAboutModule::URI_CAN_LOAD_IN_PRIVILEGEDABOUT_PROCESS |
+         nsIAboutModule::URI_SAFE_FOR_UNTRUSTED_CONTENT |
+         nsIAboutModule::IS_SECURE_CHROME_UI},
     {"unloads", "chrome://browser/content/tabunloader/aboutUnloads.html",
      nsIAboutModule::ALLOW_SCRIPT},
     {"framecrashed", "chrome://browser/content/aboutFrameCrashed.html",
@@ -70,6 +81,8 @@ static const RedirEntry kRedirMap[] = {
          nsIAboutModule::URI_CAN_LOAD_IN_PRIVILEGEDABOUT_PROCESS |
          nsIAboutModule::URI_SAFE_FOR_UNTRUSTED_CONTENT |
          nsIAboutModule::IS_SECURE_CHROME_UI},
+    {"notes", "chrome://browser/content/notes/notes.html",
+     nsIAboutModule::ALLOW_SCRIPT | nsIAboutModule::IS_SECURE_CHROME_UI},
     {"firefoxview", "chrome://browser/content/firefoxview.html",
      nsIAboutModule::ALLOW_SCRIPT | nsIAboutModule::IS_SECURE_CHROME_UI |
          nsIAboutModule::HIDE_FROM_ABOUTABOUT},

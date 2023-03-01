@@ -111,6 +111,7 @@ pref("floorp.display.toolbarbutton.label", true);
 // 1つ目はタイトル、2つ目は内容
 pref("floorp.browser.note.memos", "");
 pref("floorp.browser.note.memos.using", -1);
+pref("services.sync.prefs.sync.floorp.browser.note.memos", true);
 
 /*----------------------------------------------------------------------------------------------------------------------------------*/
 

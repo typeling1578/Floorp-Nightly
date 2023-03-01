@@ -16,13 +16,17 @@ document.addEventListener('DOMContentLoaded', function(){
   const memoTitleInput = document.getElementById("memo-title-input");
   const createNewMemo = document.getElementById("memo-add");
   const deleteMemo = document.getElementById("memo-delete");
+  let l10n = new Localization(["browser/floorp.ftl"], true);
+
+  memoTitleInput.placeholder = l10n.formatValueSync("memo-title-input-placeholder");
+  memoInput.placeholder = l10n.formatValueSync("memo-input-placeholder");
 
   let memos = Services.prefs.getStringPref("floorp.browser.note.memos"); 
   if (memos !== "") {
     memos = JSON.parse(memos);
     showMemos();
   } else {
-    memos = {"titles": ["ようこそ！"], "contents": ["Floorp Notes へようこそ！ここでは使い方について説明します！\n\nFloorp Notes はデバイス間で同期される複数のメモを保存できるメモ帳です。同期を有効にするには、Firefox アカウントでこの Floorp にサインインする必要があります。\nメモは Floorp の設定に保存されます。また、Firefox Sync は同期内容を Firefox アカウントのパスワードによって暗号化されるため、内容はあなた以外知りません。\n\nまた、Firefox Sync はバックアップサービスではありません。バックアップを取ることをおすすめします。"] };
+    memos = {"titles": [l10n.formatValueSync("memo-welcome-title")], "contents": [`${l10n.formatValueSync("memo-first-tip")}\n\n${l10n.formatValueSync("memo-second-tip")}\n${l10n.formatValueSync("memo-third-tip")}\n\n${l10n.formatValueSync("memo-fourth-tip")}`] };
     memoInput.value = memos.contents[0];
     memoTitleInput.value = memos.titles[0];
     Services.prefs.setStringPref("floorp.browser.note.memos", JSON.stringify(memos));

@@ -660,6 +660,7 @@ update-portable-notification-failed-prepare-message = Failed to prepare update.
 ##################################################################### Floorp System Update ###############################################################
 
 default-bookmark-ablaze-support = Ablaze Support
+default-bookmark-notes = Floorp Notes
 
 ######################################################################### Clock ###############################################################
 

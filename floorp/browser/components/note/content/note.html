@@ -1,0 +1,34 @@
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this file,
+   - You can obtain one at http://mozilla.org/MPL/2.0/. -->
+
+ <!DOCTYPE html>
+  <html lang="ja">
+   <head>
+     <script src="chrome://browser/content/note/note.js"></script>
+     <link rel="stylesheet" href="chrome://browser/content/note/note.css">
+     <link rel="stylesheet" href="chrome://global/skin/in-content/info-pages.css">
+     <meta charset="UTF-8">
+     <title>メモアプリ</title>
+   </head>
+   <body>
+     <div id="memo-lists-sidebar">
+      <div id="button-box">
+        <button id="memo-add">新規メモ</button>
+      </div>
+       <div id="memo-list"></div>
+     </div>
+     <div id="memo-contents">
+       <h2 id="header">Floorp Notes</h2>
+       <div id="memo-form">
+        <div id="titleAndDelete">
+         <input type="text" id="memo-title-input" placeholder="タイトルを入力してください"/>
+         <button id="memo-delete">削除</button>
+        </div>
+
+         <textarea type="text"  id="memo-input" placeholder="メモを入力してください"></textarea>
+         <button id="memo-save">保存</button>
+       </div>
+     </div>
+   </body>
+   </html>

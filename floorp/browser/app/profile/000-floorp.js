@@ -108,6 +108,10 @@ pref("floorp.browser.tabbar.multirow.max.row", 3);
 
 pref("floorp.display.toolbarbutton.label", true);
 
+// 1つ目はタイトル、2つ目は内容
+pref("floorp.browser.note.memos", "");
+pref("floorp.browser.note.memos.using", -1);
+
 /*----------------------------------------------------------------------------------------------------------------------------------*/
 
 //検索エンジン

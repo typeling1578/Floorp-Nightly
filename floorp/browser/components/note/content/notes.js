@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', function(){
     memoTitleInput.value = memos.titles[0];
     Services.prefs.setStringPref("floorp.browser.note.memos", JSON.stringify(memos));
     Services.prefs.setIntPref("floorp.browser.note.memos.using", 0);
-    showMemos()
+    showMemos();
   }
 
   function showMemos() {

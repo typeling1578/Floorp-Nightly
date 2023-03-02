@@ -79,7 +79,7 @@ document.addEventListener('DOMContentLoaded', function(){
   // 新規メモ作成ボタンがクリックされたときの処理
   createNewMemo.onclick = function() {
     memoInput.value = "";
-    memoTitleInput.value = "新規メモ";
+    memoTitleInput.value = l10n.formatValueSync("memo-new-title");
     setNoteID(-1);
   }
   

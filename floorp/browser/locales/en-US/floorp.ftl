@@ -678,3 +678,4 @@ memo-first-tip = Welcome to Floorp Notes! Here are some instructions on how to u
 memo-second-tip = Floorp Notes is a notepad that allows you to store multiple notes that are synchronized across devices. You must sign in to this Floorp with your Firefox account to enable synchronization.
 memo-third-tip = Floorp Notes will be saved in your Floorp settings. Also, Firefox Sync encrypts the contents of the sync with your Firefox account password, so no one but you knows the contents.
 memo-fourth-tip = Firefox Sync is not a backup service. We recommend that you make backups.
+memo-new-title = New Memo

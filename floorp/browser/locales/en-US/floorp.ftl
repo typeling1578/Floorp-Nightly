@@ -283,6 +283,9 @@ bsb-download-sidebar =
 bsb-TST-sidebar =
   .label = { sidebar2-TST-sidebar }
 
+bsb-notes-sidebar =
+  .label = { sidebar2-notes-sidebar }
+
 bsb-website = 
   .label = Website
 
@@ -508,6 +511,10 @@ sidebar2-TST-sidebar = Tree Style Tab
 show-TST-sidebar =
   .tooltiptext = Show { sidebar2-TST-sidebar } Sidebar
 
+sidebar2-notes-sidebar = { -brand-short-name } Notes
+
+show-notes-sidebar =
+  .tooltiptext = Show { sidebar2-notes-sidebar } Sidebar
 
 show-CustomURL-sidebar =
  .label = Show Custom URL Sidebar

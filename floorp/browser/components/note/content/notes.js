@@ -97,6 +97,8 @@ document.addEventListener('DOMContentLoaded', function(){
          memos.titles.push(memo.substr(0, 10)); // タイトルがない場合、メモの先頭10文字をタイトルとする
       }
       Services.prefs.setStringPref("floorp.browser.note.memos", JSON.stringify(memos));
+      let currentNoteID = memos.contents.length - 1;
+      setNoteID(currentNoteID);
     } else {
       memos.contents[openningNoteID] = memo;
       if (memoTitle) {
@@ -104,7 +106,6 @@ document.addEventListener('DOMContentLoaded', function(){
       } else {
         memos.titles[openningNoteID] = memoInput.value.substr(0, 10);
       }
-      console.log(memos);
       Services.prefs.setStringPref("floorp.browser.note.memos", JSON.stringify(memos));
     }
     showMemos();

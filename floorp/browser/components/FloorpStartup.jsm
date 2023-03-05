@@ -13,7 +13,7 @@ const { Services } = ChromeUtils.import(
     "resource://gre/modules/Services.jsm"
 );
 const { AppConstants } = ChromeUtils.import(
-  "resource://gre/modules/AppConstants.jsm"
+    "resource://gre/modules/AppConstants.jsm"
 );
 const { AddonManager } = ChromeUtils.import(
     "resource://gre/modules/AddonManager.jsm"
@@ -29,7 +29,7 @@ const { setTimeout, setInterval, clearTimeout, clearInterval } = ChromeUtils.imp
 let isFirstRun = false;
 let isUpdated = false;
 {
-    isFirstRun = 
+    isFirstRun =
         !Boolean(Services.prefs.getStringPref("browser.startup.homepage_override.mstone", null));
 
     let nowVersion = AppConstants.MOZ_APP_VERSION_DISPLAY;
@@ -60,19 +60,19 @@ let isUpdated = false;
 async function onFinalUIStartup() {
     Services.obs.removeObserver(onFinalUIStartup, "final-ui-startup");
 
-        IOUtils.exists(OS.Path.join(OS.Constants.Path.profileDir, "newtabImages")).then(
-            (data)=>{
-                if(!data) IOUtils.makeDirectory(OS.Path.join(OS.Constants.Path.profileDir, "newtabImages"))
-            }
-        )
+    IOUtils.exists(OS.Path.join(OS.Constants.Path.profileDir, "newtabImages")).then(
+        (data) => {
+            if (!data) IOUtils.makeDirectory(OS.Path.join(OS.Constants.Path.profileDir, "newtabImages"))
+        }
+    )
 
     // Write CSS.
-    
+
     IOUtils.exists(OS.Path.join(OS.Constants.Path.profileDir, "chrome")).then((data) => {
-    if (!data) {
-        let userChromecssPath = OS.Path.join(OS.Constants.Path.profileDir, "chrome");
-        let uccpth = OS.Path.join(userChromecssPath, 'userChrome.css')
-        IOUtils.writeUTF8(uccpth,`
+        if (!data) {
+            let userChromecssPath = OS.Path.join(OS.Constants.Path.profileDir, "chrome");
+            let uccpth = OS.Path.join(userChromecssPath, 'userChrome.css')
+            IOUtils.writeUTF8(uccpth, `
 /*************************************************************************************************************************************************************************************************************************************************************
 
 "userChrome.css" is a custom CSS file that can be used to specify CSS style rules for Floorp's interface (NOT internal site) using "chrome" privileges.
@@ -98,8 +98,8 @@ Quote: https://userChrome.org | https://github.com/topics/userchrome
 }
 `);
 
-        let ucconpth = OS.Path.join(userChromecssPath, 'userContent.css')
-        IOUtils.writeUTF8(ucconpth,`
+            let ucconpth = OS.Path.join(userChromecssPath, 'userContent.css')
+            IOUtils.writeUTF8(ucconpth, `
 /*************************************************************************************************************************************************************************************************************************************************************
  
 "userContent.css" is a custom CSS file that can be used to specify CSS style rules for Floorp's intenal site using "chrome" privileges.
@@ -121,16 +121,17 @@ NOTE: You can use the userContent.css file without change preferences (about:con
 /* Please write your custom CSS under this line*/
 `);
 
-    }});
+        }
+    });
 
     if (isFirstRun) {
         try {
-            let url = "https://addons.mozilla.org/firefox/downloads/latest/Gesturefy/latest.xpi" 
+            let url = "https://addons.mozilla.org/firefox/downloads/latest/Gesturefy/latest.xpi"
             let install = await AddonManager.getInstallForURL(url);
             await install.install();
         } catch (e) { console.error(e) }
         try {
-            let url = "https://addons.mozilla.org/firefox/downloads/latest/ublock-origin/latest.xpi" 
+            let url = "https://addons.mozilla.org/firefox/downloads/latest/ublock-origin/latest.xpi"
             let install = await AddonManager.getInstallForURL(url);
             let installed = await install.install();
             await installed.disable(); // Default is disabled.

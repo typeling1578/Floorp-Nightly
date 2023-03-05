@@ -7,12 +7,14 @@
 
 DIRS += [
     "about",
+    "calendar",
     "note",
     "search",
     "preferences",
 ]
 
 EXTRA_JS_MODULES += [
+    "FloorpActors.jsm",
     "FloorpStartup.sys.mjs",
     "GlobalsLoader.jsm",
     "TabSleep.jsm",

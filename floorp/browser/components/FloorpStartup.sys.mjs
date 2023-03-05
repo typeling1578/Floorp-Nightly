@@ -57,6 +57,15 @@ const EXECUTES = [
         }
     },
     {
+        description: "Load actors",
+        runAt: "soon",
+        onFirstRun: false,
+        onUpdated: false,
+        exec: function() {
+            ChromeUtils.import("resource:///modules/FloorpActors.jsm");
+        }
+    },
+    {
         description: "Load Tab Sleep feature",
         runAt: "soon",
         onFirstRun: false,

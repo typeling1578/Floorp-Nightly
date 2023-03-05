@@ -34,8 +34,8 @@ jobs:
         export PATH=~/git-cinnabar:$PATH
         git clone hg::https://hg.mozilla.org/mozilla-unified
         cd mozilla-unified
-        git rev-list --count origin/bookmarks/esr102
-        git checkout -b upstream-esr102-${DATE_STR} origin/bookmarks/esr102
+        git rev-list --count origin/bookmarks/central
+        git checkout -b upstream-central-${DATE_STR} origin/bookmarks/central
 
     - name: Fetch Floorp 📥
       run: |
@@ -46,11 +46,11 @@ jobs:
     - name: Push 🎁
       run: |
         cd mozilla-unified
-        git push floorp upstream-esr102-${DATE_STR}
+        git push floorp upstream-central-${DATE_STR}
 
     - name: Create Pull Request
       run: |
         cd mozilla-unified
-        gh pr create --repo ${{ github.repository }} --base ESR102 --head upstream-esr102-${DATE_STR} --title "Pull upstream" --body "Warning: Be sure to create a merge commit and merge it in."
+        gh pr create --repo ${{ github.repository }} --base master --head upstream-central-${DATE_STR} --title "Pull upstream" --body "Warning: Be sure to create a merge commit and merge it in."
       env:
         GH_TOKEN: ${{ github.token }}

@@ -61,6 +61,7 @@ locales = [
     "it",
     "ja",
     "ja-JP-mac",
+    "ja-KA",
     "ka",
     "kab",
     "kk",
@@ -149,6 +150,9 @@ locales = [
 
 [[includes]]
     path = "devtools/client/locales/l10n.toml"
+
+[[includes]]
+    path = "floorp/browser/locales/l10n.toml"
 
 [[paths]]
     reference = "devtools/startup/locales/en-US/**"

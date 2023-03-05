@@ -13,7 +13,7 @@ DIRS += [
 ]
 
 EXTRA_JS_MODULES += [
-    "FloorpStartup.jsm",
+    "FloorpStartup.sys.mjs",
     "GlobalsLoader.jsm",
     "TabSleep.jsm",
 ]

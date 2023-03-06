@@ -125,9 +125,9 @@
                  BROWSER_SIDEBAR_DATA.index.splice(index, 1);
                  delete BROWSER_SIDEBAR_DATA.data[clickedWebpanel.replace("select-", "")];
                  Services.prefs.setStringPref(`floorp.browser.sidebar2.data`, JSON.stringify(BROWSER_SIDEBAR_DATA));
-                 contextWebpanel.remove();
- 
-                 if(document.getElementById(clickedWebpanel) != null) document.getElementById(clickedWebpanel).remove();
+                 contextWebpanel?.remove();
+
+                 document.getElementById(clickedWebpanel)?.remove();
              },
              muteWebpanel:()=>{
                  if (contextWebpanel.audioMuted == false) {
@@ -213,7 +213,10 @@
                  webpanelURL = STATIC_SIDEBAR_DATA[webpanelURL].url
                  isWeb = false
              }
-             if (webpanobject != null && (webpanobject.getAttribute("usercontextid") != wibpanel_usercontext)){
+             if(webpanobject != null && 
+                !(webpanobject?.getAttribute("changeuseragent") == "" && !webpanel_userAgent) && 
+                !(webpanobject?.getAttribute("usercontextid") == "" && wibpanel_usercontext == 0) && 
+                ((webpanobject?.getAttribute("changeuseragent") ?? "false") !== String(webpanel_userAgent) || (webpanobject?.getAttribute("usercontextid") ?? "0") !== String(wibpanel_usercontext))){
                 webpanobject.remove()
                 webpanobject = null
             } 
@@ -250,11 +253,6 @@
               `));
             } else {
                 webpanobject.setAttribute("src", webpanelURL);
-                if (webpanobject.getAttribute("changeuseragent") !== String(webpanel_userAgent) || webpanobject.getAttribute("usercontextid") !== String(wibpanel_usercontext)) {
-                    webpanobject.setAttribute("usercontextid", wibpanel_usercontext);
-                    webpanobject.setAttribute("changeuseragent", String(webpanel_userAgent));
-                    webpanobject.reloadWithFlags(Ci.nsIWebNavigation.LOAD_FLAGS_BYPASS_CACHE)
-                }
             }
              bmsController.controllFunctions.visiblePanelBrowserElem()
          },

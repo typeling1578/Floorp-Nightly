@@ -75,6 +75,16 @@ const EXECUTES = [
         }
     },
     {
+        description: "Set BMS pref",
+        runAt: "final-ui-startup",
+        onFirstRun: false,
+        onUpdated: false,
+        exec: function() {
+            let { BrowserManagerSidebar } = ChromeUtils.import("resource:///modules/BrowserManagerSidebar.jsm");
+            BrowserManagerSidebar.prefsUpdate();
+        }
+    },
+    {
         description: "Write CSS",
         runAt: "final-ui-startup",
         onFirstRun: false,

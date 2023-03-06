@@ -8,7 +8,7 @@ import { XPCOMUtils } from "resource://gre/modules/XPCOMUtils.sys.mjs";
 const lazy = {};
 
 try {
-  ChromeUtils.importESModule("resource:///modules/FloorpStartup.sys.mjs");
+  ChromeUtils.import("resource:///modules/FloorpStartup.jsm");
 } catch (e) { console.error(e) }
 
 ChromeUtils.defineESModuleGetters(lazy, {

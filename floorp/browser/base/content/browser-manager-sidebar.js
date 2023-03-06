@@ -143,21 +143,7 @@
              const modeValuePref = Services.prefs.getStringPref("floorp.browser.sidebar2.page", undefined);
              const selectedwebpanel = document.getElementById(`webpanel${modeValuePref}`);
              const selectedURL = BROWSER_SIDEBAR_DATA.data[modeValuePref].url ?? ""
-         
-             let bmsStyle = document.getElementById("sidebar2style")
-             if(bmsStyle == null){
-                 bmsStyle = document.createElement("style")
-                 bmsStyle.id = "sidebar2style"
-                 document.querySelector("head").insertAdjacentElement("beforeend", bmsStyle);
-             }
-             if (selectedURL == "floorp//tst") {
-                 bmsStyle.innerText = "#sidebar2{max-height:0 !important;}#sidebar2-reload,#sidebar2-go-index, #sidebar2-forward,#sidebar2-back{display:none !important;}"
-             } else if (selectedURL.startsWith("floorp//")) {
-                 bmsStyle.innerText = "#TST{max-height:0 !important;}#sidebar2-reload, #sidebar2-go-index, #sidebar2-forward,#sidebar2-back{display:none !important;}"
-             } else {
-                 bmsStyle.innerText = "#TST, #sidebar2{max-height:0 !important;}"
-             }
-         
+             bmsController.controllFunctions.changeVisibleCommandButton(selectedURL.startsWith("floorp//"))
              for (let elem of document.getElementsByClassName("webpanels")) {
                  elem.hidden = true;
              }
@@ -182,23 +168,23 @@
                  if(selectedNode != null) selectedNode.setAttribute("checked", "true")
              }
          },
+         changeVisibleCommandButton:(hidden)=>{
+            for (let elem of sidebar_icons) document.getElementById(elem).hidden = hidden
+         },
          changeVisibleWenpanel:()=>{
-             let sidebar2 = document.getElementById("sidebar2");
              let siderbar2header = document.getElementById("sidebar2-header");
              let sidebarsplit2 = document.getElementById("sidebar-splitter2");
              let sidebar2box = document.getElementById("sidebar2-box");
-             let sidebarSetting = {true:["auto","","auto","","","false",false,true,true],false:["0","0","0","0","none","true",true,false,false]}
+             let sidebarSetting = {true:["auto","","","false",false,true,true],false:["0","0","none","true",true,false,false]}
              let doDisplay = sidebarsplit2.getAttribute("hidden") == "true"
          
-             sidebar2.style.minWidth = sidebarSetting[doDisplay][0];
-             sidebar2.style.maxWidth = sidebarSetting[doDisplay][1];
-             sidebar2box.style.minWidth = sidebarSetting[doDisplay][2];
-             sidebar2box.style.maxWidth = sidebarSetting[doDisplay][3];
-             siderbar2header.style.display = sidebarSetting[doDisplay][4];
-             sidebarsplit2.setAttribute("hidden", sidebarSetting[doDisplay][5]);
-             for (let elem of sidebar_icons) document.getElementById(elem).hidden = sidebarSetting[doDisplay][6];
-             bmsController.controllFunctions.changeCheckPanel(sidebarSetting[doDisplay][7]);
-             Services.prefs.setBoolPref("floorp.browser.sidebar.is.displayed", sidebarSetting[doDisplay][8]);
+             sidebar2box.style.minWidth = sidebarSetting[doDisplay][0];
+             sidebar2box.style.maxWidth = sidebarSetting[doDisplay][1];
+             siderbar2header.style.display = sidebarSetting[doDisplay][2];
+             sidebarsplit2.setAttribute("hidden", sidebarSetting[doDisplay][3]);
+             bmsController.controllFunctions.changeVisibleCommandButton(sidebarSetting[doDisplay][4]);
+             bmsController.controllFunctions.changeCheckPanel(sidebarSetting[doDisplay][5]);
+             Services.prefs.setBoolPref("floorp.browser.sidebar.is.displayed", sidebarSetting[doDisplay][6]);
          },
          setSidebarWidth:(webpanel_id)=>{
              if (webpanel_id != "" && BROWSER_SIDEBAR_DATA.index.includes(webpanel_id)) {
@@ -215,38 +201,61 @@
          makeWebpanel:(webpanel_id)=>{
              const webpandata = BROWSER_SIDEBAR_DATA.data[webpanel_id]
              let webpanobject = document.getElementById(`webpanel${webpanel_id}`)
-             const webpanelURL = webpandata.url
-             const sidebar2elem = document.getElementById("sidebar2");
+             let webpanelURL = webpandata.url
              const wibpanel_usercontext = webpandata.usercontext ?? 0
              const webpanel_userAgent = webpandata.userAgent ?? false
+             let isWeb = true
+             let isTST = false
          
              bmsController.controllFunctions.setSidebarWidth(webpanel_id)
              if (webpanelURL.startsWith("floorp//")) {
-                 let setURL = STATIC_SIDEBAR_DATA[webpanelURL].url
-                 if (setURL != "none") sidebar2elem.setAttribute("src", setURL);
-             } else {
-                 if (webpanobject != null && (webpanobject.getAttribute("usercontextid") != wibpanel_usercontext)){
-                     webpanobject.remove()
-                     webpanobject = null
-                 } 
-                 if (webpanobject == null) {
-                     document.getElementById("sidebar2-box").appendChild(window.MozXULElement.parseXULToFragment(`
-                   <browser usercontextid="${wibpanel_usercontext}" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
-                     id="webpanel${webpanel_id}" class="webpanels" flex="1" autoscroll="false" disablehistory="true" 
-                     disablefullscreen="true" tooltip="aHTMLTooltip" disableglobalhistory="true" messagemanagergroup="webext-browsers"
-                     context="" webextension-view-type="sidebar" autocompletepopup="PopupAutoComplete"
-                     initialBrowsingContextGroupId="40" type="content" remote="true" changeuseragent="${String(webpanel_userAgent)}"
-                     maychangeremoteness="true" src="${webpanelURL}"/>
-                   `));
-                 } else {
-                     webpanobject.setAttribute("src", webpanelURL);
-                     if (webpanobject.getAttribute("changeuseragent") !== String(webpanel_userAgent) || webpanobject.getAttribute("usercontextid") !== String(wibpanel_usercontext)) {
-                         webpanobject.setAttribute("usercontextid", wibpanel_usercontext);
-                         webpanobject.setAttribute("changeuseragent", String(webpanel_userAgent));
-                         webpanobject.reloadWithFlags(Ci.nsIWebNavigation.LOAD_FLAGS_BYPASS_CACHE)
-                     }
-                 }
+                if(webpanelURL == "floorp//tst") isTST = true
+                 webpanelURL = STATIC_SIDEBAR_DATA[webpanelURL].url
+                 isWeb = false
              }
+             if (webpanobject != null && (webpanobject.getAttribute("usercontextid") != wibpanel_usercontext)){
+                webpanobject.remove()
+                webpanobject = null
+            } 
+            if (webpanobject == null) {
+                document.getElementById("sidebar2-box").appendChild(window.MozXULElement.parseXULToFragment(`
+              <browser 
+                id="webpanel${webpanel_id}"
+                class="webpanels"
+                flex="1"
+                src="${webpanelURL}"
+                xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+                disablehistory="true"
+                disablefullscreen="true"
+                tooltip="aHTMLTooltip"
+                autoscroll="false"
+                disableglobalhistory="true"
+                messagemanagergroup="webext-browsers"
+                autocompletepopup="PopupAutoComplete"
+                initialBrowsingContextGroupId="40"
+                ${isWeb ? `
+                usercontextid="${wibpanel_usercontext}"
+                changeuseragent="${String(webpanel_userAgent)}"
+                ` :""}
+                ${isWeb || isTST ? `
+                webextension-view-type="sidebar"
+                type="content"
+                remote="true"
+                maychangeremoteness="true"
+                ` :""}
+                ${isWeb ? `context=""`
+                  : (isTST ? `context="contentAreaContextMenu"` : "")
+                }
+                 />
+              `));
+            } else {
+                webpanobject.setAttribute("src", webpanelURL);
+                if (webpanobject.getAttribute("changeuseragent") !== String(webpanel_userAgent) || webpanobject.getAttribute("usercontextid") !== String(wibpanel_usercontext)) {
+                    webpanobject.setAttribute("usercontextid", wibpanel_usercontext);
+                    webpanobject.setAttribute("changeuseragent", String(webpanel_userAgent));
+                    webpanobject.reloadWithFlags(Ci.nsIWebNavigation.LOAD_FLAGS_BYPASS_CACHE)
+                }
+            }
              bmsController.controllFunctions.visiblePanelBrowserElem()
          },
          makeSidebarIcon:()=>{
@@ -333,7 +342,7 @@
  }
  
  if(Services.prefs.getBoolPref("floorp.browser.sidebar.enable", false)){
-     (() => {
+     (async() => {
          Services.prefs.setStringPref("floorp.browser.sidebar2.page","")
          // Context Menu
          addContextBox("bsb-context-add", "bsb-context-add", "fill-login", `
@@ -375,7 +384,7 @@
  
          // Set TST URL
          window.setTimeout(async () => {
-             document.getElementById("TST").setAttribute("src", await BrowserManagerSidebar.getAdoonSidebarPage("treestyletab@piro.sakura.ne.jp"));
+              BrowserManagerSidebar.STATIC_SIDEBAR_DATA["floorp//tst"].url = await BrowserManagerSidebar.getAdoonSidebarPage("treestyletab@piro.sakura.ne.jp")
          }, 1250);
      })()
  }

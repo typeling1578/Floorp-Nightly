@@ -9,6 +9,9 @@ browser.jar:
   skin/classic/browser/TST-dark.svg                                         (icons/TST-dark.svg)
   skin/classic/browser/TST-light.svg                                        (icons/TST-light.svg)
 
+# Floorp Notes
+  skin/classic/browser/notes.svg                                         (icons/notes.svg)
+
 # options
   skin/classic/browser/options/micaforeveryone.css                        (designs/options/micaforeveryone.css)
   skin/classic/browser/options/move_page_inside_searchbar.css             (designs/options/move_page_inside_searchbar.css)

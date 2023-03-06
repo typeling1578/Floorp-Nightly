@@ -196,3 +196,12 @@ try {
 try {
     ChromeUtils.import("resource:///modules/TabSleep.jsm");
 } catch (e) { console.error(e) }
+
+// Load OpenLinkInExternal feature
+try {
+    if (AppConstants.platform === "win" || AppConstants.platform === "linux") {
+        if (Services.prefs.getBoolPref("floorp.openLinkInExternal.enabled", false)) {
+            ChromeUtils.import("resource:///modules/OpenLinkInExternal.jsm");
+        }
+    }
+} catch (e) { console.error(e) }

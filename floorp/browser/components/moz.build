@@ -13,6 +13,7 @@ DIRS += [
 ]
 
 EXTRA_JS_MODULES += [
+    "BrowserManagerSidebar.jsm",
     "FloorpStartup.jsm",
     "GlobalsLoader.jsm",
     "TabSleep.jsm",

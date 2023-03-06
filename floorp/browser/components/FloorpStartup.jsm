@@ -58,7 +58,11 @@ let isUpdated = false;
 
 
 async function onFinalUIStartup() {
+    console.log("aiueo")
+    let { BrowserManagerSidebar } = ChromeUtils.import("resource:///modules/BrowserManagerSidebar.jsm")
+    BrowserManagerSidebar.prefsUpdate()
     Services.obs.removeObserver(onFinalUIStartup, "final-ui-startup");
+
 
         IOUtils.exists(OS.Path.join(OS.Constants.Path.profileDir, "newtabImages")).then(
             (data)=>{

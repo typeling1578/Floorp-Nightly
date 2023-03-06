@@ -206,17 +206,29 @@
              const webpanel_userAgent = webpandata.userAgent ?? false
              let isWeb = true
              let isTST = false
+             let isFloorp = false
          
              bmsController.controllFunctions.setSidebarWidth(webpanel_id)
              if (webpanelURL.startsWith("floorp//")) {
                 if(webpanelURL == "floorp//tst") isTST = true
+                isFloorp = true
                  webpanelURL = STATIC_SIDEBAR_DATA[webpanelURL].url
                  isWeb = false
              }
-             if(webpanobject != null && 
-                !(webpanobject?.getAttribute("changeuseragent") == "" && !webpanel_userAgent) && 
-                !(webpanobject?.getAttribute("usercontextid") == "" && wibpanel_usercontext == 0) && 
-                ((webpanobject?.getAttribute("changeuseragent") ?? "false") !== String(webpanel_userAgent) || (webpanobject?.getAttribute("usercontextid") ?? "0") !== String(wibpanel_usercontext))){
+             if(webpanobject != null && (
+                (
+                  !(webpanobject?.getAttribute("changeuseragent") == "" && !webpanel_userAgent) && 
+                  !(webpanobject?.getAttribute("usercontextid") == "" && wibpanel_usercontext == 0) && 
+                  ((webpanobject?.getAttribute("changeuseragent") ?? "false") !== String(webpanel_userAgent) || (webpanobject?.getAttribute("usercontextid") ?? "0") !== String(wibpanel_usercontext))
+                )
+                ||
+                (
+                  ((webpanobject.className.includes("isFloorp") || webpanobject.className.includes("isTST")) && isWeb) || 
+                  ((webpanobject.className.includes("isFloorp") || webpanobject.className.includes("isWeb")) && isTST) ||
+                  ((webpanobject.className.includes("isTST") || webpanobject.className.includes("isWeb")) && isFloorp)
+                )
+                )              
+            ){
                 webpanobject.remove()
                 webpanobject = null
             } 
@@ -224,7 +236,7 @@
                 document.getElementById("sidebar2-box").appendChild(window.MozXULElement.parseXULToFragment(`
               <browser 
                 id="webpanel${webpanel_id}"
-                class="webpanels"
+                class="webpanels${isFloorp ? " isFloorp" : (isTST ? " isTST" : " isWeb")}"
                 flex="1"
                 src="${webpanelURL}"
                 xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
@@ -330,10 +342,15 @@
                  }
              }
          
-             for (let elem of document.querySelectorAll(".webpanel-icon")) {
-                 let sbar_url = BROWSER_SIDEBAR_DATA.data[elem.id.slice(7)].url;
-                 BrowserManagerSidebar.getFavicon(sbar_url, document.getElementById(`${elem.id}`))
-                 bmsController.controllFunctions.setUserContextColorLine(elem.id.slice(7));
+             for (let elem of document.querySelectorAll(".sidepanel-icon")) {
+                if(elem.className.includes("webpanel-icon")){
+                    let sbar_url = BROWSER_SIDEBAR_DATA.data[elem.id.slice(7)].url;
+                    BrowserManagerSidebar.getFavicon(sbar_url, document.getElementById(`${elem.id}`))
+                    bmsController.controllFunctions.setUserContextColorLine(elem.id.slice(7));
+                }else{
+                    elem.style.removeProperty("--BMSIcon")
+                }
+
              }
          }
      }

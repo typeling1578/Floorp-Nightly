@@ -91,6 +91,8 @@ pref("floorp.browser.sidebar2.global.webpanel.width", 400);
 
 pref("floorp.tabsleep.enabled", false);
 pref("floorp.webcompat.enabled", true);
+pref("floorp.openLinkInExternal.enabled", false);
+pref("floorp.openLinkInExternal.browserId", "");
 
 // システムアドオンのアップデート確認先
 pref("extensions.systemAddon.update.url", "https://floorp-update.ablaze.one/systemAddon/xml/%DISPLAY_VERSION%/%OS%/update.xml");
@@ -257,17 +259,6 @@ pref("gfx.webrender.all", true);
 #ifdef XP_WIN
 pref("dom.webshare.enabled", true);
 #endif
-
-// アドオンのバージョン制限のチェックを無効化
-pref("extensions.checkCompatibility.102.8", false);
-pref("extensions.checkCompatibility.102.9", false);
-pref("extensions.checkCompatibility.102.10", false);
-pref("extensions.checkCompatibility.102.11", false);
-pref("extensions.checkCompatibility.102.12", false);
-pref("extensions.checkCompatibility.102.13", false);
-pref("extensions.checkCompatibility.102.14", false);
-pref("extensions.checkCompatibility.102.15", false);
-pref("extensions.checkCompatibility.nightly", false);
 
 // カラーテーマクローゼットを無効化
 pref("browser.theme.colorway-closet", false);

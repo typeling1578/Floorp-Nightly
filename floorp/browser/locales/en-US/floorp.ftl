@@ -86,6 +86,8 @@ display-toolbar-icon-label =
 
 about-display-label = A working of the actual behavior of each button displayed on the toolbar is shown next to it, and the add-on buttons cannot be displayed on the toolbar.
 
+disable-extension-check-compatibility-option =
+ .label = Do not check for compatibility with add-ons
 other-preference = Other Preferences
 
 operation-settings = Browser Operation
@@ -686,3 +688,14 @@ memo-second-tip = Floorp Notes is a notepad that allows you to store multiple no
 memo-third-tip = Floorp Notes will be saved in your Floorp settings. Also, Firefox Sync encrypts the contents of the sync with your Firefox account password, so no one but you knows the contents.
 memo-fourth-tip = Firefox Sync is not a backup service. We recommend that you make backups.
 memo-new-title = New Memo
+
+##################################################################### Open link in external ###############################################################
+open-link-in-external-enabled-option =
+ .label = Enable "Open in external browser" feature
+open-link-in-external-select-browser-option = Choose the browser you want to open in "Open in external browser"
+open-link-in-external-select-browser-option-default =
+ .label = Default browser
+open-link-in-external-tab-context-menu = Open in external browser
+open-link-in-external-tab-dialog-title-error = Error
+open-link-in-external-tab-dialog-message-default-browser-not-found = Default browser does not exist or is not configured.
+open-link-in-external-tab-dialog-message-selected-browser-not-found = The selected browser does not exist.

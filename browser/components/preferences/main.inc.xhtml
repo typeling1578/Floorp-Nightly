@@ -282,6 +282,21 @@
   </hbox>
 #endif
 
+#if defined(XP_WIN) || defined(XP_LINUX)
+  <checkbox preference="floorp.openLinkInExternal.enabled" data-l10n-id="open-link-in-external-enabled-option" class="needreboot"/>
+  <hbox>
+    <description flex="1" data-l10n-id="open-link-in-external-select-browser-option"/>
+    <menulist id="openLinkInExternalSelectBrowser" preference="floorp.openLinkInExternal.browserId">
+      <menupopup>
+        <menuitem value="" data-l10n-id="open-link-in-external-select-browser-option-default"/>
+        <menuseparator/>
+      </menupopup>
+    </menulist>
+  </hbox>
+#endif
+
+  <checkbox id="disableExtensionCheckCompatibility" data-l10n-id="disable-extension-check-compatibility-option"/>
+
   <hbox align="center">
     <checkbox preference="floorp.display.toolbarbutton.label" class="needreboot"
               id="displa_label_enable" data-l10n-id="display-toolbar-icon-label"/>

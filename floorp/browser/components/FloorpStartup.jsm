@@ -60,12 +60,12 @@ let isUpdated = false;
 async function onFinalUIStartup() {
     Services.obs.removeObserver(onFinalUIStartup, "final-ui-startup");
 
-    let { BrowserManagerSidebar } = ChromeUtils.import("resource:///modules/BrowserManagerSidebar.jsm")
+    let { BrowserManagerSidebar } = ChromeUtils.import("resource:///modules/BrowserManagerSidebar.jsm");
     BrowserManagerSidebar.prefsUpdate();
 
     IOUtils.exists(OS.Path.join(OS.Constants.Path.profileDir, "newtabImages")).then(
-        (data)=>{
-            if(!data) IOUtils.makeDirectory(OS.Path.join(OS.Constants.Path.profileDir, "newtabImages"))
+        (data) => {
+            if (!data) IOUtils.makeDirectory(OS.Path.join(OS.Constants.Path.profileDir, "newtabImages"))
         }
     )
 

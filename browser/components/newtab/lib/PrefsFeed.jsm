@@ -12,6 +12,13 @@ const { XPCOMUtils } = ChromeUtils.importESModule(
 const { Prefs } = ChromeUtils.import(
   "resource://activity-stream/lib/ActivityStreamPrefs.jsm"
 );
+
+const { OS } = ChromeUtils.import("resource://gre/modules/osfile.jsm");
+
+const { FileUtils } = ChromeUtils.import(
+  "resource://gre/modules/FileUtils.jsm"
+);
+
 const { AppConstants } = ChromeUtils.importESModule(
   "resource://gre/modules/AppConstants.sys.mjs"
 );
@@ -44,6 +51,9 @@ class PrefsFeed {
           data: { name, value },
         })
       );
+      if(name == "floorp.background.type" && value == 3){
+        this.getImage()
+      }
     }
   }
 
@@ -189,6 +199,7 @@ class PrefsFeed {
       "discoverystream.sponsored-collections.enabled",
       false
     );
+    this._setIntPref(values, "floorp.background.type", 0);
     this._setBoolPref(values, "discoverystream.isCollectionDismissible", false);
     this._setBoolPref(values, "discoverystream.hardcoded-basic-layout", false);
     this._setBoolPref(values, "discoverystream.personalization.enabled", false);
@@ -212,6 +223,38 @@ class PrefsFeed {
         },
       })
     );
+
+    Services.prefs.addObserver("browser.newtabpage.activity-stream.floorp.background.images.folder",this.getImage.bind(this))
+      Services.prefs.addObserver("browser.newtabpage.activity-stream.floorp.background.images.extensions",this.getImage.bind(this))
+      Services.obs.addObserver(this.getImage.bind(this), "floorp-newtab-background-update");
+    this.getImage()
+  }
+
+  async getImage(){
+    if(Services.prefs.getIntPref("browser.newtabpage.activity-stream.floorp.background.type") == 3){
+    let tPath = OS.Path.join(Services.prefs.getStringPref("browser.newtabpage.activity-stream.floorp.background.images.folder","") || OS.Path.join(OS.Constants.Path.profileDir, "newtabImages"),"a").slice( 0, -1 )
+    let folderExists = await IOUtils.exists(tPath)
+    if(folderExists){
+      let imagesPath = await IOUtils.getChildren(tPath)
+      let str = new RegExp(`\\.(${Services.prefs.getStringPref("browser.newtabpage.activity-stream.floorp.background.images.extensions","").split(",").join("|")})+$`)
+      let imagesDataPath = []
+      if(imagesPath != 0){
+        for(let elem of imagesPath){
+          if(!str.test(elem)) continue
+          let filePath = Services.io.newFileURI(FileUtils.File(elem)).asciiSpec
+          imagesDataPath.push(filePath)
+        }
+        
+      }
+      this.store.dispatch(
+        ac.BroadcastToContent({
+          type: at.PREF_CHANGED,
+          data: { name:"backgroundPaths", value:imagesDataPath  },
+        })
+      );
+      
+    }
+  }
   }
 
   uninit() {

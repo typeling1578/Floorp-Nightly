@@ -18,6 +18,7 @@
 
 -brand-shorter-name = Floorp
 -brand-short-name = Floorp
+-brand-shortcut-name = Floorp
 -brand-full-name = Ablaze Floorp
 # This brand name can be used in messages where the product name needs to
 # remain unchanged across different versions (Nightly, Beta, etc.).

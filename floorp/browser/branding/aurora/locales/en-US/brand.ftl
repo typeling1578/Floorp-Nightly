@@ -18,6 +18,7 @@
 
 -brand-shorter-name = Floorp Dev
 -brand-short-name = Floorp Dev
+-brand-shortcut-name = Floorp Dev
 -brand-full-name = Floorp Dev
 # This brand name can be used in messages where the product name needs to
 # remain unchanged across different versions (Nightly, Beta, etc.).

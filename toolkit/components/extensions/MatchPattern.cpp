@@ -208,7 +208,7 @@ const nsCString& CookieInfo::RawHost() const {
 
 DEFINE_STATIC_ATOM_SET(PermittedSchemes, nsGkAtoms::http, nsGkAtoms::https,
                        nsGkAtoms::ws, nsGkAtoms::wss, nsGkAtoms::file,
-                       nsGkAtoms::ftp, nsGkAtoms::data);
+                       nsGkAtoms::ftp, nsGkAtoms::data, nsGkAtoms::about);
 
 // Known schemes that are followed by "://" instead of ":".
 DEFINE_STATIC_ATOM_SET(HostLocatorSchemes, nsGkAtoms::http, nsGkAtoms::https,
@@ -218,7 +218,7 @@ DEFINE_STATIC_ATOM_SET(HostLocatorSchemes, nsGkAtoms::http, nsGkAtoms::https,
                        nsGkAtoms::moz_icon, nsGkAtoms::moz_gio);
 
 DEFINE_STATIC_ATOM_SET(WildcardSchemes, nsGkAtoms::http, nsGkAtoms::https,
-                       nsGkAtoms::ws, nsGkAtoms::wss);
+                       nsGkAtoms::ws, nsGkAtoms::wss, nsGkAtoms::about);
 
 #undef DEFINE_STATIC_ATOM_SET
 

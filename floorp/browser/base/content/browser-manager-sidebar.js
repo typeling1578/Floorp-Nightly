@@ -399,6 +399,7 @@
          if (!(sidebarsplit2.getAttribute("hidden") == "true")) {
             bmsController.controllFunctions.changeVisibleWenpanel();
          }
+         window.bmsController = bmsController
  
          // Set TST URL
          window.setTimeout(async () => {

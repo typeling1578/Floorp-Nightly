@@ -86,11 +86,7 @@ jobs:
         
         echo Setup Visual Studio
         sudo apt install -y msitools python3-pip
-        pip install six zstandard pyyaml
-        cp third_party/python/vsdownload/vsdownload.py vsdownload.py
-        cp build/vs/pack_vs.py pack_vs.py
-        cp build/vs/vs2017.yaml vs2017.yaml
-        python3 pack_vs.py -o $RUNNER_USERDIR/win-cross/vs2017.tar.zst vs2017.yaml
+        ./mach python --virtualenv build build/vs/pack_vs.py -o $RUNNER_USERDIR/win-cross/vs2017.tar.zst build/vs/vs2017.yaml
         tar --zstd -xvf $RUNNER_USERDIR/win-cross/vs2017.tar.zst -C $RUNNER_USERDIR/win-cross
         rm $RUNNER_USERDIR/win-cross/vs2017.tar.zst
         chmod -R +x "$RUNNER_USERDIR/win-cross/vs2017"
@@ -270,11 +266,7 @@ jobs:
 
         echo Setup Visual Studio
         sudo apt install -y msitools python3-pip
-        pip install six zstandard pyyaml
-        cp third_party/python/vsdownload/vsdownload.py vsdownload.py
-        cp build/vs/pack_vs.py pack_vs.py
-        cp build/vs/vs2017.yaml vs2017.yaml
-        python3 pack_vs.py -o $RUNNER_USERDIR/win-cross/vs2017.tar.zst vs2017.yaml
+        ./mach python --virtualenv build build/vs/pack_vs.py -o $RUNNER_USERDIR/win-cross/vs2017.tar.zst build/vs/vs2017.yaml
         tar --zstd -xvf $RUNNER_USERDIR/win-cross/vs2017.tar.zst -C $RUNNER_USERDIR/win-cross
         rm $RUNNER_USERDIR/win-cross/vs2017.tar.zst
         chmod -R +x "$RUNNER_USERDIR/win-cross/vs2017"

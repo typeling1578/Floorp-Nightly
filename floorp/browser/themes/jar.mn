@@ -393,8 +393,9 @@ browser.jar:
   skin/classic/browser/protonfix/protonfix.css                (designs/protonfix/protonfix.css)
   skin/classic/browser/protonfix/proton-fix.svg               (designs/protonfix/proton-fix.svg)
 
-# Floorp Fluenial 
-  skin/classic/browser/floorplegacy/fluenial.css               (designs/floorp-legacy/fluenial.css)
+# Floorp Fluerial 
+  skin/classic/browser/floorplegacy/fluerial.css               (designs/floorp-legacy/fluerial.css)
+  skin/classic/browser/floorplegacy/fluerial-multitab.css      (designs/floorp-legacy/fluerial-multitab.css)
   skin/classic/browser/floorplegacy/material.svg               (designs/floorp-legacy/material.svg)
   skin/classic/browser/ablaze.png                              (icons/ablaze.png)
   skin/classic/browser/support-m.svg                           (icons/support-m.svg)

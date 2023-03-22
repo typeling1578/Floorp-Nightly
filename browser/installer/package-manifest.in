@@ -254,10 +254,6 @@
 
 @RESPATH@/browser/@PREF_DIR@/000-floorp.js
 
-#ifdef XP_LINUX
-@RESPATH@/distribution/policies.json
-#endif
-
 ; [Default Preferences]
 ; All the pref files must be part of base to prevent migration bugs
 @RESPATH@/browser/@PREF_DIR@/firefox.js

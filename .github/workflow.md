@@ -1,6 +1,6 @@
 # Floorp Browser Work Flow
 
-Use: Windows 10 64bit or Windows 11 | Ubuntu 20.04 (Linux Mint)
+Use: Windows 10 x86_64 or Windows 11 x86_64 | Ubuntu 22.04 x86_64
 
 ## Setup Floorp build environment (Windows)
 
@@ -27,13 +27,9 @@ https://code.visualstudio.com
 ---
 ## Setup Floorp build environment (Linux)
 
-Install Git tool
+Install tools
 ```
-sudo apt install git
-```
-Install Python tools
-```
-sudo apt-get install curl python3 python3-dev python3-pip
+sudo apt-get install git curl python3 python3-dev python3-pip
 ```
 
 ----
@@ -42,13 +38,16 @@ sudo apt-get install curl python3 python3-dev python3-pip
 Clone Floorp Browser repo
 
 ```
-git clone https://github.com/Floorp-Projects/Floorp/.git
-
-NOTICE: If you just build and aren't interested in other branches, fast cloning is possible
-
-USE: git clone --branch [BRANCH] --depth 200 https://github.com/Floorp-Projects/Floorp.git
-
+git clone https://github.com/Floorp-Projects/Floorp.git
 ```
+
+**NOTICE**: If you just build and aren't interested in other branches, fast cloning is possible
+
+**USE**: 
+```
+git clone --branch [BRANCH] --depth 1 https://github.com/Floorp-Projects/Floorp.git
+```
+
 BootStrap source code
 
 `NOTICE: Please Select 2. After that, all n is OK`
@@ -204,9 +203,9 @@ Example: The file looks like this
 ```
 <?xml version="1.0" encoding="UTF-8"?>
 <updates>
-    <update type="minor" displayVersion="10.0.0b16" appVersion="102.0" platformVersion="102.0" buildID="20220611234516" detailsURL="https://blog.ablaze.one/category/ablaze/ablaze-project/floorp/">
-        <patch type="complete" URL="https://github.com/Floorp-Projects/Floorp/releases/download/10.0.0b14/output.mar"  size="64144579"/>
-    </update>
+  <update type="minor" displayVersion="10.11.0" appVersion="102.9" platformVersion="102.9" buildID="20230311161101" detailsURL="https://blog.ablaze.one/category/ablaze/ablaze-project/floorp/">
+    <patch type="complete" URL="https://github.com/Floorp-Projects/Floorp/releases/download/v10.11.0/WINNT-v10.11.0.mar" size="85718587"/>
+  </update>
 </updates>
 ```
 
@@ -222,7 +221,6 @@ curl -v https://api.github.com/repos/Floorp-Projects/Floorp/releases/latest
 ```
 Place the completed xml in 
 
-Windows：https: //repo.ablaze.one/data/floorp/10.0.0/WINNT/update.xml
-macOS：https: //repo.ablaze.one/data/floorp/10.0.0/Darwin/update.xml
+Windows：`https://floorp-update.ablaze.one/browser/<Floorp version>/WINNT/x86_64/update.xml`
 
 This completes the release

@@ -142,10 +142,10 @@ firefox-photon-lepton =
  .label = Firefox Photon・Lepton UI
  
 floorp-legacy =
- .label = Floorp Legacy material UI・Unsupported
+ .label = Floorp Legacy UI・Unsupported
 
 floorp-fluentUI =
- .label = fluentUI
+ .label = Microsoft Fluent UI
  
 floorp-fluerialUI =
  .label = Floorp Fluerial UI
@@ -178,7 +178,7 @@ appmenuitem-reboot =
 
 ## useagent
 
-UserAgent-preference = UserAgent
+UserAgent-preference = User Agent
 default-useragent-mode =
  .label = Use Firefox User Agent (Default)
 windows-chrome-useragent-mode =
@@ -191,8 +191,6 @@ mobile-chrome-useragent-mode =
  .label = Spoof Chrome on iOS
 use-custom-useragent-mode =
  .label = Use Custom User Agent
-custom-useragent-value =
-  .label = Custom User Agent
 
 ## DMR UI
 download-mgr-UI =
@@ -244,9 +242,6 @@ bsb-notes-sidebar =
 
 bsb-TST-sidebar =
   .label = { sidebar2-TST-sidebar }
-
-bsb-notes-sidebar =
-  .label = { sidebar2-notes-sidebar }
 
 bsb-website = 
   .label = Website
@@ -411,7 +406,7 @@ floorp-home-mode-choice-default =
 floorp-home-prefs-content-header = Floorp Home Content
 floorp-home-prefs-content-description = Choose what content you want on your Floorp Home screen.
 
-## tool attribute
+
 ################################################################### browser ###############################################################
 
 rest-mode = Taking a break...
@@ -480,13 +475,6 @@ sidebar2-TST-sidebar = Tree Style Tab
 
 show-TST-sidebar =
   .tooltiptext = Show { sidebar2-TST-sidebar } Sidebar
-
-
-show-CustomURL-sidebar =
- .label = Show Custom URL Sidebar
-
-Edit-Custom-URL =
- .label = Edit Custom URL in Sidebar
 
 sidebar-add-button =
   .tooltiptext = { bsb-add }

@@ -35,7 +35,7 @@
          },
          keepWidth:()=>{
              const pref = bmsController.nowPage;
-             BROWSER_SIDEBAR_DATA.data[pref].width = document.getElementById("sidebar2-box").width
+             BROWSER_SIDEBAR_DATA.data[pref].width = document.getElementById("sidebar2-box").clientWidth;
              Services.prefs.setStringPref(`floorp.browser.sidebar2.data`, JSON.stringify(BROWSER_SIDEBAR_DATA));
          },
          keepWidthForGlobal:()=>{
@@ -193,7 +193,7 @@
          setSidebarWidth:(webpanel_id)=>{
              if (webpanel_id != null && BROWSER_SIDEBAR_DATA.index.includes(webpanel_id)) {
                  const panelWidth = BROWSER_SIDEBAR_DATA.data[webpanel_id].width ?? Services.prefs.getIntPref("floorp.browser.sidebar2.global.webpanel.width", undefined);
-                 document.getElementById("sidebar2-box").setAttribute("width", panelWidth);
+                 document.getElementById("sidebar2-box").style.width = `${panelWidth}px`;
              }
          },
          visibleWebpanel:()=>{

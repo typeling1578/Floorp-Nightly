@@ -8,9 +8,10 @@
 DIRS += [
     "about",
     "calendar",
-    "note",
     "search",
+    "search-bms",
     "preferences",
+    "notes",
 ]
 
 EXTRA_JS_MODULES += [

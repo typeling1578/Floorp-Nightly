@@ -83,11 +83,6 @@ show-nav-bar-bottom =
 
 material-effect =
  .label = Allow Mica for Everyone to modify the browser design
-
-display-toolbar-icon-label =
-  .label = Display the Behavior Assistant for Toolbar Buttons
-about-display-label = A working of the actual behavior of each button displayed on the toolbar is shown next to it, and the add-on buttons cannot be displayed on the toolbar.
-
 disable-extension-check-compatibility-option =
  .label = Do not check for compatibility with add-ons
 other-preference = Other Preferences
@@ -466,7 +461,7 @@ sidebar2-download-sidebar = Download
 show-download-sidebar =
   .tooltiptext = Show { sidebar2-download-sidebar } Sidebar
 
-sidebar2-notes-sidebar = { -brand-short-name } Notes
+sidebar2-notes-sidebar = Notes
 
 show-notes-sidebar =
   .tooltiptext = Show { sidebar2-notes-sidebar } Sidebar
@@ -615,16 +610,6 @@ update-portable-notification-success-message = Update succeeded! Hope you enjoy 
 update-portable-notification-failed-title = Update failed.
 update-portable-notification-failed-redirector-message = Update failed. Restarting your browser may solve the problem.
 update-portable-notification-failed-prepare-message = Failed to prepare update.
-
-
-######################################################################### Clock ###############################################################
-toolbar-clock = --:--
-
-
-######################################################################### Default bookmarks ###############################################################
-default-bookmark-ablaze-support = Ablaze Support
-default-bookmark-notes = Floorp Notes
-
 
 ##################################################################### Open link in external ###############################################################
 openInExternal-title = Open in External Browser

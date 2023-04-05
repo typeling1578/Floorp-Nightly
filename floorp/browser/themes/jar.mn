@@ -8,10 +8,13 @@ browser.jar:
 # TST
   skin/classic/browser/TST-dark.svg                                         (icons/TST-dark.svg)
   skin/classic/browser/TST-light.svg                                        (icons/TST-light.svg)
-
+  
 # Floorp Notes
   skin/classic/browser/notes.png                                          (icons/notes.png)
   skin/classic/browser/notes-bms.svg                                      (icons/notes-bms.svg)
+
+#verticalTab
+  skin/classic/browser/verticaltab.svg                                    (icons/verticaltab.svg)
 
 # options
   skin/classic/browser/options/micaforeveryone.css                        (designs/options/micaforeveryone.css)
@@ -23,7 +26,8 @@ browser.jar:
   skin/classic/browser/options/downloading-redcolor.css                   (designs/options/downloading-redcolor.css)
   skin/classic/browser/options/navbar-botttom.css                         (designs/options/navbar-botttom.css)
   skin/classic/browser/options/disableFullScreenNotification.css          (designs/options/disableFullScreenNotification.css)
-  skin/classic/browser/options/display_label.css                          (designs/options/display_label.css)
+  skin/classic/browser/options/delete-border.css                          (designs/options/delete-border.css)
+  skin/classic/browser/options/native-verticaltab-hover.css               (designs/options/native-verticaltab-hover.css)
 
 # tabbar
   skin/classic/browser/tabbar/hide-tabbrowser.css                        (designs/tabbar/hide-tabbrowser.css)
@@ -394,9 +398,8 @@ browser.jar:
   skin/classic/browser/protonfix/protonfix.css                (designs/protonfix/protonfix.css)
   skin/classic/browser/protonfix/proton-fix.svg               (designs/protonfix/proton-fix.svg)
 
-# Floorp Fluerial 
-  skin/classic/browser/floorplegacy/fluerial.css               (designs/floorp-legacy/fluerial.css)
-  skin/classic/browser/floorplegacy/fluerial-multitab.css      (designs/floorp-legacy/fluerial-multitab.css)
+# Floorp Legacy by materialfox
+  skin/classic/browser/floorplegacy/floorplegacy.css           (designs/floorp-legacy/floorplegacy.css)
   skin/classic/browser/floorplegacy/material.svg               (designs/floorp-legacy/material.svg)
   skin/classic/browser/ablaze.png                              (icons/ablaze.png)
   skin/classic/browser/support-m.svg                           (icons/support-m.svg)
@@ -457,6 +460,10 @@ browser.jar:
   skin/classic/browser/connection-warning-2x.svg               (icons/connection-warning-2x.svg)
   skin/classic/browser/floorplegacy/menu.svg                   (designs/floorp-legacy/menu.svg)
   skin/classic/browser/floorplegacy/newtab.svg                 (designs/floorp-legacy/newtab.svg)
+
+# Floorp Fluenial 
+  skin/classic/browser/floorplegacy/test_legacy.css           (designs/floorp-legacy/test_legacy.css)
+  skin/classic/browser/floorplegacy/test_legacy_multitab.css  (designs/floorp-legacy/test_legacy_multitab.css)
 
 # New tab background images
   skin/classic/browser/newtabbg-0.webp                            　 (newtabbg/newtabbg-0.webp)

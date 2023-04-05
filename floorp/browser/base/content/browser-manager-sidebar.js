@@ -5,17 +5,18 @@
 
 
  let { BrowserManagerSidebar } = ChromeUtils.import("resource:///modules/BrowserManagerSidebar.jsm")
+ var { Services } = ChromeUtils.import("resource://gre/modules/Services.jsm")
 
  /*---------------------------------------------------------------- browser manager sidebar ----------------------------------------------------------------*/
  
  const STATIC_SIDEBAR_DATA = BrowserManagerSidebar.STATIC_SIDEBAR_DATA
  let BROWSER_SIDEBAR_DATA = JSON.parse(Services.prefs.getStringPref(`floorp.browser.sidebar2.data`, undefined))
- const sidebar_icons = ["sidebar2-back", "sidebar2-forward", "sidebar2-reload"]
+ const sidebar_icons = ["sidebar2-back", "sidebar2-forward", "sidebar2-reload", "sidebar2-go-index"]
  
  const bmsController = {
      eventFunctions:{
          sidebarButtons:(action) => {
-            const modeValuePref = bmsController.nowPage
+             const modeValuePref = bmsController.nowPage
              let webpanel = document.getElementById(`webpanel${modeValuePref}`)
              switch (action) {
                  case 0:
@@ -28,17 +29,17 @@
                      webpanel.reloadWithFlags(Ci.nsIWebNavigation.LOAD_FLAGS_BYPASS_CACHE) /* Reload */
                      break;
                  case 3:
-                     webpanel.gotoIndex() /* Goto Index */
+                     webpanel.gotoIndex();
                      break
              }
          },
          keepWidth:()=>{
-            const pref = bmsController.nowPage;
-             BROWSER_SIDEBAR_DATA.data[pref].width = document.getElementById("sidebar2-box").clientWidth
+             const pref = bmsController.nowPage;
+             BROWSER_SIDEBAR_DATA.data[pref].width = document.getElementById("sidebar2-box").width
              Services.prefs.setStringPref(`floorp.browser.sidebar2.data`, JSON.stringify(BROWSER_SIDEBAR_DATA));
          },
          keepWidthForGlobal:()=>{
-             Services.prefs.setIntPref("floorp.browser.sidebar2.global.webpanel.width", document.getElementById("sidebar2-box").clientWidth);
+             Services.prefs.setIntPref("floorp.browser.sidebar2.global.webpanel.width", document.getElementById("sidebar2-box").width);
          },
          servicesObs:(data_) => {
              let data = data_.wrappedJSObject
@@ -55,13 +56,13 @@
          },
          selectSidebarItem:()=>{
              let custom_url_id = event.target.id.replace("select-", "")
+
              if(bmsController.nowPage == custom_url_id){
                 bmsController.controllFunctions.changeVisibleWenpanel();
              }else{
                 bmsController.nowPage = custom_url_id
                 bmsController.controllFunctions.visibleWebpanel()
              }
-
          },
          sidebarItemMouse:{
              mouseOver:(event)=>Services.obs.notifyObservers({ eventType: "mouseOver", id: event.target.id }, "obs-panel"),
@@ -102,10 +103,9 @@
                     bmsController.controllFunctions.visibleWebpanel()
              
                     if (sidebarsplit2.getAttribute("hidden") != "true") {
-                       bmsController.controllFunctions.changeVisibleWenpanel();
+                        bmsController.controllFunctions.changeVisibleWenpanel();
                     }
                  }
-
                  contextWebpanel.remove();
              },
              changeUserAgent:()=>{
@@ -141,7 +141,7 @@
      },
      controllFunctions:{
          visiblePanelBrowserElem:()=>{
-            const modeValuePref = bmsController.nowPage;
+             const modeValuePref = bmsController.nowPage;
              const selectedwebpanel = document.getElementById(`webpanel${modeValuePref}`);
              const selectedURL = BROWSER_SIDEBAR_DATA.data[modeValuePref].url ?? ""
              bmsController.controllFunctions.changeVisibleCommandButton(selectedURL.startsWith("floorp//"))
@@ -169,7 +169,7 @@
                  elem.setAttribute("checked", "false");
              }
              if(doChecked){
-                let selectedNode = document.querySelector(`#select-${bmsController.nowPage}`);
+                 let selectedNode = document.querySelector(`#select-${bmsController.nowPage}`);
                  if(selectedNode != null) selectedNode.setAttribute("checked", "true")
              }
          },
@@ -191,17 +191,17 @@
              Services.prefs.setBoolPref("floorp.browser.sidebar.is.displayed", doDisplay);
          },
          setSidebarWidth:(webpanel_id)=>{
-            if (webpanel_id != null && BROWSER_SIDEBAR_DATA.index.includes(webpanel_id)) {
-                const panelWidth = BROWSER_SIDEBAR_DATA.data[webpanel_id].width ?? Services.prefs.getIntPref("floorp.browser.sidebar2.global.webpanel.width", undefined);
-                document.getElementById("sidebar2-box").setAttribute("width", panelWidth);
-            }
-        },
-        visibleWebpanel:()=>{
-            const webpanel_id = bmsController.nowPage;
-            if (webpanel_id != null && BROWSER_SIDEBAR_DATA.index.includes(webpanel_id)) {
-                bmsController.controllFunctions.makeWebpanel(webpanel_id)
-            }
-        },
+             if (webpanel_id != null && BROWSER_SIDEBAR_DATA.index.includes(webpanel_id)) {
+                 const panelWidth = BROWSER_SIDEBAR_DATA.data[webpanel_id].width ?? Services.prefs.getIntPref("floorp.browser.sidebar2.global.webpanel.width", undefined);
+                 document.getElementById("sidebar2-box").setAttribute("width", panelWidth);
+             }
+         },
+         visibleWebpanel:()=>{
+             const webpanel_id = bmsController.nowPage;
+             if (webpanel_id != null && BROWSER_SIDEBAR_DATA.index.includes(webpanel_id)) {
+                 bmsController.controllFunctions.makeWebpanel(webpanel_id)
+             }
+         },
          makeWebpanel:(webpanel_id)=>{
              const webpandata = BROWSER_SIDEBAR_DATA.data[webpanel_id]
              let webpanobject = document.getElementById(`webpanel${webpanel_id}`)
@@ -227,9 +227,9 @@
                 )
                 ||
                 (
-                  ((webpanobject.className.includes("isFloorp") || webpanobject.className.includes("isTST")) && isWeb) || 
-                  ((webpanobject.className.includes("isFloorp") || webpanobject.className.includes("isWeb")) && isTST) ||
-                  ((webpanobject.className.includes("isTST") || webpanobject.className.includes("isWeb")) && isFloorp)
+                    ((webpanobject.className.includes("isFloorp") || webpanobject.className.includes("isTST")) && isWeb) || 
+                    ((webpanobject.className.includes("isFloorp") || webpanobject.className.includes("isWeb")) && isTST) ||
+                    ((webpanobject.className.includes("isTST") || webpanobject.className.includes("isWeb")) && isFloorp)
                 )
                 )              
             ){
@@ -310,7 +310,7 @@
                      sidebarItemLabel.setAttribute("flex", "1")
                      sidebarItem.appendChild(sidebarItemLabel)
          
-                     document.getElementById("sidebar2-top-box").insertBefore(sidebarItem, document.getElementById("add-button"));
+                     document.getElementById("sidebar-select-box").insertBefore(sidebarItem, document.getElementById("add-button"));
                  } else {
                      sidebarItem = document.getElementById(`select-${elem}`)
                      if (BROWSER_SIDEBAR_DATA.data[elem]["url"].slice(0, 8) == "floorp//") {
@@ -324,7 +324,7 @@
                          sidebarItem.removeAttribute("data-l10n-id");
                          sidebarItem.setAttribute("context", "webpanel-context");
                      }
-                     document.getElementById("sidebar2-top-box").insertBefore(sidebarItem, document.getElementById("add-button"));
+                     document.getElementById("sidebar-select-box").insertBefore(sidebarItem, document.getElementById("add-button"));
                  }
              }
              let siconAll = document.querySelectorAll(".sicon-list")
@@ -333,7 +333,9 @@
              if (sicon > side) {
                  for (let i = 0; i < (sicon - side); i++) {
                      if (document.getElementById(siconAll[i].id.replace("select-", "webpanel")) != null) {
-                        if (bmsController.nowPage == siconAll[i].id.replace("select-", "")) {
+                         let sidebarsplit2 = document.getElementById("sidebar-splitter2");
+         
+                         if (bmsController.nowPage == siconAll[i].id.replace("select-", "")) {
                             bmsController.nowPage = null
                             bmsController.controllFunctions.visibleWebpanel()
                              if (sidebarsplit2.getAttribute("hidden") != "true") {
@@ -357,11 +359,12 @@
 
              }
          }
-     }
+     },
+     "nowPage":null
  }
  
  if(Services.prefs.getBoolPref("floorp.browser.sidebar.enable", false)){
-     (async() => {
+     (async () => {
          // Context Menu
          addContextBox("bsb-context-add", "bsb-context-add", "fill-login", `
          BrowserManagerSidebar.addPanel(gContextMenu.browser.currentURI.spec,gContextMenu.browser.getAttribute("usercontextid") ?? 0)
@@ -371,13 +374,13 @@
          BrowserManagerSidebar.addPanel(gContextMenu.linkURL,gContextMenu.browser.getAttribute("usercontextid") ?? 0)
          `,"context-openlink",function(){document.getElementById("bsb-context-link-add").hidden = document.getElementById("context-openlink").hidden})
  
-         Services.prefs.addObserver("floorp.browser.sidebar2.global.webpanel.width",  () => bmsController.controllFunctions.setSidebarWidth(Services.prefs.getStringPref("floorp.browser.sidebar2.page", "")))
+         Services.prefs.addObserver("floorp.browser.sidebar2.global.webpanel.width",  () => bmsController.controllFunctions.setSidebarWidth(bmsController.nowPage))
  
          Services.prefs.addObserver(`floorp.browser.sidebar2.data`, function () {
              let TEMP_BROWSER_SIDEBAR_DATA = JSON.parse(JSON.stringify(BROWSER_SIDEBAR_DATA))
              BROWSER_SIDEBAR_DATA = JSON.parse(Services.prefs.getStringPref(`floorp.browser.sidebar2.data`, undefined))
              for (let elem of BROWSER_SIDEBAR_DATA.index) {
-                 if (document.querySelector(`#webpanel${elem}`) && (JSON.stringify(BROWSER_SIDEBAR_DATA.data[elem]) != JSON.stringify(TEMP_BROWSER_SIDEBAR_DATA.data[elem]))) {
+                if (document.querySelector(`#webpanel${elem}`) && (JSON.stringify(BROWSER_SIDEBAR_DATA.data[elem]) != JSON.stringify(TEMP_BROWSER_SIDEBAR_DATA.data[elem]))) {
                      bmsController.controllFunctions.makeWebpanel(elem)
                  }
              }
@@ -385,6 +388,7 @@
              bmsController.controllFunctions.visibleWebpanel()
          })
          Services.obs.addObserver(bmsController.eventFunctions.servicesObs, "obs-panel-re")
+         Services.obs.addObserver(bmsController.controllFunctions.changeVisibleWenpanel, "floorp-change-panel-show")
          let addbutton = document.getElementById("add-button")
          addbutton.ondragover = bmsController.eventFunctions.sidebarItemMouse.dragOver
          addbutton.ondragleave = bmsController.eventFunctions.sidebarItemMouse.dragLeave
@@ -402,8 +406,7 @@
  
          // Set TST URL
          window.setTimeout(async () => {
-              BrowserManagerSidebar.STATIC_SIDEBAR_DATA["floorp//tst"].url = await BrowserManagerSidebar.getAdoonSidebarPage("treestyletab@piro.sakura.ne.jp")
+            BrowserManagerSidebar.STATIC_SIDEBAR_DATA["floorp//tst"].url = await BrowserManagerSidebar.getAdoonSidebarPage("treestyletab@piro.sakura.ne.jp")
          }, 1250);
      })()
  }
- 

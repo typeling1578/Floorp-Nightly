@@ -75,7 +75,7 @@ UICustomPrefHandler("floorp.bookmarks.bar.focus.mode", function(event) {
 UICustomPrefHandler("floorp.bookmarks.fakestatus.mode", function(event) {
   if (event.prefValue) {
     setTimeout(function() {
-      document.getElementById("statusBar")
+      document.getElementById("browser-bottombox")
         .after(document.getElementById("PersonalToolbar"));
     }, event.reason === "init" ? 250 : 1);
   } else {
@@ -130,8 +130,8 @@ UICustomPrefHandler("floorp.navbar.bottom", function(event) {
     Tag.setAttribute("id", "floorp-navvarcss");
     Tag.innerText = `@import url(chrome://browser/skin/options/navbar-botttom.css)`;
     document.head.appendChild(Tag);
-    document.getElementsByTagName("html:body")[0]
-      .appendChild(document.getElementById("nav-bar"));
+    document.getElementById("browser-bottombox")
+      .after(document.getElementById("nav-bar"));
   } else {
     document.getElementById("floorp-navvarcss")?.remove();
     if (event.reason === "changed") {
@@ -159,12 +159,16 @@ UICustomPrefHandler("floorp.disable.fullscreen.notification", function(event) {
   }
 });
 
-//Need reboot
-if(Services.prefs.getBoolPref("floorp.display.toolbarbutton.label", false)) {
-  var Tag = document.createElement("style");
-  Tag.innerText = `@import url(chrome://browser/skin/options/display_label.css)`;
-  document.head.appendChild(Tag);
-}
+UICustomPrefHandler("floorp.delete.browser.border", function(event) {
+  if (event.prefValue) {
+    var Tag = document.createElement("style");
+    Tag.innerText = `@import url(chrome://browser/skin/options/delete-border.css)`;
+    Tag.setAttribute("id", "floorp-DB");
+    document.head.appendChild(Tag);
+  } else {
+    document.getElementById("floorp-DB")?.remove();
+  }
+});
 
 /*------------------------------------------- sidebar -------------------------------------------*/
 
@@ -199,3 +203,17 @@ if (!Services.prefs.getBoolPref("floorp.browser.sidebar.enable", false)) {
   }`;
   document.head.appendChild(Tag);
 }
+
+/*------------------------------------------- verticaltab -------------------------------------------*/
+
+UICustomPrefHandler("floorp.verticaltab.hover.enabled", function(event) {
+  if(!Services.prefs.getBoolPref("floorp.browser.native.verticaltabs.enabled", false)) return;
+   if (event.prefValue) {
+     var Tag = document.createElement("style");
+     Tag.innerText = `@import url(chrome://browser/skin/options/native-verticaltab-hover.css)`;
+     Tag.setAttribute("id", "floorp-vthover");
+     document.head.appendChild(Tag);
+   } else {
+     document.getElementById("floorp-vthover")?.remove();
+   }
+});

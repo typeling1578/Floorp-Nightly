@@ -48,6 +48,11 @@
     border: var(--win-sidebar-bgcolor) 0.1px solid;
   } 
 
+  #sidebar-box[positionend] + .sidebar-splitter {
+    border-inline-width: unset !important;
+    margin-inline: 0 auto !important;
+  }
+
   #sidebar-splitter {
     -moz-box-ordinal-group: 6 !important;
   }
@@ -55,7 +60,7 @@
   #sidebar-box {
     -moz-box-ordinal-group: 5 !important;
     }
-  
+
   #sidebar-select-box {
     background: var(--toolbar-bgcolor);
   }
@@ -269,4 +274,8 @@
 
   #undo-closed-tab {
     list-style-image: url("chrome://browser/skin/undo-closed-tab.svg");
+  }
+
+  #vertical-tab-reverse-position {
+    list-style-image: url("chrome://browser/skin/verticaltab.svg");
   }

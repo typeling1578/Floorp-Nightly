@@ -9829,7 +9829,7 @@
           list-style-image: url("chrome://global/skin/icons/settings.svg") !important;
         }
         #viewMenu {
-          list-style-image: url("chrome://browser/skin/lepton/sort.svg") !important;
+          list-style-image: url("chrome://browser/skin/lepton/verticaltab.svg") !important;
         }
         #maintenanceButton {
           list-style-image: url("chrome://browser/skin/lepton/import-export.svg") !important;
@@ -12040,12 +12040,16 @@
     #torBrowserUserManual {
       --menuitem-image: url("chrome://browser/skin/onion.svg");
     }
-    #rebootappmenu {
-      list-style-image: url("chrome://browser/skin/lepton/refresh-cw.svg");
-    }
-    
-    #usercssloader-menu {
-      --menuitem-image: url("chrome://browser/skin/lepton/developer.svg");
+  }
+  /** Floorp *****************************************************************/
+  @supports -moz-bool-pref("userChrome.icon.panel") {
+      #rebootappmenu {
+        list-style-image: url("chrome://browser/skin/lepton/refresh-cw.svg");
+      }
+
+      #usercssloader-menu {
+        --menuitem-image: url("chrome://browser/skin/lepton/developer.svg");
+      }
     }
   }
 }

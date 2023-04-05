@@ -31,6 +31,7 @@ body, html {
 
 #memo-contents{
    padding-left: var(--main-content-padding-to-sidebar);
+   width: 90%;
 }
 
 .memo-list-item {
@@ -44,34 +45,40 @@ body, html {
    width: var(--memo-list-sidebar-width);
    min-width: var(--memo-list-sidebar-width);
    height: 100%;
-   border-right: 1px solid gray;
+   display: inline;
 }
 
-#header {
+#header-box {
+   display: flex;
    border-bottom: solid 1px gray;
-   padding-bottom: 25px;
 }
 
 #memo-input {
-   width: 75vh;
-   height: 75vh;
+   min-width: 25vh;
+   height: 40vh;
    resize: none;
+   max-width: 100%;
+   width: 85%;
 }
 
 #memo-list {
    overflow: scroll;
-   height: 100%;
+   max-height: 20em;
 }
 
 #memo-add {
-   padding-inline: 10px;
+   margin: 0 auto;
+   margin-top: 10px;
 }
 
 #button-box {
-   padding-inline: 5em;
-   border-bottom: solid 1px gray;
-   padding-bottom: 10px;
+   padding-bottom: 0px;
    padding-top: 10px;
+   margin-left: auto;
+}
+
+#memo-input-box {
+   display: flex;
 }
 
 #memo-delete {
@@ -89,5 +96,24 @@ body, html {
 }
 
 #titleAndDelete {
+   display: flex;
+}
+
+#memo-form {
+   margin-top: 2em;
+}
+
+#memo-save {
+   height: 2.5em;
+   margin-top: auto;
+}
+
+#beta {
+   margin: auto 10px 10px;
+   font-style: italic;
+   color: gray;
+}
+
+#title-box {
    display: flex;
 }

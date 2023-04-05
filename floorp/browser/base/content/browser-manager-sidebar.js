@@ -310,7 +310,7 @@
                      sidebarItemLabel.setAttribute("flex", "1")
                      sidebarItem.appendChild(sidebarItemLabel)
          
-                     document.getElementById("sidebar-select-box").insertBefore(sidebarItem, document.getElementById("add-button"));
+                     document.getElementById("panelBox").insertBefore(sidebarItem, document.getElementById("add-button"));
                  } else {
                      sidebarItem = document.getElementById(`select-${elem}`)
                      if (BROWSER_SIDEBAR_DATA.data[elem]["url"].slice(0, 8) == "floorp//") {
@@ -324,7 +324,7 @@
                          sidebarItem.removeAttribute("data-l10n-id");
                          sidebarItem.setAttribute("context", "webpanel-context");
                      }
-                     document.getElementById("sidebar-select-box").insertBefore(sidebarItem, document.getElementById("add-button"));
+                     document.getElementById("panelBox").insertBefore(sidebarItem, document.getElementById("add-button"));
                  }
              }
              let siconAll = document.querySelectorAll(".sicon-list")

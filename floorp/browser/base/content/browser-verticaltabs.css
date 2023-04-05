@@ -57,6 +57,15 @@
 .tab-icon-image:not([pinned]) {
   padding-inline-end: 1px;
 }
+.tabbrowser-tab:not([pinned]):not([fadein]) {
+  display: none !important;
+  max-width: 0 !important;
+  min-width: 0 !important;
+  width: 0 !important;
+  max-height: 0 !important;
+  min-height: 0 !important;
+  height: 0 !important;
+}
 
  .tabbrowser-tab.tabbrowser-tab:not([pinned]){
   width: -moz-available !important;

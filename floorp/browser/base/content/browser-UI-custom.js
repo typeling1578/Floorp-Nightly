@@ -75,7 +75,7 @@ UICustomPrefHandler("floorp.bookmarks.bar.focus.mode", function(event) {
 UICustomPrefHandler("floorp.bookmarks.fakestatus.mode", function(event) {
   if (event.prefValue) {
     setTimeout(function() {
-      document.getElementById("browser-bottombox")
+      document.getElementById("fullscreen-and-pointerlock-wrapper")
         .after(document.getElementById("PersonalToolbar"));
     }, event.reason === "init" ? 250 : 1);
   } else {
@@ -130,7 +130,7 @@ UICustomPrefHandler("floorp.navbar.bottom", function(event) {
     Tag.setAttribute("id", "floorp-navvarcss");
     Tag.innerText = `@import url(chrome://browser/skin/options/navbar-botttom.css)`;
     document.head.appendChild(Tag);
-    document.getElementById("browser-bottombox")
+    document.getElementById("fullscreen-and-pointerlock-wrapper")
       .after(document.getElementById("nav-bar"));
   } else {
     document.getElementById("floorp-navvarcss")?.remove();

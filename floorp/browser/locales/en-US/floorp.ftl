@@ -270,7 +270,7 @@ max-memory =
     .label = Best Speed and Performance (high memory usage)
 
 delete-border-and-roundup-option =
-  .label = Delete the border and round up { -brand-short-name }'s corners
+  .label = round up { -brand-short-name }'s corners
 
 ## DualTheme
 dualtheme-enable =

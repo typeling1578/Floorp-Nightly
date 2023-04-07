@@ -32,11 +32,12 @@ let BrowserManagerSidebar = {
             "l10n":`download-sidebar`,
             "defaultWidth":415
         },
+        //notes is available in floorp for v11.0.0.
         "floorp//notes":{
           "url":"chrome://browser/content/notes/notes-bms.html",
           "l10n":`notes-sidebar`,
           "defaultWidth":500,
-          "enabled": Services.prefs.getBoolPref("floorp.browser.note.enabled", false)
+          "enabled": true
       },
         //TST is removed from Floorp.
         "floorp//tst":{

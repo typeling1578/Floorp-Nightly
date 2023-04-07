@@ -194,3 +194,7 @@
     position: fixed !important;
     height: unset !important;
   }
+
+  .tab-stack::before, .tab-stack::after {
+    display: none !important;
+  } 

@@ -6,6 +6,7 @@
 
   .tabbrowser-tab {
     display: block !important;
+    --tab-overflow-pinned-tabs-width: 0px !important;
   }
 
  #TabsToolbar-customization-target {
@@ -13,7 +14,7 @@
   min-width: -moz-available !important;;
   max-width: -moz-available !important;
   height: 100% !important;
-  background: var(--lwt-accent-color);
+  background: transparent ;
  }
  
  #toolbar-items-verticaltabs {
@@ -153,4 +154,43 @@
     max-width: 2.5em !important;
     width: 2.5em !important;
     min-width: 2.5em !important;
+  }
+
+  :root[privatebrowsingmode] #PanelUI-menu-button::after {
+    content: url("chrome://global/skin/icons/indicator-private-browsing.svg") "  " "Private" !important;
+    vertical-align: middle;
+    white-space: pre-wrap;
+    display: flex !important;
+    white-space: pre;
+    padding-left: 5px;
+  }
+
+  :root[privatebrowsingmode] #PanelUI-menu-button:hover {
+    background-color: var(--toolbarbutton-hover-background) !important;
+  }
+
+  #PanelUI-menu-button {
+    display: revert !important;
+    border-radius: 4px;
+    margin: 3px;
+  }
+
+  #private-browsing-indicator-with-label {
+    display: none !important;
+  }
+
+  tab > stack, .tabbrowser-tab {
+    height: unset !important;
+    width: -moz-available !important;
+    min-width: -moz-available !important;
+  }
+
+  .tabbrowser-tab[context]:not([pinned]) .tab-icon-stack, tab-label-container {
+    margin-left: 0 !important;
+  }
+
+  :root[tabsintitlebar] #titlebar .titlebar-buttonbox-container:not(#hack) {
+    display: block !important;
+    position: fixed !important;
+    height: unset !important;
   }

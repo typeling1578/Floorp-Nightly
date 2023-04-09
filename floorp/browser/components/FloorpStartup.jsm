@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-const EXPORTED_SYMBOLS = [];
+const EXPORTED_SYMBOLS = ["isFirstRun","isUpdated"];
 
 /*
 Scripts written here are executed only once at browser startup.
@@ -145,6 +145,11 @@ NOTE: You can use the userContent.css file without change preferences (about:con
         } catch (e) { console.error(e) }
     }
 
+    if(isUpdated && Services.prefs.getBoolPref("floorp.enable.multitab")){
+        Services.prefs.setBoolPref("floorp.tabbar.style",1)
+        Services.prefs.deleteBranch("floorp.tabbar.style")
+    } 
+
     try {
         if (Services.prefs.getBoolPref("floorp.extensions.translate.migrateFromSystemAddonToUserAddon.ended", false)) return;
         let addon = await AddonManager.getAddonByID("{036a55b4-5e72-4d05-a06c-cba2dfcc134a}");
@@ -156,13 +161,6 @@ NOTE: You can use the userContent.css file without change preferences (about:con
         }
         Services.prefs.setBoolPref("floorp.extensions.translate.migrateFromSystemAddonToUserAddon.ended", true);
     } catch (e) { console.error(e) }
-
-
-    // Setup for Undo Close Tab
-    if (isFirstRun) {
-        CustomizableUI.addWidgetToArea("undo-closed-tab", CustomizableUI.AREA_NAVBAR, -1);
-    }
-
 
     // Migrate from "floorp.optimized.msbutton.ope" pref
     if (Services.prefs.prefHasUserValue("floorp.optimized.msbutton.ope")) {

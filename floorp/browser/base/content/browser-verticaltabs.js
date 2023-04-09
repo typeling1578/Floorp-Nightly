@@ -2,18 +2,15 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
- var { Services } = ChromeUtils.import("resource://gre/modules/Services.jsm");
- 
-  if (Services.prefs.getBoolPref("floorp.browser.native.verticaltabs.enabled", false)) {
-    Services.prefs.setBoolPref("floorp.enable.multitab", true);
-
+var { Services } = ChromeUtils.import("resource://gre/modules/Services.jsm");
+function setVerticalTabs() {
+  if (Services.prefs.getIntPref("floorp.tabbar.style") == 2) {
     window.setTimeout(function () {
-      document.getElementsByClassName("toolbar-items")[0].id = "toolbar-items-verticaltabs";
-      
-      let verticalTabs = document.getElementById("toolbar-items-verticaltabs");
+      let verticalTabs = document.querySelector(".toolbar-items")
+      verticalTabs.id = "toolbar-items-verticaltabs";
+
       let sidebarBox = document.getElementById("sidebar-box");
-      //init sidebar
-      sidebarBox.setAttribute("style", "overflow: scroll !important;");
+      sidebarBox.style.setProperty("overflow", "scroll", "important")
 
       //init vertical tabs
       sidebarBox.insertBefore(verticalTabs, sidebarBox.firstChild);
@@ -26,58 +23,41 @@
       document.getElementById("tabbrowser-tabs").setAttribute("orient", "vertical");
       tabBrowserArrowScrollBox.shadowRoot.querySelector(`[part="scrollbox"]`).setAttribute("orient", "vertical");
 
-      //Delete max-height
-      let observer = new MutationObserver(function () {
-        tabBrowserArrowScrollBox.shadowRoot.querySelector(`[part="scrollbox"]`).removeAttribute("style");
-      })
-      observer.observe(tabBrowserArrowScrollBox.shadowRoot.querySelector(`[part="scrollbox"]`), {
-        attributes: true
-      });
-  
       //move menubar
       document.getElementById("titlebar").before(document.getElementById("toolbar-menubar"));
-      if(sidebarBox.getAttribute("hidden") == "true") {
+      if (sidebarBox.getAttribute("hidden") == "true") {
         SidebarUI.toggle();
       }
-
-      let promise = new Promise(function (resolve, reject) {
-        SidebarUI.toggle() ? resolve() : reject();
-      });
-      promise.then(function () {
-        SidebarUI.toggle();
-      });
     }, 500);
 
     //toolbar modification
     var Tag = document.createElement("style");
+    Tag.id = "verticalTabsStyle"
     Tag.textContent = `@import url("chrome://browser/content/browser-verticaltabs.css");`;
     document.head.appendChild(Tag);
-    Services.prefs.addObserver("floorp.browser.native.verticaltabs.enabled", function () {
-      if ("floorp.browser.native.verticaltabs.enabled") {
-        Services.prefs.setBoolPref("floorp.enable.multitab", false);
-      }
-    }, false);
-
-    /**************************************** vertical tab change position ****************************************/
-
-    (async() => {
-      let l10n = new Localization(["browser/floorp.ftl"])
-      let l10n_text = await l10n.formatValue("vertical-tab-reverse-position");
-      CustomizableUI.createWidget({
-        id: "vertical-tab-reverse-position",
-        type: "button",
-        label: l10n_text,
-        tooltiptext: l10n_text,
-        onCreated(aNode) {
-            aNode.appendChild(window.MozXULElement.parseXULToFragment(`<stack xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" class="toolbarbutton-badge-stack"><image class="toolbarbutton-icon" label="閉じたタブを開く"/><html:label xmlns:html="http://www.w3.org/1999/xhtml" class="toolbarbutton-badge" ></html:label></stack>`))
-    
-            let a = aNode.querySelector(".toolbarbutton-icon:not(stack > .toolbarbutton-icon)")
-            if (a != null) a.remove()
-        },
-        onCommand() {
-          SidebarUI.reversePosition();
-        }
-      });
-      CustomizableUI.addWidgetToArea("vertical-tab-reverse-position", CustomizableUI.AREA_NAVBAR, 1);
-    })();
+  } else {
+    document.querySelector("#verticalTabsStyle")?.remove()
+    let verticalTabs = document.querySelector("#toolbar-items-verticaltabs")
+    if(verticalTabs != null){
+      document.querySelector("#TabsToolbar").insertBefore(verticalTabs,
+        document.querySelectorAll(`#TabsToolbar > .titlebar-spacer`)[1])
+      let tabBrowserArrowScrollBox = document.getElementById("tabbrowser-arrowscrollbox");
+      let tabsBase = document.querySelector("#tabbrowser-tabs")
+      verticalTabs.setAttribute("align", "end");
+      verticalTabs.removeAttribute("id")
+      tabBrowserArrowScrollBox.setAttribute("orient", "horizontal");
+      tabsBase.setAttribute("orient", "horizontal");
+      
+      window.setTimeout(() => {
+        if(tabBrowserArrowScrollBox.getAttribute("overflowing") != "true") tabsBase.removeAttribute("overflow")
+      },1000)
+      tabBrowserArrowScrollBox.setAttribute("scrolledtostart","true")
+      tabBrowserArrowScrollBox.removeAttribute("disabled");
+      let sidebarBox = document.getElementById("sidebar-box");
+      sidebarBox.style.removeProperty("overflow")
+    }
   }
+
+}
+setVerticalTabs()
+Services.prefs.addObserver("floorp.tabbar.style", setVerticalTabs);

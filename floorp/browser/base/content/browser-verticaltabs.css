@@ -128,8 +128,8 @@
   }
 
   #tabs-newtab-button > .toolbarbutton-icon {
-   margin-left: auto;
-   margin-right: auto;
+   margin-left: auto !important;
+   margin-right: auto !important;
    margin-inline-end: auto !important;
   }
   
@@ -161,10 +161,6 @@
    }
  
    #sidebar {
-     display: none !important;
-   }
- 
-   #sidebar-button {
      display: none !important;
    }
  

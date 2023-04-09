@@ -14,6 +14,7 @@ Preferences.addAll([
   { id: "ui.systemUsesDarkTheme", type: "int" },
   { id: "floorp.browser.user.interface", type: "int" },
   { id: "floorp.browser.tabbar.settings", type: "int" },
+  { id: "floorp.tabbar.style", type: "int" },
   { id: "floorp.bookmarks.fakestatus.mode", type: "bool" },
   { id: "floorp.search.top.mode", type: "bool" },
   { id: "floorp.legacy.menu.mode", type: "bool" },
@@ -182,10 +183,18 @@ window.addEventListener("pageshow", async function() {
     });
   }
 
-  let elems = document.getElementsByClassName("multiRowTabs")
-  for (let i = 0; i < elems.length; i++) {
-    elems[i].disabled = Services.prefs.getBoolPref("floorp.browser.native.verticaltabs.enabled", false);
+  let disableMultirowPref = () => {
+    let elems = document.getElementsByClassName("multiRowTabs")
+    for (let i = 0; i < elems.length; i++) {
+      elems[i].disabled = Services.prefs.getIntPref("floorp.tabbar.style", 0) != 1;
+    }
+    elems = document.getElementsByClassName("verticalTabs")
+    for (let i = 0; i < elems.length; i++) {
+      elems[i].disabled = Services.prefs.getIntPref("floorp.tabbar.style", 0) != 2;
+    }
   }
+  disableMultirowPref()
+  Services.prefs.addObserver("floorp.tabbar.style",disableMultirowPref)
 }, { once: true });
 
 // Optimize for portable version

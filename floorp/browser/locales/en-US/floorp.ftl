@@ -56,15 +56,21 @@ move-tabbar-position =
 tabbar-on-bottom =
  .label = Display tabbar at the bottom of the window
 
-native-tabbar = Native Vertical Tabbar
-use-native-vertical =
-  .label = Use native vertical tabbar (experimental)
+tabbar-style-preference = Tabbar Style
+
+horizontal-tabbar =
+ .label = Horizontal Tabbar
+
+multirow-tabbar =
+ .label = Multi-Row Tabbar
+vertical-tabbar =
+ .label = Vertical Tabbar (experimental)
 native-tabbar-tip = This feature uses default Firefox sidebar, so you can't use it with other sidebar addons & default sidebar panels.
 
 hover-vertical-tab =
  .label = Expand vertical tabs when hovering the mouse cursor
 
-vertical-tab-reverse-position = Reverse VerticalTab Position
+sidebar-reverse-position-toolbar = Reverse Sidebar Position
 
 bookmarks-bar-settings = Bookmark Bar Settings (Can`t be used in parallel)
 bookmarks-focus-mode =

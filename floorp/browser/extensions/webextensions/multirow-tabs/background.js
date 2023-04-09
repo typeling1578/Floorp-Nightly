@@ -227,8 +227,8 @@ async function startup() {
 }
 
 (async() => {
-  let enabled = await browser.aboutConfigPrefs.getPref("floorp.enable.multitab");
-  if (enabled) {
+  let enabled = await browser.aboutConfigPrefs.getPref("floorp.tabbar.style");
+  if (enabled == 1 || enabled == 2) {
     browser.theme.onUpdated.addListener(async details => {
       if ((await browser.storage.local.get('fitLightness')).fitLightness !== false) {
         // Re-apply options, so the lightness settings fit the new theme
@@ -240,5 +240,5 @@ async function startup() {
   }
   browser.aboutConfigPrefs.onPrefChange.addListener(function(){
     browser.runtime.reload();
-  }, "floorp.enable.multitab");
+  }, "floorp.tabbar.style");
 })();

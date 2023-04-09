@@ -1611,14 +1611,22 @@ border-bottom: 1.1px solid var(--toolbar-bgcolor);
   background-color: var(--toolbarbutton-hover-background) !important;
 }
 
-.tab-background::before:not(browser *) {
+#tabbrowser-tabs tab:last-of-type{
+  margin-right: 8px !important;
+}
+#firefox-view-button+#tabbrowser-tabs tab:first-of-type{
+  margin-left: 16px !important;
+  margin-inline-start: 8px !important;
+}
+
+.tab-background:not(#browser *)::before {
   border-bottom-right-radius: 8px !important;
   left: 0 !important;
   transform: translateX(-8px) !important;
   box-shadow: 4px 4px 0 4px var(--tab-bgcolor) !important;
 }
 
-.tab-background::after:not(browser *) {
+.tab-background:not(#browser *)::after {
   border-bottom-left-radius: 8px !important;
   right: 0 !important;
   transform: translateX(8px) !important;
@@ -1946,8 +1954,8 @@ menupopup> :is(menu:not(.menu-iconic), menuitem:not(.menuitem-iconic, [type="che
 }
 
 /* special case for pinned tabs when overflowing */
-:is(#tabbrowser-tabs:not([overflow]) .tabbrowser-tab:not([first-visible-tab]),
-#tabbrowser-tabs[overflow] .tabbrowser-tab:not([first-visible-tab]):not([pinned])):not(#browser *) {
+:is(:is(#tabbrowser-tabs:not([overflow]) .tabbrowser-tab:not([first-visible-tab]),
+#tabbrowser-tabs[overflow] .tabbrowser-tab:not([first-visible-tab]):not([pinned])):not(#browser *)):not(#firefox-view-button+#tabbrowser-tabs tab:first-of-type) {
   margin-inline-start: -.5px !important;
 }
 
@@ -2171,6 +2179,7 @@ menupopup> :is(menu:not(.menu-iconic), menuitem:not(.menuitem-iconic, [type="che
 
 #tabbrowser-tabs #tabs-newtab-button {
   margin-inline-start: 6px !important;
+  margin-left: -8px !important;
 }
 
 #tabbrowser-tabs[overflow] .tabbrowser-arrowscrollbox {

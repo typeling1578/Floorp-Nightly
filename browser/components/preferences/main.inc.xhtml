@@ -85,16 +85,6 @@
     <checkbox id="showTabsInTaskbar" data-l10n-id="show-tabs-in-taskbar"
               preference="browser.taskbar.previews.enable"/>
 #endif
-    <checkbox  data-l10n-id="enable-multitab" preference="floorp.enable.multitab"
-               class="multiRowTabs" id="multitabar"/>
-    <checkbox  data-l10n-id="multirow-tabs-newtab" preference="floorp.browser.tabbar.multirow.newtab-inside.enabled"
-               class="multiRowTabs" id="multitabarNewTab"/>
-    <checkbox  data-l10n-id="multirow-tabs-limit" preference="floorp.browser.tabbar.multirow.max.enabled"
-               class="multiRowTabs" id="multitabarLimit"/>
-    <hbox>
-      <description flex="1" data-l10n-id="multirow-tabs-value"/>
-      <html:input type="number" min="1" value="0" id="MultirowValue"/>
-    </hbox>
 
     <checkbox  data-l10n-id="enable-tab-sleep"
                id="tab-sleep" preference="floorp.tabsleep.enabled"/>
@@ -161,13 +151,25 @@
      <radio value="4" class="tabbar" data-l10n-id="tabbar-on-bottom"/>
     </radiogroup>
 
-    <html:h2 data-l10n-id="native-tabbar"/>
-    <checkbox preference="floorp.browser.native.verticaltabs.enabled" class="needreboot"
-              id="nativetabbar" data-l10n-id="use-native-vertical"/>
-    <description class="indent tip-caption" data-l10n-id="native-tabbar-tip"/>
+    <html:h2 data-l10n-id="tabbar-style-preference"/>
+    <radiogroup preference="floorp.tabbar.style">
+      <radio value="0" data-l10n-id="horizontal-tabbar"/>
 
-    <checkbox preference="floorp.verticaltab.hover.enabled"
-              id="hoverVerticalTab" data-l10n-id="hover-vertical-tab"/>
+      <radio value="1" data-l10n-id="multirow-tabbar"/>
+      <checkbox  data-l10n-id="multirow-tabs-newtab" preference="floorp.browser.tabbar.multirow.newtab-inside.enabled"
+            class="multiRowTabs" id="multitabarNewTab"/>
+      <checkbox  data-l10n-id="multirow-tabs-limit" preference="floorp.browser.tabbar.multirow.max.enabled"
+            class="multiRowTabs" id="multitabarLimit"/>
+      <hbox>
+        <description flex="1" data-l10n-id="multirow-tabs-value" class="multiRowTabs"/>
+        <html:input type="number" min="1" value="0" id="MultirowValue" class="multiRowTabs"/>
+      </hbox>
+
+      <radio value="2" data-l10n-id="vertical-tabbar"/>
+      <description class="indent tip-caption" data-l10n-id="native-tabbar-tip"/>
+      <checkbox preference="floorp.verticaltab.hover.enabled"
+              id="hoverVerticalTab" data-l10n-id="hover-vertical-tab" class="verticalTabs"/>
+    </radiogroup>
   
    <html:h2 data-l10n-id="bookmarks-bar-settings"/>
 

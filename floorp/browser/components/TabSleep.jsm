@@ -212,6 +212,7 @@ let tabSleepEnabled = false;
 let TAB_TIMEOUT_MINUTES;
 let tabObserve_ = null;
 let interval = null;
+let isEnabled = false;
 let isTestMode = false;
 
 function enableTabSleep() {
@@ -343,12 +344,14 @@ if (Services.prefs.prefHasUserValue(TAB_SLEEP_TAB_TIMEOUT_SECONDS_PREF)) {
 }
 
 {
-    let isEnabled = Services.prefs.getBoolPref(TAB_SLEEP_ENABLED_PREF, false);
+    isEnabled = Services.prefs.getBoolPref(TAB_SLEEP_ENABLED_PREF, false);
     isTestMode = Services.prefs.getBoolPref(TAB_SLEEP_TESTMODE_ENABLED_PREF, false);
 
     let systemMemory = Services.sysinfo.getProperty("memsize");
     let systemMemoryGB = systemMemory / 1024 / 1024 / 1024;
-    console.log(`Tab Sleep: System Memory (GB) => ${systemMemoryGB}`);
+    if (isTestMode) {
+        console.log(`Tab Sleep: System Memory (GB) => ${systemMemoryGB}`);
+    }
 
     let tabTimeoutMinutesDefault = Math.floor(systemMemoryGB * 5);
     Services.prefs.getDefaultBranch(null)
@@ -356,7 +359,9 @@ if (Services.prefs.prefHasUserValue(TAB_SLEEP_TAB_TIMEOUT_SECONDS_PREF)) {
 
     let timeoutMinutesPrefHandle = function() {
         TAB_TIMEOUT_MINUTES = Services.prefs.getIntPref(TAB_SLEEP_TAB_TIMEOUT_MINUTES_PREF, tabTimeoutMinutesDefault);
-        console.log(`Tab Sleep: TAB_TIMEOUT_MINUTES => ${TAB_TIMEOUT_MINUTES}`);
+        if (isTestMode) {
+            console.log(`Tab Sleep: TAB_TIMEOUT_MINUTES => ${TAB_TIMEOUT_MINUTES}`);
+        }
     };
     timeoutMinutesPrefHandle();
     Services.prefs.addObserver(TAB_SLEEP_TAB_TIMEOUT_MINUTES_PREF, timeoutMinutesPrefHandle);
@@ -366,7 +371,7 @@ if (Services.prefs.prefHasUserValue(TAB_SLEEP_TAB_TIMEOUT_SECONDS_PREF)) {
     }
 
     Services.prefs.addObserver(TAB_SLEEP_ENABLED_PREF, function() {
-        let isEnabled = Services.prefs.getBoolPref(TAB_SLEEP_ENABLED_PREF, false);
+        isEnabled = Services.prefs.getBoolPref(TAB_SLEEP_ENABLED_PREF, false);
         if (isEnabled) {
             enableTabSleep();
         } else {

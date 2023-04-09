@@ -58,7 +58,7 @@ body, html {
    height: 40vh;
    resize: none;
    max-width: 100%;
-   width: 85%;
+   width: 95%;
 }
 
 #memo-list {
@@ -105,7 +105,7 @@ body, html {
 
 #memo-save {
    height: 2.5em;
-   margin-top: auto;
+   margin-top: 1em;
 }
 
 #beta {

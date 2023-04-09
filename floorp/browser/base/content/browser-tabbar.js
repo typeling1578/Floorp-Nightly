@@ -121,6 +121,19 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
       removeMultirowTabMaxHeight();
       setBrowserDesign();
+      let tabToolbarItems = document.querySelector("#TabsToolbar > .toolbar-items");
+      tabToolbarItems.style.visibility = "hidden";
+      window.setTimeout(function(){
+        new Promise(function() {
+          var tabbrowserTabs = document.getElementById("tabbrowser-tabs");
+          tabbrowserTabs.setAttribute("style", "-moz-box-flex: unset !important;");
+          setTimeout(function() {
+            tabbrowserTabs.style.removeProperty("-moz-box-flex");[
+              tabToolbarItems.style.visibility = ""
+            ]
+          }, 0);
+        })
+      }, 500);
     }
   }
   Services.prefs.addObserver("floorp.tabbar.style", applyMultitab);

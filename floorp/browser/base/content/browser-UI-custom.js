@@ -207,7 +207,7 @@ if (!Services.prefs.getBoolPref("floorp.browser.sidebar.enable", false)) {
 /*------------------------------------------- verticaltab -------------------------------------------*/
 
 UICustomPrefHandler("floorp.verticaltab.hover.enabled", function(event) {
-  if(!Services.prefs.getBoolPref("floorp.browser.native.verticaltabs.enabled", false)) return;
+  if(Services.prefs.getIntPref("floorp.tabbar.style", false) != 2) return;
    if (event.prefValue) {
      var Tag = document.createElement("style");
      Tag.innerText = `@import url(chrome://browser/skin/options/native-verticaltab-hover.css)`;

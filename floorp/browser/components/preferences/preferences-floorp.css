@@ -626,3 +626,7 @@ color: var(--in-content-item-selected-text);
   opacity: 0.5;
   pointer-events: none;
 }
+
+[disabled="true"]{
+  opacity:0.5;
+}

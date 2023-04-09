@@ -642,3 +642,15 @@ memo-new-title = New Memo
 ######################################################################### Default bookmarks ###############################################################
 default-bookmark-ablaze-support = Ablaze Support
 default-bookmark-notes = Floorp Notes
+
+######################################################################### Like Chrome Download mgr ###############################################################
+
+floorp-delete-all-downloads = 
+  .label = Hide all downloads
+  .accesskey = D
+  .tooltiptext = Hide all downloads
+
+floorp-show-all-downloads =
+  .label = Show all downloads
+  .accesskey = S
+  .tooltiptext = Show all downloads

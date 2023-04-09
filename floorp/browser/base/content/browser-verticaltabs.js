@@ -47,6 +47,9 @@ function setVerticalTabs() {
       verticalTabs.removeAttribute("id")
       tabBrowserArrowScrollBox.setAttribute("orient", "horizontal");
       tabsBase.setAttribute("orient", "horizontal");
+      let tabsToolBar = document.querySelector("#tabbrowser-tabs")
+      tabsToolBar.style.removeProperty("--tab-overflow-pinned-tabs-width")
+      tabsToolBar.removeAttribute("positionpinnedtabs")
       
       window.setTimeout(() => {
         if(tabBrowserArrowScrollBox.getAttribute("overflowing") != "true") tabsBase.removeAttribute("overflow")

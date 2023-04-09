@@ -52,7 +52,7 @@ function setVerticalTabs() {
         if(tabBrowserArrowScrollBox.getAttribute("overflowing") != "true") tabsBase.removeAttribute("overflow")
       },1000)
       tabBrowserArrowScrollBox.setAttribute("scrolledtostart","true")
-      tabBrowserArrowScrollBox.removeAttribute(disabled)
+      tabBrowserArrowScrollBox.removeAttribute("disabled");
       let sidebarBox = document.getElementById("sidebar-box");
       sidebarBox.style.removeProperty("overflow")
     }

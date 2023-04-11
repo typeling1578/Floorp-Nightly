@@ -79,16 +79,31 @@ document.addEventListener('DOMContentLoaded', function(){
   // 新規メモ作成ボタンがクリックされたときの処理
   createNewMemo.onclick = function() {
     memoInput.value = "";
-    memoTitleInput.value = l10n.formatValueSync("memo-new-title");
+    let DefaultNewTitle = l10n.formatValueSync("memo-new-title");
+    if (memos.titles.includes(DefaultNewTitle)) {
+      let i = 1;
+      while (memos.titles.includes(DefaultNewTitle + ` (${i})`)) {
+        i++;
+      }
+      memoTitleInput.value = DefaultNewTitle + ` (${i})`;
+    } else {
+      memoTitleInput.value = DefaultNewTitle;
+    }
     setNoteID(-1);
   }
   
   // メモの保存ボタンがクリックされたときの処理
   memoSave.onclick = function() {
+    saveNotes();
+  }
+
+  document.getElementById("memo-input").addEventListener("input", saveNotes);
+
+  function saveNotes() {
     const memo = memoInput.value;
     const memoTitle = memoTitleInput.value;
     const openningNoteID = returnNoteID();
-
+  
     if (openningNoteID == -1) {
       memos.contents.push(memo);
       if (memoTitle) {
@@ -110,4 +125,39 @@ document.addEventListener('DOMContentLoaded', function(){
     }
     showMemos();
   };
+
+  function convertMarkdownToHtml(markdown) {
+    const lines = markdown.split('\n');
+    let html = '';
+    for (let i = 0; i < lines.length; i++) {
+      if (lines[i].startsWith('#')) {
+        const headerLevel = lines[i].match(/^#+/)[0].length;
+        const headerText = lines[i].substring(headerLevel + 1).trim();
+        html += `<h${headerLevel}>${headerText}</h${headerLevel}>`;
+      }
+      else if (lines[i]) {
+        html += '<p>' + lines[i] + '</p>';
+      }
+      else {
+        html += '<br>';
+      }
+    }
+    html = html.replace(/(https?:\/\/[a-zA-Z0-9\/\.\?\&\=\-\_\~\:\@\!\#\$\%\^\*\(\)\+\,\;\[\]]+)/g, '<a href="$1">$1</a>');
+    html = html.replace(/(\*\*|__)(.*?)\1/g, '<strong>$1</strong>');
+    html = html.replace(/(\*|_)(.*?)\1/g, '<em>$1</em>');
+    html = html.replace(/(\~\~)(.*?)\1/g, '<del>$1</del>');
+    html = html.replace(/(\|)(.*?)\1/g, '<td>$1</td>');
+    html = html.replace(/(\|\|)(.*?)\1/g, '<th>$1</th>');
+    html = html.replace(/(\|\|\|)(.*?)\1/g, '<tr>$1</tr>');
+    html = html.replace(/(\|\|\|\|)(.*?)\1/g, '<table>$1</table>');
+    html = html.replace(/(\`\`\`)(.*?)\1/g, '<pre>$1</pre>');
+    html = html.replace(/(\`\`)(.*?)\1/g, '<code>$1</code>');
+    html = html.replace(/(\`)(.*?)\1/g, '<code>$1</code>');
+
+    return html;
+  }
+
+  function viewMarkdown() {
+    const html = convertMarkdownToHtml(memoInput.value);
+  }
 });

@@ -36,7 +36,7 @@ let BrowserManagerSidebar = {
         "floorp//notes":{
           "url":"chrome://browser/content/notes/notes-bms.html",
           "l10n":`notes-sidebar`,
-          "defaultWidth":500,
+          "defaultWidth":550,
           "enabled": true
       },
         //TST is removed from Floorp.

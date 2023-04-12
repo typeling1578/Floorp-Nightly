@@ -16,7 +16,9 @@ document.addEventListener('DOMContentLoaded', function(){
   const memoTitleInput = document.getElementById("memo-title-input");
   const createNewMemo = document.getElementById("memo-add");
   const deleteMemo = document.getElementById("memo-delete");
-  let l10n = new Localization(["browser/floorp.ftl"], true);
+  const HTMLPreview = document.getElementById("html-output");
+  const memoMarkDownPreViewButton = document.getElementById("memo-markdown-preview");
+  const l10n = new Localization(["browser/floorp.ftl"], true);
 
   memoTitleInput.placeholder = l10n.formatValueSync("memo-title-input-placeholder");
   memoInput.placeholder = l10n.formatValueSync("memo-input-placeholder");
@@ -61,6 +63,7 @@ document.addEventListener('DOMContentLoaded', function(){
         memoInput.value = memos.contents[i];
         memoTitleInput.value = memos.titles[i];
         setNoteID(i);
+        hideMarkDownPreview();
       });
     }
   }
@@ -73,6 +76,7 @@ document.addEventListener('DOMContentLoaded', function(){
     Services.prefs.setStringPref("floorp.browser.note.memos", JSON.stringify(memos));
     memoInput.value = "";
     memoTitleInput.value = "";
+    hideMarkDownPreview();
     showMemos();
   }
 
@@ -97,7 +101,16 @@ document.addEventListener('DOMContentLoaded', function(){
     saveNotes();
   }
 
-  document.getElementById("memo-input").addEventListener("input", saveNotes);
+  // メモのマークダウンプレビューボタンがクリックされたときの処理
+  memoMarkDownPreViewButton.onclick = function() {
+    if (HTMLPreview.style.display == "none") {
+      showMarkDownPreview();
+    } else {
+      hideMarkDownPreview();
+    }
+  }
+  memoInput.addEventListener("input", saveNotes);
+  memoTitleInput.addEventListener("input", saveNotes);
 
   function saveNotes() {
     const memo = memoInput.value;
@@ -109,7 +122,7 @@ document.addEventListener('DOMContentLoaded', function(){
       if (memoTitle) {
         memos.titles.push(memoTitle);
       } else {
-         memos.titles.push(memo.substr(0, 10)); // タイトルがない場合、メモの先頭10文字をタイトルとする
+         memos.titles.push(l10n.formatValueSync("memo-new-title"));
       }
       Services.prefs.setStringPref("floorp.browser.note.memos", JSON.stringify(memos));
       let currentNoteID = memos.contents.length - 1;
@@ -127,37 +140,22 @@ document.addEventListener('DOMContentLoaded', function(){
   };
 
   function convertMarkdownToHtml(markdown) {
-    const lines = markdown.split('\n');
-    let html = '';
-    for (let i = 0; i < lines.length; i++) {
-      if (lines[i].startsWith('#')) {
-        const headerLevel = lines[i].match(/^#+/)[0].length;
-        const headerText = lines[i].substring(headerLevel + 1).trim();
-        html += `<h${headerLevel}>${headerText}</h${headerLevel}>`;
-      }
-      else if (lines[i]) {
-        html += '<p>' + lines[i] + '</p>';
-      }
-      else {
-        html += '<br>';
-      }
-    }
-    html = html.replace(/(https?:\/\/[a-zA-Z0-9\/\.\?\&\=\-\_\~\:\@\!\#\$\%\^\*\(\)\+\,\;\[\]]+)/g, '<a href="$1">$1</a>');
-    html = html.replace(/(\*\*|__)(.*?)\1/g, '<strong>$1</strong>');
-    html = html.replace(/(\*|_)(.*?)\1/g, '<em>$1</em>');
-    html = html.replace(/(\~\~)(.*?)\1/g, '<del>$1</del>');
-    html = html.replace(/(\|)(.*?)\1/g, '<td>$1</td>');
-    html = html.replace(/(\|\|)(.*?)\1/g, '<th>$1</th>');
-    html = html.replace(/(\|\|\|)(.*?)\1/g, '<tr>$1</tr>');
-    html = html.replace(/(\|\|\|\|)(.*?)\1/g, '<table>$1</table>');
-    html = html.replace(/(\`\`\`)(.*?)\1/g, '<pre>$1</pre>');
-    html = html.replace(/(\`\`)(.*?)\1/g, '<code>$1</code>');
-    html = html.replace(/(\`)(.*?)\1/g, '<code>$1</code>');
-
-    return html;
+    const converter = new showdown.Converter();
+    return converter.makeHtml(markdown);
   }
 
-  function viewMarkdown() {
-    const html = convertMarkdownToHtml(memoInput.value);
+  function showMarkDownPreview() {
+    const memo = memoInput.value;
+    HTMLPreview.style.display = "block";
+    memoInput.style.display = "none";
+    memoSave.style.display = "none";
+    HTMLPreview.innerHTML = convertMarkdownToHtml(memo);
+  }
+
+  function hideMarkDownPreview() {
+    HTMLPreview.style.display = "none";
+    memoInput.style.display = "block";
+    memoSave.style.display = "block";
+    HTMLPreview.innerHTML = "";
   }
 });

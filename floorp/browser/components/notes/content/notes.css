@@ -21,16 +21,21 @@ body, html {
   padding: 0 !important;
   align-items: unset !important;
   justify-content: unset !important;
+  min-height: 100% !important;
 }
 
 #memo-title-input {
    display: inherit;
    width: 18em;
    margin-bottom: 25px;
+   font-size: 25px;
 }
 
 #memo-contents{
    padding-left: var(--main-content-padding-to-sidebar);
+   width: 100%;
+   height: 100%;
+   overflow: scroll;
 }
 
 .memo-list-item {
@@ -45,16 +50,16 @@ body, html {
    min-width: var(--memo-list-sidebar-width);
    height: 100%;
    border-right: 1px solid gray;
+   overflow: scroll;
 }
 
 #memo-input {
-   width: 65vh;
-   height: 75vh;
    resize: none;
+   height: 100%;
+   width: 95%;
 }
 
 #memo-list {
-   overflow: scroll;
    height: 100%;
 }
 
@@ -98,4 +103,45 @@ body, html {
    display: flex;
    border-bottom: solid 0.1px gray;
    margin-bottom: 15px;
+   width: 70%;
+}
+
+#memo-form {
+   width: 70%;
+   height: 80%;
+   margin-bottom: 20px;
+}
+
+#html-output {
+   display: block;
+   border: solid 1px gray;
+   padding: 25px;
+   box-shadow: 0 1px 4px var(--grey-90-a10);
+   background: var(--in-content-button-background);
+   border: 1px solid transparent;
+   border-radius: 4px;
+   box-shadow: var(--card-shadow);
+   margin: 0 0 8px;
+   margin-bottom: 8px;
+   margin-bottom: 8px;
+   padding: calc(var(--card-padding) - 1px);
+   transition: box-shadow 150ms;
+   margin-bottom: 10em;
+}
+
+button {
+   padding-inline-start: 30px;
+   background-repeat: no-repeat;
+   background-position: 8px;
+   -moz-context-properties: fill;
+   fill: currentColor;
+   min-width: auto;
+   flex: 0 0 auto;
+   height: 2.5em;
+   display: block;
+   margin-right: 20px;
+}
+
+#memo-delete {
+   margin-left: auto;
 }

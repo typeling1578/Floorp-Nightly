@@ -32,6 +32,7 @@ body, html {
 #memo-contents{
    padding-left: var(--main-content-padding-to-sidebar);
    width: 90%;
+   height: 100%;
 }
 
 .memo-list-item {
@@ -42,10 +43,7 @@ body, html {
 }
 
 #memo-lists-sidebar {
-   width: var(--memo-list-sidebar-width);
-   min-width: var(--memo-list-sidebar-width);
-   height: 100%;
-   display: inline;
+   height: 25%;
 }
 
 #header-box {
@@ -54,21 +52,22 @@ body, html {
 }
 
 #memo-input {
-   min-width: 25vh;
-   height: 40vh;
    resize: none;
    max-width: 100%;
-   width: 95%;
+   width: 100%;
+   height: 90%;
 }
 
 #memo-list {
    overflow: scroll;
-   max-height: 20em;
+   display: block;
+   height: 100%;
 }
 
 #memo-add {
    margin: 0 auto;
    margin-top: 10px;
+   margin-bottom: 10px;
 }
 
 #button-box {
@@ -79,6 +78,7 @@ body, html {
 
 #memo-input-box {
    display: flex;
+   height: 100%;
 }
 
 #memo-delete {
@@ -101,11 +101,12 @@ body, html {
 
 #memo-form {
    margin-top: 2em;
+   height: 55%;
+   margin-bottom: 15px;
 }
 
 #memo-save {
    height: 2.5em;
-   margin-top: 1em;
 }
 
 #beta {
@@ -116,4 +117,33 @@ body, html {
 
 #title-box {
    display: flex;
+}
+
+#html-output {
+   overflow: scroll;
+}
+
+#button-box {
+   display: flex;
+   justify-content: space-between;
+}
+
+#memo-markdown-preview {
+   margin-right: auto;
+}
+
+#html-output {
+   display: block;
+   border: solid 1px gray;
+   padding: 25px;
+   box-shadow: 0 1px 4px var(--grey-90-a10);
+   background: var(--in-content-button-background);
+   border: 1px solid transparent;
+   border-radius: 4px;
+   box-shadow: var(--card-shadow);
+   margin: 0 0 8px;
+     margin-bottom: 8px;
+   margin-bottom: 8px;
+   padding: calc(var(--card-padding) - 1px);
+   transition: box-shadow 150ms;
 }

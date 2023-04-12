@@ -42,10 +42,12 @@ async function UCTFirst(){
 UCTFirst();
 
 async function switchSidebarPositionButton() {
-  let l10n = new Localization(["browser/floorp.ftl"])
+  const widgetId = "sidebar-reverse-position-toolbar";
+  if (CustomizableUI.getWidget(widgetId)) return;
+  let l10n = new Localization(["browser/floorp.ftl"]);
   let l10n_text = await l10n.formatValue("sidebar-reverse-position-toolbar");
   CustomizableUI.createWidget({
-    id: "sidebar-reverse-position-toolbar",
+    id: widgetId,
     type: "button",
     label: l10n_text,
     tooltiptext: l10n_text,

@@ -60,26 +60,19 @@ document.addEventListener("DOMContentLoaded", () => {
 //-------------------------------------------------------------------------Multirow-tabs----------------------------------------------------------------------------
 
 function setMultirowTabMaxHeight() {
-  document.querySelector("#tabbrowser-arrowscrollbox")
-    .style.maxHeight = "";
-  document.querySelector("#tabbrowser-arrowscrollbox")
-    .shadowRoot
-    .querySelector("[part=scrollbox]")
-    .removeAttribute("style");
+  let arrowscrollbox = document.querySelector("#tabbrowser-arrowscrollbox");
+  let scrollbox = arrowscrollbox.shadowRoot.querySelector("[part=scrollbox]");
 
-  let rowValue = Services.prefs.getIntPref("floorp.browser.tabbar.multirow.max.row");
-  let multiRowTabValueEnabled = Services.prefs.getBoolPref("floorp.browser.tabbar.multirow.max.enabled") && Services.prefs.getIntPref("floorp.tabbar.style") != 2;
-  if(multiRowTabValueEnabled){
-    document.querySelector("#tabbrowser-arrowscrollbox")
+  arrowscrollbox.style.maxHeight = "";
+  scrollbox.removeAttribute("style");
+
+  const isMultiRowTabEnabled = Services.prefs.getBoolPref("floorp.browser.tabbar.multirow.max.enabled");
+  if (isMultiRowTabEnabled) {
+    const rowValue = Services.prefs.getIntPref("floorp.browser.tabbar.multirow.max.row");
+    const tabHeight = document.querySelector(".tabbrowser-tab").clientHeight;
+    arrowscrollbox
       .style.cssText += "max-height: unset !important;";
-    let tabHeight = document.querySelector(".tabbrowser-tab").clientHeight;
-    document.querySelector("#tabbrowser-arrowscrollbox")
-      .shadowRoot
-      .querySelector("[part=scrollbox]")
-      .setAttribute(
-        "style",
-        "max-height: " + (tabHeight * rowValue) + "px !important;"
-      );
+    scrollbox.setAttribute("style", `max-height: ${tabHeight * rowValue}px !important;`);
   }
   
 }

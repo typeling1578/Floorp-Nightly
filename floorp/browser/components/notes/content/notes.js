@@ -146,10 +146,12 @@ document.addEventListener('DOMContentLoaded', function(){
 
   function showMarkDownPreview() {
     const memo = memoInput.value;
-    HTMLPreview.style.display = "block";
-    memoInput.style.display = "none";
-    memoSave.style.display = "none";
-    HTMLPreview.innerHTML = convertMarkdownToHtml(memo);
+    if (!memo == "") {
+      HTMLPreview.style.display = "block";
+      memoInput.style.display = "none";
+      memoSave.style.display = "none";
+      HTMLPreview.innerHTML = convertMarkdownToHtml(memo);
+    }
   }
 
   function hideMarkDownPreview() {

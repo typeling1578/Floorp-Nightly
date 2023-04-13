@@ -639,6 +639,7 @@ memo-third-tip = Floorp Notes will be saved in your Floorp settings. Also, Firef
 memo-fourth-tip = Firefox Sync is not a backup service. We recommend that you make backups.
 memo-new-title = New Note
 chage-view-mode = Change view/Edit mode
+readonly-mode = Offline (Read-only)
 
 ######################################################################### Default bookmarks ###############################################################
 default-bookmark-ablaze-support = Ablaze Support

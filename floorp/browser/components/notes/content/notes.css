@@ -140,3 +140,11 @@ button {
 #memo-delete {
    margin-left: auto;
 }
+
+#offline-label {
+   font-weight: 600;
+   line-height: 1.4em;
+   margin: auto 1em auto auto;
+   opacity: 0.7;
+   font-size: 20px;
+}

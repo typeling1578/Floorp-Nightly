@@ -19,6 +19,7 @@ document.addEventListener('DOMContentLoaded', function(){
   const HTMLPreview = document.getElementById("html-output");
   const memoMarkDownPreViewButton = document.getElementById("memo-markdown-preview");
   const l10n = new Localization(["browser/floorp.ftl"], true);
+  const offlineLabel = document.getElementById("offline-label");
 
   memoTitleInput.placeholder = l10n.formatValueSync("memo-title-input-placeholder");
   memoInput.placeholder = l10n.formatValueSync("memo-input-placeholder");
@@ -35,6 +36,19 @@ document.addEventListener('DOMContentLoaded', function(){
     Services.prefs.setIntPref("floorp.browser.note.memos.using", 0);
     showMemos();
   }
+
+  if (!window.navigator.onLine) {
+    whenBrowserIsOffline();
+  }
+
+  window.addEventListener('online', (e)=>{
+    whenBrowserIsOnline();
+  })
+  
+  window.addEventListener('offline', (e)=>{
+    whenBrowserIsOffline();
+  })  
+
 
   function showMemos() {
     memoList.innerHTML = "";
@@ -159,5 +173,23 @@ document.addEventListener('DOMContentLoaded', function(){
     memoInput.style.display = "block";
     memoSave.style.display = "block";
     HTMLPreview.innerHTML = "";
+  }
+
+  function whenBrowserIsOffline() {
+    memoInput.readOnly = true;
+    memoTitleInput.readOnly = true;
+    memoSave.disabled = true;
+    createNewMemo.disabled = true;
+    deleteMemo.disabled = true;
+    offlineLabel.hidden = false;
+  }
+
+  function whenBrowserIsOnline() {
+    memoInput.readOnly = false;
+    memoTitleInput.readOnly = false;
+    memoSave.disabled = false;
+    createNewMemo.disabled = false;
+    deleteMemo.disabled = false;
+    offlineLabel.hidden = true;
   }
 });

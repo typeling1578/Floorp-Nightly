@@ -2,152 +2,159 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-:root {
-  --memo-list-sidebar-width: 250px;
-  --main-content-padding-to-sidebar: 25px;
-  font: message-box;
-  appearance: none;
-  background-color: var(--in-content-page-background);
-  color: var(--in-content-page-color);
-}
-
-body, html {
-  display: flex;
-  height: 100%;
-  width: 100%;
-  flex-direction: unset !important;
-  box-sizing: unset !important;
-  padding: 0 !important;
-  align-items: unset !important;
-  justify-content: unset !important;
-  overflow: scroll !important;
-}
-
-#memo-title-input {
+ :root {
+   --memo-list-sidebar-width: 20vw;
+   --main-content-padding-to-sidebar: 2vw;
+   font: message-box;
+   appearance: none;
+   background-color: var(--in-content-page-background);
+   color: var(--in-content-page-color);
+ }
+ 
+ #header {
+   margin: 0 !important;
+ }
+ 
+ body, html {
+   display: flex;
+   min-height: 100% !important;
+   height: 100% !important;
+   width: 100% !important;
+   padding: 10px !important;
+   flex-direction: column;
+   box-sizing: border-box;
+   align-items: stretch;
+   justify-content: stretch;
+   overflow-x: hidden;
+   overflow-y: auto;
+ }
+ 
+ #memo-title-input {
    display: inherit;
    width: 18em;
-   margin-bottom: 25px;
-}
-
-#memo-contents{
-   padding: 0px var(--main-content-padding-to-sidebar);
+   margin-bottom: 2vw;
+ }
+ 
+ #memo-contents {
+   padding: 0 var(--main-content-padding-to-sidebar);
    width: 100%;
    height: 100%;
-}
-
-.memo-list-item {
-   margin: 0px;
+ }
+ 
+ .memo-list-item {
+   margin: 0;
    border-bottom: solid 1px gray;
    padding: 15px;
    text-align: left;
-}
-
-#memo-lists-sidebar {
-   height: 25%;
-}
-
-#header-box {
+ }
+ 
+ #memo-lists-sidebar {
+   height: 25vh;
+ }
+ 
+ #header-box {
    display: flex;
    border-bottom: solid 1px gray;
-}
-
-#memo-input {
+   height: 3em;
+ }
+ 
+ #memo-input {
    resize: none;
    max-width: 100%;
    width: 100%;
-}
-
-#memo-list {
-   overflow: scroll;
+ }
+ 
+ #memo-list {
+   overflow: auto;
    display: block;
    height: 100%;
-}
-
-#memo-add {
+ }
+ 
+ #memo-add {
    margin: 0 auto;
-   margin-top: 10px;
-   margin-bottom: 10px;
-}
-
-#button-box {
-   padding-bottom: 0px;
-   padding-top: 10px;
+   margin-bottom: 3.5vw;
+ }
+ 
+ #button-box {
+   padding-bottom: 0;
    margin-left: auto;
-}
-
-#memo-input-box {
+ }
+ 
+ #memo-input-box {
    display: flex;
-   height: 95%;
-}
-
-#memo-delete {
+   height: 90%;
+ }
+ 
+ #memo-delete {
    background-image: url("chrome://global/skin/icons/delete.svg");
-   padding-inline-start: 30px;
    background-repeat: no-repeat;
-   background-position: 8px;
+   background-position: 1vw;
    -moz-context-properties: fill;
    fill: currentColor;
    min-width: auto;
    flex: 0 0 auto;
-   height: 2.5em;
    display: block;
    margin-left: auto;
-}
-
-#titleAndDelete {
+ }
+ 
+ #titleAndDelete {
    display: flex;
-}
-
-#memo-form {
-   margin-top: 2em;
+ }
+ 
+ #memo-form {
+   margin-top: 2vw;
    height: 55%;
-   margin-bottom: 10px;
-}
-
-#memo-save {
-   height: 2.5em;
-}
-
-#beta {
-   margin: auto 10px 10px;
+   margin-bottom: 1vw;
+ }
+ 
+ #memo-save {
+   height: 2.5vw;
+ }
+ 
+ #beta {
+   margin: auto 1vw 1vw;
    font-style: italic;
    color: gray;
-}
-
-#title-box {
+ }
+ 
+ #title-box {
    display: flex;
-}
-
-#html-output {
-   overflow: scroll;
-}
-
-#button-box {
+ }
+ 
+ #html-output {
+   overflow: auto;
+ }
+ 
+ #button-box {
    display: flex;
    justify-content: space-between;
-}
-
-#memo-markdown-preview {
+   margin-top: 2.5%;
+ }
+ 
+ #header-items {
+   display: flex;
+   justify-content: space-between;
+ }
+ 
+ #memo-markdown-preview {
    margin-right: auto;
-}
-
-#html-output {
+ }
+ 
+ #html-output {
    display: block;
    border: solid 1px gray;
-   padding: 25px;
    box-shadow: 0 1px 4px var(--grey-90-a10);
    background: var(--in-content-button-background);
    border: 1px solid transparent;
    border-radius: 4px;
    box-shadow: var(--card-shadow);
-   margin: 0 0 8px;
-   margin-bottom: 8px;
-   margin-bottom: 8px;
-   padding: calc(var(--card-padding) - 1px);
+   margin: 0 0 0.8vw;
+   margin-bottom: 0.8vw;
+   padding: calc(var(--card-padding) - 0.1vw);
    transition: box-shadow 150ms;
-}
-
-#offline-label {
+ }
+ 
+ #offline-label {
    font-weight: 600;
    line-height: 1.4em;
    margin: auto;
@@ -155,4 +162,4 @@ body, html {
    opacity: 0.7;
    font-size: 15px;
    margin-right: 1em;
-}
+ }

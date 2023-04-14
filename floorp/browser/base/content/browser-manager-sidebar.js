@@ -248,15 +248,14 @@
                 tooltip="aHTMLTooltip"
                 autoscroll="false"
                 disableglobalhistory="true"
-                messagemanagergroup="webext-browsers"
+                messagemanagergroup="browsers"
                 autocompletepopup="PopupAutoComplete"
-                initialBrowsingContextGroupId="40"
                 ${isWeb ? `
                 usercontextid="${(typeof wibpanel_usercontext) == "number" ? String(wibpanel_usercontext) : "0"}"
                 changeuseragent="${webpanel_userAgent == true}"
                 ` :""}
                 ${isWeb || isTST ? `
-                webextension-view-type="sidebar"
+                webextension-view-type="popup"
                 type="content"
                 remote="true"
                 maychangeremoteness="true"

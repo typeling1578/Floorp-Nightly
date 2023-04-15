@@ -38,7 +38,23 @@ var gDesign = {
       }
     }
     disableMultirowPref()
-    Services.prefs.addObserver("floorp.tabbar.style",disableMultirowPref)
+    Services.prefs.addObserver("floorp.tabbar.style",disableMultirowPref);
+
+    {
+      let prefName = "floorp.browser.tabbar.multirow.max.row";
+      let elem = document.getElementById("MultirowValue");
+      elem.value = Services.prefs.getIntPref(prefName, undefined);
+      elem.addEventListener('change', function () {
+        Services.prefs.setIntPref(prefName, Number(elem.value));
+      });
+      Services.prefs.addObserver(prefName, function () {
+        elem.value = Services.prefs.getIntPref(prefName, undefined);
+      });
+    }
+
+    document.getElementById("leptonButton").addEventListener("click", function () {
+      window.location.href = "about:preferences#lepton";
+    });
 
     document
         .getElementById("colors")

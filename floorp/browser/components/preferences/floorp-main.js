@@ -69,18 +69,6 @@ window.addEventListener("pageshow", async function() {
   }
 
   {
-    let prefName = "floorp.browser.tabbar.multirow.max.row";
-    let elem = document.getElementById("MultirowValue");
-    elem.value = Services.prefs.getIntPref(prefName, undefined);
-    elem.addEventListener('change', function () {
-      Services.prefs.setIntPref(prefName, Number(elem.value));
-    });
-    Services.prefs.addObserver(prefName, function () {
-      elem.value = Services.prefs.getIntPref(prefName, undefined);
-    });
-  }
-
-  {
     let prefName = "browser.tabs.tabMinWidth";
     let elem = document.getElementById("tabWidthValue");
     elem.value = Services.prefs.getIntPref(prefName, undefined);
@@ -128,9 +116,6 @@ window.addEventListener("pageshow", async function() {
       setOverrideUA();
   });
 
-  document.getElementById("leptonButton").addEventListener("click", function () {
-    window.location.href = "about:preferences#lepton";
-  });
   document.getElementById("SetCustomURL").addEventListener("click", function () {
     window.location.href = "about:preferences#bSB";
   });
@@ -161,7 +146,7 @@ window.addEventListener("pageshow", async function() {
     Services.prefs.addObserver(prefName, function () {
       elem.checked = !Services.prefs.getBoolPref(prefName, true);
     });
-  }0
+  }
 }, { once: true });
 
 // Optimize for portable version

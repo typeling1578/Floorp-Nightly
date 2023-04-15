@@ -140,52 +140,17 @@
       </hbox>
     </vbox>
 </groupbox>
+<groupbox data-category="paneGeneral" hidden="true">
+    <html:h2 data-l10n-id="preferences-tabs-newtab-position"/>
+    <radiogroup id="openNewTabPosition" preference="floorp.browser.tabs.openNewTabPosition">
+    <radio  value="-1"  data-l10n-id="open-new-tab-use-default"/>
+     <radio value="0" data-l10n-id="open-new-tab-at-the-end"/>
+     <radio value="1" data-l10n-id="open-new-tab-next-to-current"/>
+    </radiogroup>
+</groupbox>
 
 <groupbox data-category="paneGeneral" hidden="true">
-   <html:h2 data-l10n-id="tabbar-preference"/>
-   <radiogroup preference="floorp.browser.tabbar.settings">
-     <radio value="0" class="tabbar" data-l10n-id="None-mode"/>
-     <radio value="1" class="tabbar" data-l10n-id="hide-horizontality-tabs"/>
-     <radio value="2" class="tabbar" data-l10n-id="verticalTab-setting"/>
-     <radio value="3" class="tabbar" data-l10n-id="move-tabbar-position"/>
-     <radio value="4" class="tabbar" data-l10n-id="tabbar-on-bottom"/>
-    </radiogroup>
-
-    <html:h2 data-l10n-id="tabbar-style-preference"/>
-    <radiogroup preference="floorp.tabbar.style">
-      <radio value="0" data-l10n-id="horizontal-tabbar"/>
-
-      <radio value="1" data-l10n-id="multirow-tabbar"/>
-      <checkbox  data-l10n-id="multirow-tabs-newtab" preference="floorp.browser.tabbar.multirow.newtab-inside.enabled"
-            class="multiRowTabs" id="multitabarNewTab"/>
-      <checkbox  data-l10n-id="multirow-tabs-limit" preference="floorp.browser.tabbar.multirow.max.enabled"
-            class="multiRowTabs" id="multitabarLimit"/>
-      <hbox>
-        <description flex="1" data-l10n-id="multirow-tabs-value" class="multiRowTabs"/>
-        <html:input type="number" min="1" value="0" id="MultirowValue" class="multiRowTabs"/>
-      </hbox>
-
-      <radio value="2" data-l10n-id="vertical-tabbar"/>
-      <description class="indent tip-caption" data-l10n-id="native-tabbar-tip"/>
-      <checkbox preference="floorp.verticaltab.hover.enabled"
-              id="hoverVerticalTab" data-l10n-id="hover-vertical-tab" class="verticalTabs"/>
-    </radiogroup>
-  
-   <html:h2 data-l10n-id="bookmarks-bar-settings"/>
-
-    <checkbox preference="floorp.bookmarks.bar.focus.mode"
-              id="bookmarkfocusmode" data-l10n-id="bookmarks-focus-mode"/>
-
-    <checkbox preference="floorp.bookmarks.fakestatus.mode"
-              id="bookmarkbottomofwindow" data-l10n-id="bookmarks-bottom-mode"/>
-
-   <html:h2 data-l10n-id="nav-bar-settings"/>
-
-    <checkbox preference="floorp.navbar.bottom"
-              id="nav-bar-bottom" data-l10n-id="show-nav-bar-bottom"/>
-
-
-   <html:h2 id="sidebarUI" data-l10n-id="sidebar-preferences"/>
+    <html:h2 id="sidebarUI" data-l10n-id="sidebar-preferences"/>
    <checkbox preference="floorp.browser.sidebar.enable" 
               id="enable-sidebar2" data-l10n-id="enable-sidebar2" class="needreboot"/>             
    <checkbox preference="floorp.browser.sidebar.right" 
@@ -210,165 +175,84 @@
       </menupopup>
     </menulist>
   </hbox>
-
-  <html:h2 data-l10n-id="preferences-tabs-newtab-position"/>
-    <radiogroup id="openNewTabPosition" preference="floorp.browser.tabs.openNewTabPosition">
-    <radio  value="-1"  data-l10n-id="open-new-tab-use-default"/>
-     <radio value="0" data-l10n-id="open-new-tab-at-the-end"/>
-     <radio value="1" data-l10n-id="open-new-tab-next-to-current"/>
-    </radiogroup>
 </groupbox>
 
-<hbox id="languageAndAppearanceCategory"
-      class="subcategory"
-      hidden="true"
-      data-category="paneGeneral">
-  <html:h1 data-l10n-id="language-and-appearance-header"/>
-</hbox>
+<!-- Languages -->
+<groupbox id="languagesGroup" data-category="paneGeneral" hidden="true">
+  <label><html:h2 data-l10n-id="language-header"/></label>
 
-<!--デザイン設定 -->
- <groupbox id="SystemThemeGroup" data-category="paneGeneral" hidden="true">
-    <label><html:h2 data-l10n-id="ui-preference"/></label>
-    <description class="tip-caption" data-l10n-id="preferences-browser-appearance-description"/>
-    <radiogroup  preference="floorp.browser.user.interface">
-     <radio value="1" class="themes"  data-l10n-id="firefox-proton"/>
-      <label>
-        <div id="proton"></div>  
-      </label>
-    
-      <radio value="2" class="themes" data-l10n-id="firefox-proton-fix"/>
-      <label>
-        <div id="proton-fix"></div>  
-      </label>
-    
-      <radio value="3" class="themes" data-l10n-id="firefox-photon-lepton" flex="1"/>
-      <label>
-        <div id="photon"></div>    
-      </label>
-      <hbox>
-        <spacer flex="1"/>
-      <button id="leptonButton"
+  <vbox id="browserLanguagesBox" align="start" hidden="true">
+    <description flex="1" controls="chooseBrowserLanguage" data-l10n-id="choose-browser-language-description"/>
+    <hbox>
+      <menulist id="primaryBrowserLocale">
+        <menupopup/>
+      </menulist>
+      <button id="manageBrowserLanguagesButton"
+              is="highlightable-button"
+              class="accessory-button"
+              data-l10n-id="manage-browser-languages-button"/>
+    </hbox>
+  </vbox>
+  <hbox id="confirmBrowserLanguage" class="message-bar" align="center" hidden="true">
+    <html:img class="message-bar-icon"/>
+    <vbox class="message-bar-content-container" align="stretch" flex="1"/>
+  </hbox>
+
+  <hbox id="languagesBox" align="center">
+    <description flex="1" control="chooseLanguage" data-l10n-id="choose-language-description"/>
+    <button id="chooseLanguage"
             is="highlightable-button"
             class="accessory-button"
-            data-l10n-id="lepton-preference-button"/>
-      </hbox>
-    
-      <radio value="8" class="themes" data-l10n-id="floorp-fluerialUI"/>
-      <label>
-        <div id="fluerialUI"></div>  
-      </label>
-      
-      <div id="Windows-only">
-      <radio value="5" class="themes" data-l10n-id="floorp-fluentUI"/>
-      <label>
-        <div id="fluentui"></div> 
-      </label>
-      </div>
-
-      <div id="Linux-only">
- <!--only linux-->
-      <radio value="6" class="themes" data-l10n-id="floorp-gnomeUI"/>
-      <label>
-        <div id="gnomeUI"></div>
-      </label>
-      </div>
-    </radiogroup>
-
-    <label><html:h2 data-l10n-id="other-preference"/></label>
-    <hbox align="center">
-      <checkbox preference="floorp.enable.dualtheme"
-                id="dualtheme_enable" data-l10n-id="dualtheme-enable"/> 
-      <label class="learnMore" is="text-link" href="https://blog.ablaze.one/2449/2022-10-10/" data-l10n-id="do-not-track-learn-more"></label>
-    </hbox>
-
-#ifdef XP_WIN
-    <hbox align="center">
-      <checkbox preference="floorp.material.effect.enable"
-                id="micaforeveryone" data-l10n-id="material-effect"/>
-      <label class="learnMore" is="text-link" href="https://support.ablaze.one/articles/floorp/mica-for-everyone" data-l10n-id="do-not-track-learn-more"></label>
-    </hbox>
-#endif
-<checkbox preference="floorp.delete.browser.border" data-l10n-id="delete-border-and-roundup-option" />
-
-    <label>
-      <html:h2 data-l10n-id="preferences-theme-appearance-header"/>
-    </label>
-    <label>
-    <description data-l10n-id="system-color-settings"></description>
-    </label>
-    <radiogroup id="SystemThemeColorGroup"  preference="floorp.chrome.theme.mode">
-      <radio value="1"  data-l10n-id="system-theme-dark"/>
-      <radio value="0"  data-l10n-id="system-theme-light"/>
-      <radio value="-1" data-l10n-id="system-theme-auto"/>
-    </radiogroup>
- </groupbox>
-
-<!-- Website appearance -->
-<groupbox id="webAppearanceGroup" data-category="paneGeneral" hidden="true">
-  <html:h2 data-l10n-id="preferences-web-appearance-header"/>
-  <html:div id="webAppearanceSettings">
-    <description data-l10n-id="preferences-web-appearance-description"/>
-    <html:div id="web-appearance-override-warning" class="info-box-container">
-      <html:div class="info-icon-container">
-        <html:img class="info-icon"/>
-      </html:div>
-      <description data-l10n-id="preferences-web-appearance-override-warning">
-        <html:a class="text-link" data-l10n-name="colors-link" id="web-appearance-manage-colors-link" href="#"/>
-      </description>
-    </html:div>
-    <form xmlns="http://www.w3.org/1999/xhtml" id="web-appearance-chooser" autocomplete="off">
-      <label class="web-appearance-choice" data-l10n-id="preferences-web-appearance-choice-tooltip-auto">
-        <div class="web-appearance-choice-image-container"><img role="presentation" alt="" width="54" height="42" /></div>
-        <div class="web-appearance-choice-footer">
-          <input type="radio" name="web-appearance" value="auto" data-l10n-id="preferences-web-appearance-choice-input-auto"
-          /><span data-l10n-id="preferences-web-appearance-choice-auto" />
-        </div>
-      </label>
-      <label class="web-appearance-choice" data-l10n-id="preferences-web-appearance-choice-tooltip-light">
-        <div class="web-appearance-choice-image-container"><img role="presentation" alt="" width="54" height="42" /></div>
-        <div class="web-appearance-choice-footer">
-          <input type="radio" name="web-appearance" value="light" data-l10n-id="preferences-web-appearance-choice-input-light"
-          /><span data-l10n-id="preferences-web-appearance-choice-light" />
-        </div>
-      </label>
-      <label class="web-appearance-choice" data-l10n-id="preferences-web-appearance-choice-tooltip-dark">
-        <div class="web-appearance-choice-image-container"><img role="presentation" alt="" width="54" height="42" /></div>
-        <div class="web-appearance-choice-footer">
-          <input type="radio" name="web-appearance" value="dark" data-l10n-id="preferences-web-appearance-choice-input-dark"
-          /><span data-l10n-id="preferences-web-appearance-choice-dark" />
-        </div>
-      </label>
-    </form>
-    <html:div data-l10n-id="preferences-web-appearance-footer">
-      <html:a id="web-appearance-manage-themes-link" class="text-link" data-l10n-name="themes-link" href="about:addons" target="_blank" />
-    </html:div>
-  </html:div>
-</groupbox>
-
-<!-- Colors -->
-<groupbox id="colorsGroup" data-category="paneGeneral" hidden="true">
-  <label><html:h2 data-l10n-id="preferences-colors-header"/></label>
-
-  <hbox id="colorsSettings" align="center" flex="1">
-    <description flex="1" control="colors" data-l10n-id="preferences-colors-description"/>
-    <button id="colors"
-            is="highlightable-button"
-            class="accessory-button"
-            data-l10n-id="preferences-colors-manage-button"
+            data-l10n-id="choose-button"
             search-l10n-ids="
-              colors-page-override,
-              colors-page-override-option-always.label,
-              colors-page-override-option-auto.label,
-              colors-page-override-option-never.label,
-              colors-text-and-background,
-              colors-text-header,
-              colors-background,
-              colors-use-system,
-              colors-underline-links,
-              colors-links-header,
-              colors-unvisited-links,
-              colors-visited-links
-            "/>
+              webpage-languages-window2.title,
+              languages-description,
+              languages-customize-moveup.label,
+              languages-customize-movedown.label,
+              languages-customize-remove.label,
+              languages-customize-select-language.placeholder,
+              languages-customize-add.label,
+            " />
+  </hbox>
+
+  <checkbox id="useSystemLocale" hidden="true"
+            data-l10n-id="use-system-locale"
+            data-l10n-args='{"localeName": "und"}'
+            preference="intl.regional_prefs.use_os_locales"/>
+
+  <hbox id="translationBox" hidden="true">
+    <hbox align="center" flex="1">
+      <checkbox id="translate" preference="browser.translation.detectLanguage"
+                data-l10n-id="translate-web-pages"/>
+      <hbox id="bingAttribution" hidden="true" align="center">
+        <label data-l10n-id="translate-attribution">
+          <html:img id="translationAttributionImage" aria-label="Microsoft Translator"
+            src="chrome://browser/content/microsoft-translator-attribution.png"
+            data-l10n-name="logo"/>
+        </label>
+      </hbox>
+    </hbox>
+    <button id="translateButton"
+            is="highlightable-button"
+            class="accessory-button"
+            data-l10n-id="translate-exceptions"/>
+  </hbox>
+
+  <hbox id="fxtranslationsBox" hidden="true" data-subcategory="fxtranslations">
+    <description flex="1" control="fxtranslateButton" data-l10n-id="fx-translate-web-pages"/>
+    <button id="fxtranslateButton"
+            is="highlightable-button"
+            class="accessory-button"
+            data-l10n-id="translate-exceptions"/>
+  </hbox>
+
+  <checkbox id="checkSpelling"
+          data-l10n-id="check-user-spelling"
+          preference="layout.spellcheckDefault"/>
+  <hbox>
+  <description flex="1" data-l10n-id="floorp-translater"/>
+  <button  data-l10n-id="click-to-option" is="highlightable-button" 
+    class="accessory-button" id="translateoption"/>
   </hbox>
 </groupbox>
 
@@ -476,85 +360,6 @@
   <checkbox id="zoomText"
     data-l10n-id="preferences-zoom-text-only"/>
 
-</groupbox>
-
-<!-- Languages -->
-<groupbox id="languagesGroup" data-category="paneGeneral" hidden="true">
-  <label><html:h2 data-l10n-id="language-header"/></label>
-
-  <vbox id="browserLanguagesBox" align="start" hidden="true">
-    <description flex="1" controls="chooseBrowserLanguage" data-l10n-id="choose-browser-language-description"/>
-    <hbox>
-      <menulist id="primaryBrowserLocale">
-        <menupopup/>
-      </menulist>
-      <button id="manageBrowserLanguagesButton"
-              is="highlightable-button"
-              class="accessory-button"
-              data-l10n-id="manage-browser-languages-button"/>
-    </hbox>
-  </vbox>
-  <hbox id="confirmBrowserLanguage" class="message-bar" align="center" hidden="true">
-    <html:img class="message-bar-icon"/>
-    <vbox class="message-bar-content-container" align="stretch" flex="1"/>
-  </hbox>
-
-  <hbox id="languagesBox" align="center">
-    <description flex="1" control="chooseLanguage" data-l10n-id="choose-language-description"/>
-    <button id="chooseLanguage"
-            is="highlightable-button"
-            class="accessory-button"
-            data-l10n-id="choose-button"
-            search-l10n-ids="
-              webpage-languages-window2.title,
-              languages-description,
-              languages-customize-moveup.label,
-              languages-customize-movedown.label,
-              languages-customize-remove.label,
-              languages-customize-select-language.placeholder,
-              languages-customize-add.label,
-            " />
-  </hbox>
-
-  <checkbox id="useSystemLocale" hidden="true"
-            data-l10n-id="use-system-locale"
-            data-l10n-args='{"localeName": "und"}'
-            preference="intl.regional_prefs.use_os_locales"/>
-
-  <hbox id="translationBox" hidden="true">
-    <hbox align="center" flex="1">
-      <checkbox id="translate" preference="browser.translation.detectLanguage"
-                data-l10n-id="translate-web-pages"/>
-      <hbox id="bingAttribution" hidden="true" align="center">
-        <label data-l10n-id="translate-attribution">
-          <html:img id="translationAttributionImage" aria-label="Microsoft Translator"
-            src="chrome://browser/content/microsoft-translator-attribution.png"
-            data-l10n-name="logo"/>
-        </label>
-      </hbox>
-    </hbox>
-    <button id="translateButton"
-            is="highlightable-button"
-            class="accessory-button"
-            data-l10n-id="translate-exceptions"/>
-  </hbox>
-
-  <hbox id="fxtranslationsBox" hidden="true" data-subcategory="fxtranslations">
-    <description flex="1" control="fxtranslateButton" data-l10n-id="fx-translate-web-pages"/>
-    <button id="fxtranslateButton"
-            is="highlightable-button"
-            class="accessory-button"
-            data-l10n-id="translate-exceptions"/>
-  </hbox>
-
-  <checkbox id="checkSpelling"
-          data-l10n-id="check-user-spelling"
-          preference="layout.spellcheckDefault"/>
-  <hbox>
-  <description flex="1" data-l10n-id="floorp-translater"/>
-  <button  data-l10n-id="click-to-option" is="highlightable-button" 
-    class="accessory-button" id="translateoption"/>
-  </hbox>
 </groupbox>
 
 <!-- Files and Applications -->

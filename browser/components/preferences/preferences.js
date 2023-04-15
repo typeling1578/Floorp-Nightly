@@ -199,6 +199,7 @@ function init_all() {
   Services.telemetry.setEventRecordingEnabled("aboutpreferences", true);
 
   register_module("paneGeneral", gMainPane);
+  register_module("paneDesign", gDesign);
   register_module("paneHome", gHomePane);
   register_module("paneSearch", gSearchPane);
   register_module("panePrivacy", gPrivacyPane);
@@ -262,7 +263,7 @@ function init_all() {
       "preferences";
     helpButton.setAttribute("href", helpUrl);
 
-    document.getElementById("addonsButton").addEventListener("click", e => {
+    document.getElementById("addonsButton")?.addEventListener("click", e => {
       e.preventDefault();
       if (e.button >= 2) {
         // Ignore right clicks.

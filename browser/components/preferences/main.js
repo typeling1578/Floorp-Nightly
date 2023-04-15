@@ -452,7 +452,7 @@ var gMainPane = {
       gMainPane._rebuildFonts.bind(gMainPane)
     );
     setEventListener("advancedFonts", "command", gMainPane.configureFonts);
-    setEventListener("colors", "command", gMainPane.configureColors);
+    //setEventListener("colors", "command", gMainPane.configureColors);
     Preferences.get("layers.acceleration.disabled").on(
       "change",
       gMainPane.updateHardwareAcceleration.bind(gMainPane)
@@ -716,7 +716,7 @@ var gMainPane = {
       browserBundle.getString("userContextShopping.label"),
     ]);
 
-    AppearanceChooser.init();
+    //AppearanceChooser.init();
 
     // Notify observers that the UI is now ready
     Services.obs.notifyObservers(window, "main-pane-loaded");

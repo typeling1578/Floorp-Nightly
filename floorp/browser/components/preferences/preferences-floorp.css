@@ -19,6 +19,10 @@
   #category-lepton > .category-icon {
    list-style-image: url("chrome://mozapps/skin/extensions/category-themes.svg")
   }
+
+  #category-design > .category-icon {
+    list-style-image: url("chrome://browser/skin/customize.svg") !important;
+  }
   
   #browserContainersExtensionContent{
     display: none !important;

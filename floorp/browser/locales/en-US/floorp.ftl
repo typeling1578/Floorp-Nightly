@@ -10,6 +10,11 @@ contributors = A list of <label data-l10n-name="about-contributor">contributors 
 
 #################################################################### about:preferences ####################################################################
 
+pane-design-title = Design
+category-design =
+    .tooltiptext = { pane-design-title }
+design-header = Design
+
 feature-requires-restart = A reboot is required to change the settings
 
 tab-width = Minimum width of tabs

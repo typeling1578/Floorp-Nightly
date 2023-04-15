@@ -64,7 +64,7 @@ var gLeptonPane = {
   init() {
     this._pane = document.getElementById("paneLepton");
 
-document.getElementById("backtogeneral").addEventListener("command", function(){gotoPref("general");});
+document.getElementById("backtogeneral").addEventListener("command", function(){gotoPref("design");});
   document.getElementById("lepton-design-mode").addEventListener("click", setLeptonUI, false);
   document.getElementById("photon-design-mode").addEventListener("click", setPhotonUI, false);
   let targets = document.getElementsByClassName("photonCheckbox");

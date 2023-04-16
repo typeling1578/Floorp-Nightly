@@ -465,6 +465,11 @@ browser.jar:
   skin/classic/browser/floorplegacy/test_legacy.css           (designs/floorp-legacy/test_legacy.css)
   skin/classic/browser/floorplegacy/test_legacy_multitab.css  (designs/floorp-legacy/test_legacy_multitab.css)
 
+# Updater
+  skin/classic/browser/updater/failed.png                              (icons/failed.png)
+  skin/classic/browser/updater/link-48.png                             (icons/link-48.png)
+  skin/classic/browser/updater/link-48-last.png                        (icons/link-48-last.png)
+
 # New tab background images
   skin/classic/browser/newtabbg-0.webp                            　 (newtabbg/newtabbg-0.webp)
   skin/classic/browser/newtabbg-1.webp                             　(newtabbg/newtabbg-1.webp)

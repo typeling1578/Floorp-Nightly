@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-const EXPORTED_SYMBOLS = ["isFirstRun","isUpdated"];
+const EXPORTED_SYMBOLS = ["isFirstRun","isUpdated","isMainBrowser"];
 
 /*
 Scripts written here are executed only once at browser startup.
@@ -13,7 +13,7 @@ const { Services } = ChromeUtils.import(
     "resource://gre/modules/Services.jsm"
 );
 const { AppConstants } = ChromeUtils.import(
-  "resource://gre/modules/AppConstants.jsm"
+    "resource://gre/modules/AppConstants.jsm"
 );
 const { AddonManager } = ChromeUtils.import(
     "resource://gre/modules/AddonManager.jsm"
@@ -35,7 +35,7 @@ const { FileUtils } = ChromeUtils.import(
 let isFirstRun = false;
 let isUpdated = false;
 {
-    isFirstRun = 
+    isFirstRun =
         !Boolean(Services.prefs.getStringPref("browser.startup.homepage_override.mstone", null));
 
     let nowVersion = AppConstants.MOZ_APP_VERSION_DISPLAY;
@@ -45,6 +45,9 @@ let isUpdated = false;
     }
     Services.prefs.setStringPref("floorp.startup.oldVersion", nowVersion);
 }
+
+const isMainBrowser =
+    !Services.dirsvc.get("ProfD", Ci.nsIFile).path.endsWith("chrome_debugger_profile");
 
 
 // Optimize the notification function.
@@ -65,8 +68,8 @@ let isUpdated = false;
 
 async function onFinalUIStartup() {
     Services.obs.removeObserver(onFinalUIStartup, "final-ui-startup");
-    let { BrowserManagerSidebar } = ChromeUtils.import("resource:///modules/BrowserManagerSidebar.jsm")
-    BrowserManagerSidebar.prefsUpdate()
+    let { BrowserManagerSidebar } = ChromeUtils.import("resource:///modules/BrowserManagerSidebar.jsm");
+    BrowserManagerSidebar.prefsUpdate();
 
     IOUtils.exists(OS.Path.join(OS.Constants.Path.profileDir, "newtabImages"))
         .then((data) => {
@@ -74,12 +77,11 @@ async function onFinalUIStartup() {
         })
 
     // Write CSS.
-    
     IOUtils.exists(OS.Path.join(OS.Constants.Path.profileDir, "chrome")).then((data) => {
         if (!data) {
             let userChromecssPath = OS.Path.join(OS.Constants.Path.profileDir, "chrome");
             let uccpth = OS.Path.join(userChromecssPath, 'userChrome.css')
-            IOUtils.writeUTF8(uccpth,`
+            IOUtils.writeUTF8(uccpth, `
 /*************************************************************************************************************************************************************************************************************************************************************
 
 "userChrome.css" is a custom CSS file that can be used to specify CSS style rules for Floorp's interface (NOT internal site) using "chrome" privileges.
@@ -106,7 +108,7 @@ Quote: https://userChrome.org | https://github.com/topics/userchrome
 `);
 
             let ucconpth = OS.Path.join(userChromecssPath, 'userContent.css')
-            IOUtils.writeUTF8(ucconpth,`
+            IOUtils.writeUTF8(ucconpth, `
 /*************************************************************************************************************************************************************************************************************************************************************
  
 "userContent.css" is a custom CSS file that can be used to specify CSS style rules for Floorp's intenal site using "chrome" privileges.
@@ -133,12 +135,12 @@ NOTE: You can use the userContent.css file without change preferences (about:con
 
     if (isFirstRun) {
         try {
-            let url = "https://addons.mozilla.org/firefox/downloads/latest/Gesturefy/latest.xpi" 
+            let url = "https://addons.mozilla.org/firefox/downloads/latest/Gesturefy/latest.xpi";
             let install = await AddonManager.getInstallForURL(url);
             await install.install();
         } catch (e) { console.error(e) }
         try {
-            let url = "https://addons.mozilla.org/firefox/downloads/latest/ublock-origin/latest.xpi" 
+            let url = "https://addons.mozilla.org/firefox/downloads/latest/ublock-origin/latest.xpi";
             let install = await AddonManager.getInstallForURL(url);
             let installed = await install.install();
             await installed.disable(); // Default is disabled.
@@ -162,39 +164,14 @@ NOTE: You can use the userContent.css file without change preferences (about:con
         Services.prefs.setBoolPref("floorp.extensions.translate.migrateFromSystemAddonToUserAddon.ended", true);
     } catch (e) { console.error(e) }
 
-    // Migrate from "floorp.optimized.msbutton.ope" pref
-    if (Services.prefs.prefHasUserValue("floorp.optimized.msbutton.ope")) {
-        CustomizableUI.removeWidgetFromArea("forward-button");
-        CustomizableUI.removeWidgetFromArea("back-button");
-        Services.prefs.clearUserPref("floorp.optimized.msbutton.ope");
-    }
-
-
     if (isFirstRun) {
         setTimeout(() => {
             Services.prefs.setStringPref("browser.contentblocking.category", "strict")
         }, 5000);
     }
 }
-Services.obs.addObserver(onFinalUIStartup, "final-ui-startup");
-
-
-// Optimize for portable version
-if (Services.prefs.getBoolPref("floorp.isPortable", false)) {
-    // from firefox-scripts (https://github.com/xiaoxiaoflood/firefox-scripts/blob/2bf4334a604ef2184657ed1ddf512bbe0cd7c63c/chrome/utils/BootstrapLoader.jsm#L19-L22)
-    const Constants = ChromeUtils.import('resource://gre/modules/AppConstants.jsm');
-    const temp = Object.assign({}, Constants.AppConstants);
-    temp.MOZ_UPDATER = false;
-    Constants.AppConstants = Object.freeze(temp);
-
-    // https://searchfox.org/mozilla-esr102/source/toolkit/modules/UpdateUtils.jsm#397
-    // https://searchfox.org/mozilla-esr102/source/toolkit/modules/UpdateUtils.jsm#506-507
-    // https://searchfox.org/mozilla-esr102/source/toolkit/modules/UpdateUtils.jsm#557,573
-    const UpdateUtils = ChromeUtils.import("resource://gre/modules/UpdateUtils.jsm");
-    UpdateUtils.UpdateUtils.PER_INSTALLATION_PREFS["app.update.auto"].policyFn =
-        function() { return false };
-    UpdateUtils.UpdateUtils.PER_INSTALLATION_PREFS["app.update.background.enabled"].policyFn =
-        function() { return false };
+if (isMainBrowser) {
+    Services.obs.addObserver(onFinalUIStartup, "final-ui-startup");
 }
 
 
@@ -212,21 +189,35 @@ if (Services.prefs.getBoolPref("floorp.isPortable", false)) {
 }
 
 
-// Load Tab Sleep feature
-try {
-    ChromeUtils.import("resource:///modules/TabSleep.jsm");
-} catch (e) { console.error(e) }
+if (isMainBrowser) {
+    // Load actors
+    try {
+        ChromeUtils.import("resource:///modules/FloorpActors.jsm");
+    } catch (e) { console.error(e) }
 
-// Load OpenLinkInExternal feature
-try {
-    // Disable it in the Flatpak version because it does not work.
-    // https://gitlab.gnome.org/GNOME/gtk/-/blob/4300a5c609306ce77cbc8a3580c19201dccd8d13/gdk/gdk.c#L472
-    if (AppConstants.platform === "linux" && FileUtils.File("/.flatpak-info").exists()) {
-        Services.prefs.lockPref("floorp.openLinkInExternal.enabled");
-    }
-    if (AppConstants.platform === "win" || AppConstants.platform === "linux") {
-        if (Services.prefs.getBoolPref("floorp.openLinkInExternal.enabled", false)) {
-            ChromeUtils.import("resource:///modules/OpenLinkInExternal.jsm");
+    // Load Tab Sleep feature
+    try {
+        ChromeUtils.import("resource:///modules/TabSleep.jsm");
+    } catch (e) { console.error(e) }
+
+    // Load OpenLinkInExternal feature
+    try {
+        // Disable it in the Flatpak version because it does not work.
+        // https://gitlab.gnome.org/GNOME/gtk/-/blob/4300a5c609306ce77cbc8a3580c19201dccd8d13/gdk/gdk.c#L472
+        if (AppConstants.platform === "linux" && FileUtils.File("/.flatpak-info").exists()) {
+            Services.prefs.lockPref("floorp.openLinkInExternal.enabled");
         }
-    }
-} catch (e) { console.error(e) }
+        if (AppConstants.platform === "win" || AppConstants.platform === "linux") {
+            if (Services.prefs.getBoolPref("floorp.openLinkInExternal.enabled", false)) {
+                ChromeUtils.import("resource:///modules/OpenLinkInExternal.jsm");
+            }
+        }
+    } catch (e) { console.error(e) }
+
+    // Load PortableUpdate feature
+    try {
+        if (Services.prefs.getBoolPref("floorp.isPortable", false)) {
+            ChromeUtils.import("resource:///modules/PortableUpdate.jsm");
+        }
+    } catch (e) { console.error(e) }
+}

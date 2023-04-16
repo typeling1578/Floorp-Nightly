@@ -175,6 +175,7 @@ const portableUpdateUtils = {
             null,
             null
         );
+        return;
     } else {
         // no fatal error
     }

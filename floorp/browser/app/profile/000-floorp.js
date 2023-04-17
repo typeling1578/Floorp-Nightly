@@ -141,7 +141,6 @@ pref("floorp.browser.native.downloadbar.enabled", false);
 //検索エンジン
 pref("browser.search.separatePrivateDefault", true);
 pref("browser.search.separatePrivateDefault.ui.enabled", true);
-pref("browser.search.geoip.url", false, locked);
 pref("browser.urlbar.update2.engineAliasRefresh", true);
 pref("devtools.debugger.prompt-connection", false);
 

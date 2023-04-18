@@ -115,18 +115,21 @@ document.addEventListener("DOMContentLoaded", () => {
       removeMultirowTabMaxHeight();
       setBrowserDesign();
       let tabToolbarItems = document.querySelector("#TabsToolbar > .toolbar-items");
+      let tabsToolbar = document.getElementById("TabsToolbar-customization-target");
+      let tabbrowserTabs = document.getElementById("tabbrowser-tabs");
       tabToolbarItems.style.visibility = "hidden";
       window.setTimeout(function(){
         new Promise(function() {
-          var tabbrowserTabs = document.getElementById("tabbrowser-tabs");
+          tabsToolbar.setAttribute("flex", "");
           tabbrowserTabs.setAttribute("style", "-moz-box-flex: unset !important;");
           setTimeout(function() {
+            tabsToolbar.setAttribute("flex", "1");
             tabbrowserTabs.style.removeProperty("-moz-box-flex");[
               tabToolbarItems.style.visibility = ""
             ]
           }, 0);
         })
-      }, 500);
+      }, 1000);
     }
   }
   Services.prefs.addObserver("floorp.tabbar.style", applyMultitab);

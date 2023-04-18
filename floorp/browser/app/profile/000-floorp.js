@@ -210,7 +210,7 @@ pref("browser.crashReports.unsubmittedCheck.enabled",	false);
 //野良アドオンのインストールを許可。開発者向け。Floorp アドオンストアの準備。
 pref("xpinstall.signatures.required", false);
 
-// Firefox による、Mozilla への情報送信テレメンタリーを無効化
+// Firefox による、Mozilla へのテレメトリー送信を無効化
 pref("toolkit.telemetry.archive.enabled", false, locked);
 pref("toolkit.telemetry.bhrPing.enabled", false, locked);
 pref("toolkit.telemetry.enabled", false, locked);
@@ -461,9 +461,7 @@ pref("userChrome.rounding.square_tab",            true);
 // pref("userContent.page.proton_color.system_accent",    true);
 // pref("userContent.page.monospace",                     true);
 
-// == Theme Default Settings ===================================================
-pref("userChrome.compatibility.accent_color", true, locked); // ESR102 Compatibility Options
-// -- User Chrome --------------------------------------------------------------
+//// -- User Chrome --------------------------------------------------------------
 pref("userChrome.compatibility.theme",       true);
 pref("userChrome.compatibility.os",          true);
 

@@ -55,6 +55,7 @@ function getBrowsersOnWindows() {
         }
         for (let i = 0; i < key.childCount; i++) {
             let keyname = key.getChildName(i);
+            if (keyname == "IEXPLORE.EXE") continue;
             if (browsers.filter(browser => browser.keyName === keyname).length >= 1) continue;
 
             let keyBrowserName = Cc["@mozilla.org/windows-registry-key;1"].createInstance(
@@ -357,7 +358,9 @@ let documentObserver = {
             seenDocuments.add(doc);
             let window_ = doc.defaultView;
             let document_ = window_.document;
-            if (window_.location.href == "chrome://browser/content/browser.xhtml") {
+            let uriObj = Services.io.newURI(window_.location.href);
+            let uriWithoutQueryRef = uriObj.prePath + uriObj.filePath;
+            if (uriWithoutQueryRef == "chrome://browser/content/browser.xhtml") {
                 (async () => {
                     let tabContextMenu = document_.querySelector("#tabContextMenu");
                     let openLinkInExternal = document_.createXULElement("menuitem");
@@ -396,8 +399,8 @@ let documentObserver = {
                     contextMenu.querySelector("#context-sendlinktodevice")
                         .insertAdjacentElement("afterend", openLinkInExternal);
                 })();
-            } else if (window_.location.href.startsWith("chrome://browser/content/preferences/preferences.xhtml") ||
-                    window_.location.href.startsWith("about:preferences")) {
+            } else if (uriWithoutQueryRef == "chrome://browser/content/preferences/preferences.xhtml" ||
+                    uriWithoutQueryRef == "about:preferences") {
                 window_.addEventListener("pageshow", async function() {
                     await window_.gMainPane.initialized;
                     let browsers = [];

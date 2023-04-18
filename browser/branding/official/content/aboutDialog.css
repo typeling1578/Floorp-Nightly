@@ -53,3 +53,9 @@
   color: #999999;
   margin-block: 10px;
 }
+
+#aboutDialogContainer {
+  color: #fff;
+  background-image: url("chrome://branding/content/floorp-background.png");
+  background-size: 115%;
+}

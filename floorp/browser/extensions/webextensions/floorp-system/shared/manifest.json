@@ -106,7 +106,6 @@
       "webcompat_inject.js",
       "webcompat_useragent.js",
       "update.js",
-      "portable-update.js",
       "download-notification.js"
     ]
   },

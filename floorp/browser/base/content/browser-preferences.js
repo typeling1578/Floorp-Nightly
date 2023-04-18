@@ -77,3 +77,36 @@ const GENERAL_USERAGENT_OVERRIDE_PREF = "general.useragent.override";
     setUserAgent(BROWSER_SETED_USERAGENT);
   })
 }
+
+
+// backup Floorp Notes Pref
+var { OS } = ChromeUtils.import(
+  "resource://gre/modules/osfile.jsm"
+);
+
+const FLOORP_NOTES_PREF = "floorp.browser.note.memos";
+const FLOORP_NOTES_LATEST_BACKUP_TIME_PREF = "floorp.browser.note.backup.latest.time";
+
+const backupFloorpNotes = async () => {
+  const memos = Services.prefs.getCharPref(FLOORP_NOTES_PREF).slice(1, -1);
+  const time = new Date().getTime();
+  const backup = { [time]: memos };
+  const jsonToStr = JSON.stringify(backup).slice(1, -1);
+
+  const filePath = OS.Path.join(OS.Constants.Path.profileDir, "floorp_notes_backup.json");
+  const txtEncoded = new TextEncoder().encode(`${jsonToStr},`);
+
+  Services.prefs.setCharPref(FLOORP_NOTES_LATEST_BACKUP_TIME_PREF, time);
+  
+  if (!(await OS.File.exists(filePath))) {
+    await OS.File.writeAtomic(filePath, new TextEncoder().encode(`{"data":{`));
+  }
+
+  const valOpen = await OS.File.open(filePath, { write: true, append: true });
+  await valOpen.write(txtEncoded);
+  await valOpen.close();
+};
+
+if(Services.prefs.getCharPref(FLOORP_NOTES_PREF) != ""){
+  backupFloorpNotes();
+}

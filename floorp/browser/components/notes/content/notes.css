@@ -33,9 +33,13 @@ body, html {
 
 #memo-contents{
    padding-left: var(--main-content-padding-to-sidebar);
-   overflow: scroll;
-   max-width: 70em;
-   width: 65vw;
+   max-width: 55em;
+   width: -moz-available;
+}
+
+#memo-contents-box {
+   overflow : scroll;
+   width: inherit;
 }
 
 .memo-list-item {
@@ -56,7 +60,8 @@ body, html {
 
 #memo-input {
    resize: none;
-   max-width: 55em;
+   max-width: 50em;
+   max-height: 40em;
    width: 60vw;
    height: 40vw;
 }
@@ -105,6 +110,7 @@ body, html {
 
 #memo-form {
    margin-bottom: 20px;
+   max-width: 55em;
 }
 
 #html-output {

@@ -5,11 +5,6 @@
 document.addEventListener('DOMContentLoaded', function(){
 
   let { Services } = ChromeUtils.import("resource://gre/modules/Services.jsm");
-
-  //Clear using pref first
-
-  Services.prefs.clearUserPref("floorp.browser.note.memos.using");
-
   const memoInput = document.getElementById("memo-input");
   const memoSave = document.getElementById("memo-save");
   const memoList = document.getElementById("memo-list");
@@ -20,6 +15,9 @@ document.addEventListener('DOMContentLoaded', function(){
   const memoMarkDownPreViewButton = document.getElementById("memo-markdown-preview");
   const l10n = new Localization(["browser/floorp.ftl"], true);
   const offlineLabel = document.getElementById("offline-label");
+
+  //Clear using pref first
+  Services.prefs.clearUserPref("floorp.browser.note.memos.using");
 
   memoTitleInput.placeholder = l10n.formatValueSync("memo-title-input-placeholder");
   memoInput.placeholder = l10n.formatValueSync("memo-input-placeholder");

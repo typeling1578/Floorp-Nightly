@@ -110,3 +110,5 @@ const backupFloorpNotes = async () => {
 if(Services.prefs.getCharPref(FLOORP_NOTES_PREF) != ""){
   backupFloorpNotes();
 }
+
+//Restore backup JavaScript is at about:preferences#notes

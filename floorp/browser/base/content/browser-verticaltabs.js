@@ -10,7 +10,7 @@ function setVerticalTabs() {
       verticalTabs.id = "toolbar-items-verticaltabs";
 
       let sidebarBox = document.getElementById("sidebar-box");
-      sidebarBox.style.setProperty("overflow", "scroll", "important")
+      //sidebarBox.style.setProperty("overflow-y", "scroll", "important")
 
       //init vertical tabs
       sidebarBox.insertBefore(verticalTabs, sidebarBox.firstChild);
@@ -53,11 +53,15 @@ function setVerticalTabs() {
       
       window.setTimeout(() => {
         if(tabBrowserArrowScrollBox.getAttribute("overflowing") != "true") tabsBase.removeAttribute("overflow")
+        tabsToolBar.removeAttribute("positionpinnedtabs")
+        for(let elem of document.querySelectorAll(`#tabbrowser-arrowscrollbox > tab[style*="margin-inline-start"]`)){
+          elem.style.removeProperty("margin-inline-start")
+        }
       },1000)
       tabBrowserArrowScrollBox.setAttribute("scrolledtostart","true")
       tabBrowserArrowScrollBox.removeAttribute("disabled");
       let sidebarBox = document.getElementById("sidebar-box");
-      sidebarBox.style.removeProperty("overflow")
+      //sidebarBox.style.removeProperty("overflow-y")
     }
   }
 

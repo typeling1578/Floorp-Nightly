@@ -2,7 +2,7 @@
    - License, v. 2.0. If a copy of the MPL was not distributed with this
    - file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-  #sidebar {
+   #sidebar {
     max-width: none !important;
     min-width: 0px !important;
   }
@@ -32,17 +32,20 @@
   
   /*close*/
   #sidebar-box {
-    min-width: var(--default-vertitaltab-width) !important;
-    max-width: var(--default-vertitaltab-width) !important;
+    --hovering-verticaltab-width: calc( var(--default-vertitaltab-width) + 16px);
     width: var(--default-vertitaltab-width) !important;
     transition: all 200ms !important;
     transition-delay: 0.2s !important;
   }
+
+#sidebar-box:not(:hover) .tab-close-button{
+  display:none !important;
+  --paxmod-display-close-button:none !important;
+}
   
   /*open*/
   #sidebar-box:hover {
-    min-width: var(--hoverd-verticaltab-width) !important;
-    max-width: var(--hoverd-verticaltab-width) !important;
+    --hovering-verticaltab-width: var(--hoverd-verticaltab-width) !important;
     transition: all 200ms !important;
     transition-delay: 0.2s !important;
   }

@@ -27,6 +27,7 @@ Preferences.addAll([
   { id: "floorp.openLinkInExternal.enabled", type: "bool" },
   { id: "floorp.openLinkInExternal.browserId", type: "string" },
   { id: "floorp.browser.tabs.openNewTabPosition", type: "int" },
+  { id: "services.sync.prefs.sync.floorp.browser.note.memos", type: "bool" },
 ]);
 
 window.addEventListener("pageshow", async function() {
@@ -118,6 +119,10 @@ window.addEventListener("pageshow", async function() {
 
   document.getElementById("SetCustomURL").addEventListener("click", function () {
     window.location.href = "about:preferences#bSB";
+  });
+
+  document.getElementById("backUpNotesOption").addEventListener("click", function () {
+    window.location.href = "about:preferences#Notes";
   });
 
   {

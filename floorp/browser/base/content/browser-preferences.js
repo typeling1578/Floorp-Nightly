@@ -111,4 +111,31 @@ if(Services.prefs.getCharPref(FLOORP_NOTES_PREF) != ""){
   backupFloorpNotes();
 }
 
-//Restore backup JavaScript is at about:preferences#notes
+function getAllBackupedNotes() {
+  const filePath = OS.Path.join(OS.Constants.Path.profileDir, "floorp_notes_backup.json");
+  let content = OS.File.read(filePath, {
+    encoding: "utf-8"
+  });
+  content = content.then(content => {
+    content = content.slice(0, -1);
+    content = content + "}}";
+    return JSON.parse(content);
+  })
+  return content;
+}
+
+//Backup Limit is 10.
+getAllBackupedNotes().then(content => {
+ if(Object.keys(content.data).length > 9){
+  let keys = Object.keys(content.data);
+  let sortedKeys = keys.sort((a, b) => b - a);
+  let deleteKeys = sortedKeys.slice(9);
+  deleteKeys.forEach((key) => {
+    delete content.data[key];
+  })
+  let jsonToStr = JSON.stringify(content).slice(0, -2);
+  jsonToStr = jsonToStr + ",";
+  let filePath = OS.Path.join(OS.Constants.Path.profileDir, "floorp_notes_backup.json");
+  OS.File.writeAtomic(filePath, new TextEncoder().encode(jsonToStr));
+ }
+})

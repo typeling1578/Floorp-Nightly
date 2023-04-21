@@ -7,6 +7,7 @@ browser.jar:
    content/browser/preferences/lepton.js
    content/browser/preferences/bsb.js
    content/browser/preferences/design.js
+   content/browser/preferences/notes.js
 
 browser.jar:
 % skin browser classic/1.0 %skin/classic/browser/

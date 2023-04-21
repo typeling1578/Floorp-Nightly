@@ -407,6 +407,19 @@ floorp-home-mode-choice-default =
 floorp-home-prefs-content-header = Floorp Home Content
 floorp-home-prefs-content-description = Choose what content you want on your Floorp Home screen.
 
+## Notes
+floorp-notes = { -brand-short-name } Notes
+restore-from-backup = Restore Notes from Backup
+enable-notes-sync = 
+ .label = Enable { -brand-short-name } Notes Sync
+about-notes-backup-tips = Floorp Notes use Firefox Sync to Sync your Notes other devices. If you lost your notes, you can restore them from backup. Backup will save when you start { -brand-short-name }.
+notes-sync-description = This may solve the problem of loss of contents due to overwriting of Notes by sync.
+backuped-time = Backuped Time
+notes-backup-option = Backup Options
+backup-option-button = Open Backup Options...
+
+restore-from-backup-prompt-title = Floorp Notes Restore Service
+restore-from-this-backup = Restore to the state you were in when you backed up?
 
 ################################################################### browser ###############################################################
 

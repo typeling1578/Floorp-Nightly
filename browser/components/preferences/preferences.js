@@ -204,6 +204,7 @@ function init_all() {
   register_module("paneSearch", gSearchPane);
   register_module("panePrivacy", gPrivacyPane);
   register_module("paneLepton", gLeptonPane);
+  register_module("paneNotes", gNotesPane);
   register_module("paneBSB", gBSBPane);
   register_module("paneContainers", gContainersPane);
   if (Services.prefs.getBoolPref("browser.preferences.experimental")) {

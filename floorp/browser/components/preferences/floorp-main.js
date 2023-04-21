@@ -122,7 +122,7 @@ window.addEventListener("pageshow", async function() {
   });
 
   document.getElementById("backUpNotesOption").addEventListener("click", function () {
-    window.location.href = "about:preferences#Notes";
+    window.location.href = "about:preferences#notes";
   });
 
   {

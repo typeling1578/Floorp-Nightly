@@ -61,7 +61,7 @@ async function restoreNote(timestamp) {
     value: false
   };
   const flags = prompts.BUTTON_POS_0 * prompts.BUTTON_TITLE_OK + prompts.BUTTON_POS_1 * prompts.BUTTON_TITLE_CANCEL;
-  let result = prompts.confirmEx(null, l10n.formatValueSync("restore-from-backup-prompt-title"), `${l10n.formatValueSync("restore-from-this-backup")} ${coventToDateAndTime(Number(timestamp))}`, flags, "", null, "", null, check);
+  let result = prompts.confirmEx(null, l10n.formatValueSync("restore-from-backup-prompt-title"), `${l10n.formatValueSync("restore-from-this-backup")}\n${l10n.formatValueSync("backuped-time")}: ${coventToDateAndTime(Number(timestamp))}`, flags, "", null, "", null, check);
   if (result == 0) {
     let content = await getAllBackupedNotes();
     let note = `{${content.data[timestamp]}}`;

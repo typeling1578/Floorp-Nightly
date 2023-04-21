@@ -419,7 +419,7 @@ notes-backup-option = Backup Options
 backup-option-button = Open Backup Options...
 
 restore-from-backup-prompt-title = Floorp Notes Restore Service
-restore-from-this-backup = Restore to the state you were in when you backed up? Date:
+restore-from-this-backup = Restore to the state you were in when you backed up?
 
 ################################################################### browser ###############################################################
 

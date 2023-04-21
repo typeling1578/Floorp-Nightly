@@ -332,3 +332,50 @@
 #nav-bar:-moz-lwtheme {
   box-shadow: none !important;
 }
+
+#fxa-toolbar-menu-button {
+  display: inherit !important;
+}
+
+:root[privatebrowsingmode] #fxa-toolbar-menu-button {
+  display: inherit !important;
+  background: var(--panel-separator-zap-gradient);
+  margin: auto;
+  color: var(--toolbar-bgcolor) !important;
+  fill: currentColor !important;
+  border-radius: 15px;
+  padding: 0px 5px 0px 10px;
+}
+
+ :root[privatebrowsingmode] #fxa-toolbar-menu-button::before {
+  content: "Private" !important;
+  display: -moz-box !important;
+  font-size: 12px !important;
+  font-weight: bold;
+  margin: auto;
+}
+
+ :root[privatebrowsingmode] #fxa-avatar-image {
+  list-style-image: url("chrome://branding/content/about-logo-private.png") !important;
+  scale: 1.2;
+}
+
+ :root[privatebrowsingmode] #fxa-toolbar-menu-button:hover {
+  background: var(--panel-separator-zap-gradient) !important;
+  background-color: var(--panel-separator-zap-gradient) !important;
+  filter: brightness(70%);
+}
+
+ :root[privatebrowsingmode] #fxa-toolbar-menu-button:active {
+  background: var(--panel-separator-zap-gradient) !important;
+  background-color: var(--panel-separator-zap-gradient) !important;
+  filter: brightness(50%);
+}
+
+ :root[privatebrowsingmode] #fxa-toolbar-menu-button:hover>.toolbarbutton-badge-stack {
+  background-color: inherit !important;
+}
+
+#private-browsing-indicator-with-label {
+  display: none !important;
+}

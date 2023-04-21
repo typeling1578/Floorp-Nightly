@@ -78,8 +78,8 @@
    width: -moz-available !important;
    min-width: -moz-available !important;
    max-width: -moz-available !important;
-   padding-inline-start: var(--floorp-customcss-vertical-tab-inline-start,5px)  !important;
-   padding-inline-end: 5px !important;
+   padding-inline-start: var(--floorp-customcss-vertical-tab-inline-start,2px)  !important;
+   padding-inline-end: 2px !important;
  }
  
   #tabbrowser-tabs[positionpinnedtabs] > #tabbrowser-arrowscrollbox > .tabbrowser-tab[pinned] {
@@ -221,3 +221,7 @@
    .tab-stack::before, .tab-stack::after {
      display: none !important;
    } 
+
+   .tabbrowser-tab[label="Floorp View"], .tabbrowser-tab[label="Firefox View"]{
+     display: none !important;
+   }

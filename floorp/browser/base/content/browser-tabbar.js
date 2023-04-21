@@ -67,12 +67,14 @@ function setMultirowTabMaxHeight() {
   scrollbox.removeAttribute("style");
 
   const isMultiRowTabEnabled = Services.prefs.getBoolPref("floorp.browser.tabbar.multirow.max.enabled");
-  if (isMultiRowTabEnabled) {
-    const rowValue = Services.prefs.getIntPref("floorp.browser.tabbar.multirow.max.row");
+  const rowValue = Services.prefs.getIntPref("floorp.browser.tabbar.multirow.max.row");
     const tabHeight = document.querySelector(".tabbrowser-tab").clientHeight;
     arrowscrollbox
       .style.cssText += "max-height: unset !important;";
+  if (isMultiRowTabEnabled && Services.prefs.getIntPref("floorp.tabbar.style") == 1) {
     scrollbox.setAttribute("style", `max-height: ${tabHeight * rowValue}px !important;`);
+  }else{
+    scrollbox.setAttribute("style", `max-height: unset !important;`);
   }
   
 }

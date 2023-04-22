@@ -344,7 +344,8 @@
   color: var(--toolbar-bgcolor) !important;
   fill: currentColor !important;
   border-radius: 15px;
-  padding: 0px 5px 0px 10px;
+  padding: 0px 0px 0px 10px;
+  max-height: 25px;
 }
 
  :root[privatebrowsingmode] #fxa-toolbar-menu-button::before {
@@ -366,14 +367,16 @@
   filter: brightness(70%);
 }
 
- :root[privatebrowsingmode] #fxa-toolbar-menu-button:active {
+ :root[privatebrowsingmode] #fxa-toolbar-menu-button:active, :root[privatebrowsingmode] #fxa-toolbar-menu-button:is([open], [checked]) {
   background: var(--panel-separator-zap-gradient) !important;
   background-color: var(--panel-separator-zap-gradient) !important;
   filter: brightness(50%);
 }
 
- :root[privatebrowsingmode] #fxa-toolbar-menu-button:hover>.toolbarbutton-badge-stack {
+ :root[privatebrowsingmode] #fxa-toolbar-menu-button:hover>.toolbarbutton-badge-stack,
+ :root[privatebrowsingmode] #fxa-toolbar-menu-button:not([disabled="true"]):is([open], [checked], :hover:active) > .toolbarbutton-badge-stack {
   background-color: inherit !important;
+  filter: brightness(50%);
 }
 
 #private-browsing-indicator-with-label {

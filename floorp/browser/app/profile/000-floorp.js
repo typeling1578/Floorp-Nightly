@@ -136,6 +136,11 @@ pref("floorp.browser.native.verticaltabs.enabled", false);
 
 //ネイティブ実装ダウンロードバー
 pref("floorp.browser.native.downloadbar.enabled", false);
+
+//ワークスペース
+pref("floorp.browser.workspace.tabs.state", "[]");
+pref("floorp.browser.workspace.current", "Default");
+pref("floorp.browser.workspace.all", "Default");
 /*----------------------------------------------------------------------------------------------------------------------------------*/
 
 //検索エンジン

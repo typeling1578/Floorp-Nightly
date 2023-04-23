@@ -382,3 +382,48 @@
 #private-browsing-indicator-with-label {
   display: none !important;
 }
+
+#workspace-button > .toolbarbutton-text {
+  display: inherit;
+  font-weight: bold;
+  font-size: 13px;
+  border-radius: 0px var(--tab-border-radius) var(--tab-border-radius) 0px !important;
+}
+
+#workspace-button > .toolbarbutton-icon {
+  border-radius: var(--tab-border-radius) 0px 0px var(--tab-border-radius) !important;
+}
+toolbar #workspace-button:not([disabled="true"]):is([open], [checked], :hover:active) > .toolbarbutton-icon,
+toolbar #workspace-button:not([disabled="true"], [checked], [open], :active):hover > .toolbarbutton-icon,
+toolbar #workspace-button:not([disabled="true"]):is([open], [checked], :hover:active) > .toolbarbutton-text,
+toolbar #workspace-button:not([disabled="true"], [checked], [open], :active):hover > .toolbarbutton-text
+{
+  background: none !important;
+  background-color: unset !important;
+}
+
+#workspace-button[open="true"] {
+  background: var(--toolbarbutton-active-background);
+  border-radius: var(--tab-border-radius);
+}
+
+#workspace-label {
+  width: 80%;
+}
+
+#workspace-label > .toolbarbutton-icon {
+  display: none;
+}
+
+#workspace-label > .toolbarbutton-text {
+  display: block;
+  text-align: start;
+}
+
+#workspace-delete {
+  width: 20%;
+}
+
+#workspace-delete > .toolbarbutton-icon {
+  list-style-image: url("chrome://browser/skin/lepton/dismiss-filled.svg");
+}

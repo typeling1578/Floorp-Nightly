@@ -674,3 +674,14 @@ floorp-show-all-downloads =
   .label = Show all downloads
   .accesskey = S
   .tooltiptext = Show all downloads
+
+######################################################################### workspace ###############################################################
+
+workspace-prompt-title = Floorp Workspace
+please-enter-workspace-name = Please enter new workspace name.
+workspace-error = ERROR!
+workspace-error-discription = Workspace name is empty or already exists.
+
+workspace-button = Workspace
+  .label = Workspace
+  .tooltiptext = Workspace

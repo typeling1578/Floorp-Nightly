@@ -26,5 +26,6 @@ document.addEventListener("DOMContentLoaded", () => {
     Services.scriptloader.loadSubScript("chrome://browser/content/browser-pinned-tabs-title.js", this);
     Services.scriptloader.loadSubScript("chrome://browser/content/browser-chromeCSS.js", this);
     Services.scriptloader.loadSubScript("chrome://browser/content/browser-verticaltabs.js", this);
+    Services.scriptloader.loadSubScript("chrome://browser/content/browser-workspace.js", this);
 }, { once: true });
 </script>

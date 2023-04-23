@@ -70,7 +70,7 @@ multirow-tabbar =
  .label = Multi-Row Tabbar
 vertical-tabbar =
  .label = Vertical Tabbar (experimental)
-native-tabbar-tip = This feature uses default Firefox sidebar, so you can't use it with other sidebar addons & default sidebar panels.
+native-tabbar-tip = This feature uses default Firefox sidebar, so you can't use it with other sidebar add-ons & default sidebar panels.
 
 hover-vertical-tab =
  .label = Expand vertical tabs when hovering the mouse cursor
@@ -100,7 +100,7 @@ about-legacy-components = Enabling this feature may cause unexpected bugs or fat
 Search-positon-top =
  .label = Display the search bar at the top of the page
 allow-auto-restart =
- .label = Automatic restart when settings are changed that require a restart
+ .label = Automatic restart when settings that require a restart are changed
 
 browser-rest-mode =
  .label = Enable Rest-mode shortcut (F9)
@@ -131,7 +131,7 @@ system-theme-auto =
 ## user interface prefernces
 
 ui-preference = Browser appearance
-preferences-browser-appearance-description = You can choose from a selection of great designs written by Floorp third parties. Some designs may not be compatible with your configuration.
+preferences-browser-appearance-description = You can choose from a variety of great third-party designs. Some designs may not be compatible with your configuration.
 
 firefox-proton =
  .label = Firefox modern Proton UI
@@ -201,9 +201,9 @@ downloading-red-color =
 
 sidebar-preferences = Sidebar
 view-sidebar2-right = 
- .label = View the Browser Manager Sidebar on the Right
+ .label = Display Browser Manager Sidebar on the Right
 enable-sidebar2 =
- .label = Enable the Browser Manager Sidebar
+ .label = Enable Browser Manager Sidebar
 
 custom-URL-option = Set Webpanel URLs
 set-custom-URL-button =
@@ -212,7 +212,7 @@ set-custom-URL-button =
 bsb-header = Browser Manager Sidebar
 bsb-context = Select Container Tabs
 bsb-userAgent-label = 
-  .label = Use Mobile version UserAgent in this panel
+  .label = Use Mobile UserAgent for this panel
 bsb-width = Width (If set to 0, use global values)
 bsb-page = Page to open
 
@@ -253,7 +253,7 @@ sidebar2-pref-delete =
 sidebar2-pref-setting =
  .label = Setting
 
-sidebar2-global-width = Global value of webpanel's width
+sidebar2-global-width = Global webpanel width
 
 use-icon-provider-option = Use Icon Provider
 
@@ -281,7 +281,7 @@ max-memory =
     .label = Best Speed and Performance (high memory usage)
 
 delete-border-and-roundup-option =
-  .label = round up { -brand-short-name }'s corners
+  .label = Round up { -brand-short-name }'s corners
 
 ## DualTheme
 dualtheme-enable =
@@ -389,7 +389,7 @@ floorp-lepton-enable-urlbar-icon-move-to-left =
 floorp-lepton-enable-urlname-go_button_when_typing =
     .label = When typing, reduce the urlbar space and show a Go Button
 floorp-lepton-enable-always-show-page_action =
-    .label = Reduce the urlbar space and always show the addon action button
+    .label = Reduce the urlbar space and always show the add-on action button
 
 tabbar-preferences = Tabbar
 
@@ -405,21 +405,21 @@ floorp-lepton-enable-overlap-sidebar =
 floorp-home-mode-choice-default =
     .label = Floorp Home (Default)
 floorp-home-prefs-content-header = Floorp Home Content
-floorp-home-prefs-content-description = Choose what content you want on your Floorp Home screen.
+floorp-home-prefs-content-description = Choose the content you want to see on the Floorp Home Page.
 
 ## Notes
 floorp-notes = { -brand-short-name } Notes
 restore-from-backup = Restore Notes from Backup
 enable-notes-sync = 
  .label = Enable { -brand-short-name } Notes Sync
-about-notes-backup-tips = Floorp Notes use Firefox Sync to Sync your Notes other devices. If you lost your notes, you can restore them from backup. Backup will save when you start { -brand-short-name }.
-notes-sync-description = This may solve the problem of loss of contents due to overwriting of Notes by sync.
-backuped-time = Backuped Time
+about-notes-backup-tips = Floorp Notes uses Firefox Sync to sync your notes with other devices. If you lose your notes, you can restore them from a backup. A backup is created when you start { -brand-short-name }.
+notes-sync-description = This can solve the problem of losing content due to overwriting notes during synchronization.
+backuped-time = Time of backup
 notes-backup-option = Backup Options
 backup-option-button = Open Backup Options...
 
 restore-from-backup-prompt-title = Floorp Notes Restore Service
-restore-from-this-backup = Restore to the state you were in when you backed up?
+restore-from-this-backup = Restore Notes to the state of this backup ?
 
 ################################################################### browser ###############################################################
 
@@ -455,7 +455,7 @@ sidebar-reload-button =
   .tooltiptext = Reload
 
 sidebar-go-index-button =
-  .tooltiptext = Go Home Page
+  .tooltiptext = Go Home
 
 sidebar-muteAndUnmute-button =
   .tooltiptext = Mute/Unmute sidebar
@@ -506,7 +506,7 @@ sidebar-keepWidth-button =
   .tooltiptext = Keep This Panel Width
 
 sidebar2-keep-width-for-global =
-  .label = Set the current panel size to all web panels that don't have a unique size
+  .label = Set the current panel size for all web panels that do not have a unique size
 
 bsb-context-add = 
   .label = Add This Page on Webpanel
@@ -652,11 +652,11 @@ delete-memo = Delete
 save-memo = Save
 memo-welcome-title = Welcome!
 memo-first-tip = Welcome to Floorp Notes! Here are some instructions on how to use it!
-memo-second-tip = Floorp Notes is a notepad that allows you to store multiple notes that are synchronized across devices. You must sign in to this Floorp with your Firefox account to enable synchronization.
-memo-third-tip = Floorp Notes will be saved in your Floorp settings. Also, Firefox Sync encrypts the contents of the sync with your Firefox account password, so no one but you knows the contents.
-memo-fourth-tip = Firefox Sync is not a backup service. We recommend that you make backups.
+memo-second-tip = Floorp Notes is a notepad that lets you store multiple notes that sync across devices. To enable synchronization, you need to sign in to Floorp with your Firefox account.
+memo-third-tip = Floorp Notes will be saved in your Floorp settings. Also, Firefox Sync encrypts the contents of the sync with your Firefox account password, so no one but you knows it's contents.
+memo-fourth-tip = Firefox Sync is not a backup service. We recommend you to create backups.
 memo-new-title = New Note
-chage-view-mode = Change view/Edit mode
+chage-view-mode = Toggle View/Edit Mode
 readonly-mode = Offline (Read-only)
 
 ######################################################################### Default bookmarks ###############################################################

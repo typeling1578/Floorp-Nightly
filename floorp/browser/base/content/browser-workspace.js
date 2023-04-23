@@ -11,6 +11,12 @@ const WORKSPACE_ALL_PREF = "floorp.browser.workspace.all";
 const WORKSPACE_TABS_PREF = "floorp.browser.workspace.tabs.state";
 
 function initWorkspace() { 
+    //first run
+    let l10n = new Localization(["browser/floorp.ftl"], true);
+    if (Services.prefs.getStringPref(WORKSPACE_CURRENT_PREF) == "") {
+      Services.prefs.setStringPref(WORKSPACE_CURRENT_PREF, l10n.formatValueSync("workspace-default"));
+      Services.prefs.setStringPref(WORKSPACE_ALL_PREF, l10n.formatValueSync("workspace-default"));
+    }
     let tabs = gBrowser.tabs;
     if(Services.prefs.getStringPref(WORKSPACE_TABS_PREF) == "[]"){
       for (let i = 0; i < tabs.length; i++) {
@@ -152,9 +158,12 @@ function addNewWorkspace() {
     workspaceAll.push(label);
     Services.prefs.setStringPref(WORKSPACE_ALL_PREF, workspaceAll);
     addWorkspaceElemToMenu(label);
-  } else {
+  } else if( result == false){
+    return;
+  } else{
     prompts.alert(null, l10n.formatValueSync("workspace-prompt-title"), l10n.formatValueSync("workspace-error") + "\n" + l10n.formatValueSync("workspace-error-discription"));
   }
+  console.log(result);
 }
 
 window.setTimeout(function(){
@@ -171,8 +180,8 @@ window.setTimeout(function(){
                     style="list-style-image: url('chrome://browser/skin/topsites.svg');">
       <menupopup id="workspace-menu" context="workspace-menu-context">
          <menuseparator id="workspace-menu-separator"/>
-         <toolbarbutton label="Add new workspace" style="list-style-image: url('chrome://global/skin/icons/plus.svg');"
-                        class="subviewbutton subviewbutton-nav" oncommand="addNewWorkspace()"/>
+         <toolbarbutton style="list-style-image: url('chrome://global/skin/icons/plus.svg');"
+                        data-l10n-id="workspace-add" class="subviewbutton subviewbutton-nav" oncommand="addNewWorkspace()"/>
       </menupopup>
     </toolbarbutton>
     `

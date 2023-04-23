@@ -685,3 +685,7 @@ workspace-error-discription = Workspace name is empty or already exists.
 workspace-button = Workspace
   .label = Workspace
   .tooltiptext = Workspace
+
+workspace-default = Default Workspace
+workspace-add = 
+ .label= Add New Workspace

@@ -139,8 +139,8 @@ pref("floorp.browser.native.downloadbar.enabled", false);
 
 //ワークスペース
 pref("floorp.browser.workspace.tabs.state", "[]");
-pref("floorp.browser.workspace.current", "Default");
-pref("floorp.browser.workspace.all", "Default");
+pref("floorp.browser.workspace.current", "");
+pref("floorp.browser.workspace.all", "");
 /*----------------------------------------------------------------------------------------------------------------------------------*/
 
 //検索エンジン

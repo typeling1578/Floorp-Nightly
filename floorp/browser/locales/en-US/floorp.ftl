@@ -35,6 +35,8 @@ multirow-tabs-value = Number of rows when multi-row tabs are enabled
 enable-tab-sleep = 
  .label = Enable Tab Sleep
 tab-sleep-timeout-minutes-value = Time to put tabs to sleep (minutes)
+enable-floorp-workspace =
+ .label = Enable WorkSpace
 enable-tab-scroll-change =
  .label = Switch Tabs by Scrolling
 enable-double-click-block =
@@ -674,3 +676,18 @@ floorp-show-all-downloads =
   .label = Show all downloads
   .accesskey = S
   .tooltiptext = Show all downloads
+
+######################################################################### workspace ###############################################################
+
+workspace-prompt-title = Floorp Workspace
+please-enter-workspace-name = Please enter new workspace name.
+workspace-error = ERROR!
+workspace-error-discription = Workspace name is empty or already exists.
+
+workspace-button = Workspace
+  .label = Workspace
+  .tooltiptext = Workspace
+
+workspace-default = Default Workspace
+workspace-add = 
+ .label= Add New Workspace

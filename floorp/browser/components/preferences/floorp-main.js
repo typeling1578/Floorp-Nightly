@@ -28,6 +28,7 @@ Preferences.addAll([
   { id: "floorp.openLinkInExternal.browserId", type: "string" },
   { id: "floorp.browser.tabs.openNewTabPosition", type: "int" },
   { id: "services.sync.prefs.sync.floorp.browser.note.memos", type: "bool" },
+  { id: "floorp.browser.workspace.tab.enabled", type: "bool" },
 ]);
 
 window.addEventListener("pageshow", async function() {

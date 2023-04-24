@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 //use _gBrowser instead of gBrowser when startup
-const WORKSPACE_TAB_ENABLED_PREF = "floorp.browser.workspace.tab";
+const WORKSPACE_TAB_ENABLED_PREF = "floorp.browser.workspace.tab.enabled";
 const WORKSPACE_CURRENT_PREF = "floorp.browser.workspace.current";
 const WORKSPACE_ALL_PREF = "floorp.browser.workspace.all";
 const WORKSPACE_TABS_PREF = "floorp.browser.workspace.tabs.state";
@@ -26,7 +26,7 @@ function initWorkspace() {
       for (let i = 0; i < tabs.length; i++) {
         let tabsState = JSON.parse(Services.prefs.getStringPref(WORKSPACE_TABS_PREF));
         let tabStateSetting = tabsState[i];
-        let workspace = tabStateSetting[i].workspace;
+        let workspace = tabStateSetting?.[i]?.workspace ?? Services.prefs.getStringPref(WORKSPACE_CURRENT_PREF);
         tabs[i].setAttribute("floorp-workspace", workspace);
       }
     }
@@ -85,7 +85,7 @@ function setCurrentWorkspace() {
   for (let i = 0; i < tabs.length; i++) {
     let tab = tabs[i];
     let workspace = tab.getAttribute("floorp-workspace");
-    if (workspace == currentWorkspace) {
+    if (workspace == currentWorkspace || !Services.prefs.getBoolPref(WORKSPACE_TAB_ENABLED_PREF)) {
       gBrowser.showTab(tab);
       lastTab = tab
     } else {
@@ -190,6 +190,7 @@ window.setTimeout(function(){
     </toolbarbutton>
     `
   );document.querySelector(".toolbar-items").before(toolbarButtonEle);
+  if(!Services.prefs.getBoolPref(WORKSPACE_TAB_ENABLED_PREF)) document.querySelector("#workspace-button").style.display = "none"
 
   //run codes
   initWorkspace();
@@ -223,5 +224,10 @@ window.setTimeout(function(){
   Services.prefs.addObserver(WORKSPACE_CURRENT_PREF, function() {
     setCurrentWorkspace();
   }, false);
+
+  Services.prefs.addObserver(WORKSPACE_TAB_ENABLED_PREF,function(){
+    document.querySelector("#workspace-button").style.display = Services.prefs.getBoolPref(WORKSPACE_TAB_ENABLED_PREF) ? "" : "none"    
+    setCurrentWorkspace()
+  },false)
 
 }, 1000);

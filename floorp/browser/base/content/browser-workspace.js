@@ -32,7 +32,7 @@ function initWorkspace() {
         const tabsState = JSON.parse(workspace_tabs_string_pref);
         const tabStateSetting = tabsState[i];
         const workspace = tabStateSetting?.[i]?.workspace ?? workspace_current_string_pref;
-        tabs.setAttribute("floorp-workspace", workspace);
+        tabs[i].setAttribute("floorp-workspace", workspace);
       };
     }
 

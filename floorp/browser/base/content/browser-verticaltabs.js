@@ -30,6 +30,13 @@ function setVerticalTabs() {
       }
     }, 500);
 
+    window.setTimeout(function () {
+      //move workspace button
+      let workspaceButton = document.getElementById("workspace-button");
+      let customizeTarget = document.getElementById("nav-bar-customization-target");
+      customizeTarget.before(workspaceButton);
+    }, 2000);
+
     //toolbar modification
     var Tag = document.createElement("style");
     Tag.id = "verticalTabsStyle"
@@ -62,6 +69,10 @@ function setVerticalTabs() {
       tabBrowserArrowScrollBox.removeAttribute("disabled");
       let sidebarBox = document.getElementById("sidebar-box");
       //sidebarBox.style.removeProperty("overflow-y")
+
+      //move workspace button
+      let workspaceButton = document.getElementById("workspace-button");
+      document.querySelector(".toolbar-items").before(workspaceButton);
     }
   }
 

@@ -80,16 +80,20 @@ function setCurrentWorkspace() {
   let tabs = gBrowser.tabs;
   let currentWorkspace = Services.prefs.getStringPref(WORKSPACE_CURRENT_PREF);
 
+  document.querySelector(`[floorp-lastVisibleTab]`)?.removeAttribute("floorp-lastVisibleTab")
+  let lastTab = null
   for (let i = 0; i < tabs.length; i++) {
     let tab = tabs[i];
     let workspace = tab.getAttribute("floorp-workspace");
     if (workspace == currentWorkspace) {
       gBrowser.showTab(tab);
+      lastTab = tab
     } else {
       gBrowser.hideTab(tab);
     }
     document.getElementById("workspace-button").setAttribute("label", currentWorkspace);
   }
+  lastTab.setAttribute("floorp-lastVisibleTab","true")
 } 
 
 function saveWorkspaceState() {
@@ -193,12 +197,18 @@ window.setTimeout(function(){
 
   gBrowser.tabContainer.addEventListener("TabOpen", function() {
     let tabs = gBrowser.tabs;
+    let lastTab = null
+    document.querySelector(`[floorp-lastVisibleTab]`)?.removeAttribute("floorp-lastVisibleTab")
     for (let i = 0; i < tabs.length; i++) {
       let tab = tabs[i];
       if (!tab.hasAttribute("floorp-workspace")) {
         tab.setAttribute("floorp-workspace", Services.prefs.getStringPref(WORKSPACE_CURRENT_PREF));
       }
+      if(tab.hasAttribute("floorp-workspace") == Services.prefs.getStringPref(WORKSPACE_CURRENT_PREF)){
+        lastTab = tab
+      }
     }
+    lastTab.setAttribute("floorp-lastVisibleTab","true")
     saveWorkspaceState();
   }, false);
 

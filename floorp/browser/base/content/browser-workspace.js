@@ -12,28 +12,34 @@ const WORKSPACE_TABS_PREF = "floorp.browser.workspace.tabs.state";
 
 function initWorkspace() { 
     //first run
-    let l10n = new Localization(["browser/floorp.ftl"], true);
+    const l10n = new Localization(["browser/floorp.ftl"], true);
     if (Services.prefs.getStringPref(WORKSPACE_CURRENT_PREF) == "") {
-      Services.prefs.setStringPref(WORKSPACE_CURRENT_PREF, l10n.formatValueSync("workspace-default"));
-      Services.prefs.setStringPref(WORKSPACE_ALL_PREF, l10n.formatValueSync("workspace-default"));
+      const defaultWorkspace = l10n.formatValueSync("workspace-default");
+      Services.prefs.setStringPref(WORKSPACE_CURRENT_PREF, defaultWorkspace);
+      Services.prefs.setStringPref(WORKSPACE_ALL_PREF, defaultWorkspace);
     }
+    
     let tabs = gBrowser.tabs;
-    if(Services.prefs.getStringPref(WORKSPACE_TABS_PREF) == "[]"){
+    const workspace_tabs_string_pref = Services.prefs.getStringPref(WORKSPACE_TABS_PREF)
+    const workspace_current_string_pref = Services.prefs.getStringPref(WORKSPACE_CURRENT_PREF)
+    
+    if(workspace_tabs_string_pref == "[]"){
       for (let i = 0; i < tabs.length; i++) {
-        tabs[i].setAttribute("floorp-workspace", Services.prefs.getStringPref(WORKSPACE_CURRENT_PREF));
+        tabs[i].setAttribute("floorp-workspace", workspace_current_string_pref);
       }
     } else {
       for (let i = 0; i < tabs.length; i++) {
-        let tabsState = JSON.parse(Services.prefs.getStringPref(WORKSPACE_TABS_PREF));
-        let tabStateSetting = tabsState[i];
-        let workspace = tabStateSetting?.[i]?.workspace ?? Services.prefs.getStringPref(WORKSPACE_CURRENT_PREF);
-        tabs[i].setAttribute("floorp-workspace", workspace);
-      }
+        const tabsState = JSON.parse(workspace_tabs_string_pref);
+        const tabStateSetting = tabsState[i];
+        const workspace = tabStateSetting?.[i]?.workspace ?? workspace_current_string_pref;
+        tabs.setAttribute("floorp-workspace", workspace);
+      };
     }
+
     //add workspace menu form pref
     let workspaceAll = Services.prefs.getStringPref(WORKSPACE_ALL_PREF).split(",");
     for (let i = 0; i < workspaceAll.length; i++) {
-      let label = workspaceAll[i];
+      const label = workspaceAll[i];
       addWorkspaceElemToMenu(label);
     }
     //
@@ -55,10 +61,10 @@ function deleteworkspace(workspace) {
   Services.prefs.setCharPref(WORKSPACE_ALL_PREF, allWorkspaces.join(","));
 
   //delete workspace tabs
-  let tabs = gBrowser.tabs;
+  const tabs = gBrowser.tabs;
   for (let i = 0; i < tabs.length; i++) {
-    let tab = tabs[i];
-    let tabWorkspace = tab.getAttribute("floorp-workspace");
+    const tab = tabs[i];
+    const tabWorkspace = tab.getAttribute("floorp-workspace");
     if (tabWorkspace == workspace) {
       gBrowser.removeTab(tab);
     }
@@ -68,7 +74,7 @@ function deleteworkspace(workspace) {
   menuitem.remove();
   
   //move to other workspace
-  let currentWorkspace = Services.prefs.getStringPref(WORKSPACE_CURRENT_PREF);
+  const currentWorkspace = Services.prefs.getStringPref(WORKSPACE_CURRENT_PREF);
   if (currentWorkspace == workspace) {
     Services.prefs.setStringPref(WORKSPACE_CURRENT_PREF, allWorkspaces[0]);
     setCurrentWorkspace();
@@ -77,13 +83,13 @@ function deleteworkspace(workspace) {
 }
 
 function setCurrentWorkspace() {
-  let tabs = gBrowser.tabs;
+  const tabs = gBrowser.tabs;
   let currentWorkspace = Services.prefs.getStringPref(WORKSPACE_CURRENT_PREF);
 
   document.querySelector(`[floorp-lastVisibleTab]`)?.removeAttribute("floorp-lastVisibleTab")
   let lastTab = null
   for (let i = 0; i < tabs.length; i++) {
-    let tab = tabs[i];
+    const tab = tabs[i];
     let workspace = tab.getAttribute("floorp-workspace");
     if (workspace == currentWorkspace || !Services.prefs.getBoolPref(WORKSPACE_TAB_ENABLED_PREF)) {
       gBrowser.showTab(tab);
@@ -97,17 +103,12 @@ function setCurrentWorkspace() {
 } 
 
 function saveWorkspaceState() {
-  let tabs = gBrowser.tabs;
-  let tabStateObject = [];
-  for (let i = 0; i < tabs.length; i++) {
-    let tab = tabs[i];
-    let tabState = {
-     [i]: {
-        "workspace": tab.getAttribute("floorp-workspace"),
-      }
+  const tabs = gBrowser.tabs;
+  const tabStateObject = tabs.map((tab, i) => ({
+    [i]: {
+      "workspace": tab.getAttribute("floorp-workspace"),
     }
-    tabStateObject.push(tabState);
-  }
+  }));
   Services.prefs.setStringPref(WORKSPACE_TABS_PREF, JSON.stringify(tabStateObject));
 }
 

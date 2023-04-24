@@ -427,3 +427,12 @@ toolbar #workspace-button:not([disabled="true"], [checked], [open], :active):hov
 #workspace-delete > .toolbarbutton-icon {
   list-style-image: url("chrome://browser/skin/lepton/dismiss-filled.svg");
 }
+
+#workspace-button{
+  transition:all 0.2s ease !important;
+  appearance:none !important;
+}
+#workspace-button:hover{
+  color:inherit;
+  background-color: color-mix(in srgb, currentColor 11%, transparent) !important;
+}

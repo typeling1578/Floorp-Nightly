@@ -9,14 +9,14 @@ const WORKSPACE_TAB_ENABLED_PREF = "floorp.browser.workspace.tab.enabled";
 const WORKSPACE_CURRENT_PREF = "floorp.browser.workspace.current";
 const WORKSPACE_ALL_PREF = "floorp.browser.workspace.all";
 const WORKSPACE_TABS_PREF = "floorp.browser.workspace.tabs.state";
+const l10n = new Localization(["browser/floorp.ftl"], true);
+const defaultWorkspaceName = l10n.formatValueSync("workspace-default")
 
 function initWorkspace() { 
     //first run
-    const l10n = new Localization(["browser/floorp.ftl"], true);
     if (Services.prefs.getStringPref(WORKSPACE_CURRENT_PREF) == "") {
-      const defaultWorkspace = l10n.formatValueSync("workspace-default");
-      Services.prefs.setStringPref(WORKSPACE_CURRENT_PREF, defaultWorkspace);
-      Services.prefs.setStringPref(WORKSPACE_ALL_PREF, defaultWorkspace);
+      Services.prefs.setStringPref(WORKSPACE_CURRENT_PREF, defaultWorkspaceName);
+      Services.prefs.setStringPref(WORKSPACE_ALL_PREF, defaultWorkspaceName);
     }
     
     let tabs = gBrowser.tabs;
@@ -54,7 +54,7 @@ function initWorkspace() {
 }
 
 function deleteworkspace(workspace) {
- if  (workspace !== "Default") {
+ if  (workspace !== defaultWorkspaceName) {
   let allWorkspaces = Services.prefs.getCharPref(WORKSPACE_ALL_PREF).split(",");
   let index = allWorkspaces.indexOf(workspace);
   allWorkspaces.splice(index, 1);
@@ -99,7 +99,7 @@ function setCurrentWorkspace() {
     }
     document.getElementById("workspace-button").setAttribute("label", currentWorkspace);
   }
-  lastTab.setAttribute("floorp-lastVisibleTab","true")
+  lastTab?.setAttribute("floorp-lastVisibleTab","true")
 } 
 
 function saveWorkspaceState() {
@@ -118,11 +118,17 @@ function addWorkspaceElemToMenu(label) {
     <toolbarbutton id="workspace-label" label="${label}" 
               class="toolbarbutton-1 workspace-item" workspace="${label}"
               oncommand="changeWorkspace('${label}')"/>
-    <toolbarbutton id="workspace-delete" class="workspace-item-delete toolbarbutton-1"
-                   oncommand="deleteworkspace('${label}')"/>
   </hbox>
   `);
   document.getElementById("workspace-menu-separator").before(workspaceItemElem);
+
+  if (label !== defaultWorkspaceName) {
+    let deleteButtonElem = window.MozXULElement.parseXULToFragment(`
+        <toolbarbutton id="workspace-delete" class="workspace-item-delete toolbarbutton-1"
+                       oncommand="deleteworkspace('${label}')"/>
+    `);
+    document.getElementById(`workspace-${label}`).appendChild(deleteButtonElem);
+  }
 }
 
 function changeWorkspace(label) {
@@ -160,15 +166,19 @@ function addNewWorkspace() {
   if (result && allWorkspace.indexOf(input.value) == -1 && input.value != "") {
     let label = input.value;
     let workspaceAll = Services.prefs.getStringPref(WORKSPACE_ALL_PREF).split(",");
+    try {
+      addWorkspaceElemToMenu(label);
+    } catch (e) {
+      prompts.alert(null, l10n.formatValueSync("workspace-prompt-title"), l10n.formatValueSync("workspace-error") + "\n" + l10n.formatValueSync("workspace-error-discription"));
+      return;
+    }
     workspaceAll.push(label);
     Services.prefs.setStringPref(WORKSPACE_ALL_PREF, workspaceAll);
-    addWorkspaceElemToMenu(label);
-  } else if( result == false){
+  } else if(result == false){
     return;
-  } else{
+  } else {
     prompts.alert(null, l10n.formatValueSync("workspace-prompt-title"), l10n.formatValueSync("workspace-error") + "\n" + l10n.formatValueSync("workspace-error-discription"));
   }
-  console.log(result);
 }
 
 window.setTimeout(function(){
@@ -210,7 +220,7 @@ window.setTimeout(function(){
         lastTab = tab
       }
     }
-    lastTab.setAttribute("floorp-lastVisibleTab","true")
+    lastTab?.setAttribute("floorp-lastVisibleTab","true")
     saveWorkspaceState();
   }, false);
 

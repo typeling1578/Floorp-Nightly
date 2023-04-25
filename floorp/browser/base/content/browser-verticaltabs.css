@@ -8,6 +8,10 @@
      --tab-overflow-pinned-tabs-width: 0px !important;
    }
    
+   .tabbrowser-tab[hidden="true"] {
+    display: none !important;
+  }
+   
    #TabsToolbar-customization-target {
      width: -moz-available !important;
      min-width: -moz-available !important;

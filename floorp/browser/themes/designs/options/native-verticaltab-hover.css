@@ -32,7 +32,7 @@
   
   /*close*/
   #sidebar-box {
-    --hovering-verticaltab-width: calc( var(--default-vertitaltab-width));
+    --hovering-verticaltab-width: calc( var(--default-vertitaltab-width) + 12px);
     width: var(--default-vertitaltab-width) !important;
     transition: all 200ms !important;
     transition-delay: 0.2s !important;
@@ -41,6 +41,21 @@
 #sidebar-box:not(:hover) .tab-close-button{
   display:none !important;
   --paxmod-display-close-button:none !important;
+}
+
+#sidebar-box:not(:hover) .tab-label-container{
+  display: none !important;
+}
+#sidebar-box:not(:hover)  :is(.tab-icon-stack,.tab-icon-image){
+margin:auto !important;
+}
+
+#sidebar-box:not(:hover) .tab-content{
+  --inline-tab-padding:0px !important;
+}
+#sidebar-box .tabbrowser-tab{
+  margin-right: 1px !important;
+  margin-left: 1px !important;
 }
   
   /*open*/

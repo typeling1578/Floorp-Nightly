@@ -42,6 +42,13 @@ function setVerticalTabs() {
     Tag.id = "verticalTabsStyle"
     Tag.textContent = `@import url("chrome://browser/content/browser-verticaltabs.css");`;
     document.head.appendChild(Tag);
+
+    if(document.getElementById("floorp-vthover") == null && Services.prefs.getBoolPref("floorp.verticaltab.hover.enabled")){
+      var Tag = document.createElement("style");
+     Tag.innerText = `@import url(chrome://browser/skin/options/native-verticaltab-hover.css)`;
+     Tag.setAttribute("id", "floorp-vthover");
+     document.head.appendChild(Tag);
+    }
   } else {
     document.querySelector("#verticalTabsStyle")?.remove()
     let verticalTabs = document.querySelector("#toolbar-items-verticaltabs")
@@ -73,6 +80,8 @@ function setVerticalTabs() {
       //move workspace button
       let workspaceButton = document.getElementById("workspace-button");
       document.querySelector(".toolbar-items").before(workspaceButton);
+
+      document.getElementById("floorp-vthover")?.remove();
     }
   }
 

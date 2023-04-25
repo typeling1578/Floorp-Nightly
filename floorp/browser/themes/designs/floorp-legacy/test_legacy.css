@@ -2114,7 +2114,7 @@ menupopup> :is(menu:not(.menu-iconic), menuitem:not(.menuitem-iconic, [type="che
   padding-inline-start: 8px !important;
 }
 
-#browser .tabbrowser-tab.tabbrowser-tab[pinned]{
+.tabbrowser-tab.tabbrowser-tab[pinned]:not(#browser *){
   padding-inline-start:5px !important;
   padding-inline-end:5px !important;
 }
@@ -2180,7 +2180,7 @@ menupopup> :is(menu:not(.menu-iconic), menuitem:not(.menuitem-iconic, [type="che
   }
 }
 
-#tabbrowser-tabs #tabs-newtab-button {
+#tabbrowser-tabs #tabs-newtab-button:not(#browser *) {
   margin-inline-start: 6px !important;
   margin-left: -8px !important;
 }

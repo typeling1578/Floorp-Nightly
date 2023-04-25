@@ -93,7 +93,7 @@ function setCurrentWorkspace() {
     }
     document.getElementById("workspace-button").setAttribute("label", currentWorkspace);
   }
-  lastTab.setAttribute("floorp-lastVisibleTab","true")
+  lastTab?.setAttribute("floorp-lastVisibleTab","true")
 } 
 
 function saveWorkspaceState() {
@@ -209,7 +209,7 @@ window.setTimeout(function(){
         lastTab = tab
       }
     }
-    lastTab.setAttribute("floorp-lastVisibleTab","true")
+    lastTab?.setAttribute("floorp-lastVisibleTab","true")
     saveWorkspaceState();
   }, false);
 

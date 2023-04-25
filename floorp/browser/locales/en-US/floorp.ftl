@@ -688,6 +688,6 @@ workspace-button = Workspace
   .label = Workspace
   .tooltiptext = Workspace
 
-workspace-default = Default Workspace
+workspace-default = Default
 workspace-add = 
  .label= Add New Workspace

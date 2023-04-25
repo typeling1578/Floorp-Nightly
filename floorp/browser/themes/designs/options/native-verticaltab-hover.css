@@ -21,6 +21,7 @@
     position: relative !important;
     clip-path: inset(0) !important;
     z-index: 1 !important;
+    transition-delay: 0.2s !important;
   }
   
   :root {

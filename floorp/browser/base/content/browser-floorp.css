@@ -408,7 +408,7 @@ toolbar #workspace-button:not([disabled="true"], [checked], [open], :active):hov
 }
 
 #workspace-label {
-  width: 80%;
+  width: 75%;
 }
 
 #workspace-label > .toolbarbutton-icon {

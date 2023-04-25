@@ -682,7 +682,7 @@ floorp-show-all-downloads =
 workspace-prompt-title = Floorp Workspace
 please-enter-workspace-name = Please enter new workspace name.
 workspace-error = ERROR!
-workspace-error-discription = Workspace name is empty or already exists.
+workspace-error-discription = Workspace name is invalid or already exists.
 
 workspace-button = Workspace
   .label = Workspace

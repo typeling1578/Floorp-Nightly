@@ -133,6 +133,7 @@ pref("floorp.browser.tabs.openNewTabPosition", -1);
 
 //ネイティブ実装垂直タブ
 pref("floorp.browser.native.verticaltabs.enabled", false);
+pref("floorp.verticaltab.hover.enabled", false);
 
 //ネイティブ実装ダウンロードバー
 pref("floorp.browser.native.downloadbar.enabled", false);

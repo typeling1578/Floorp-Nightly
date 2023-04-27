@@ -92,7 +92,7 @@ jobs:
         echo Replace rustc
         aria2c "https://firefox-ci-tc.services.mozilla.com/api/index/v1/task/gecko.cache.level-3.toolchains.v3.linux64-rust-windows-1.68.latest/artifacts/public%2Fbuild%2Frustc.tar.zst" -o rustc.tar.zst
         tar --zstd -xvf rustc.tar.zst -C $RUNNER_USERDIR/win-cross
-        echo 'export RUSTC="$RUNNER_USERDIR/win-crosstool/rustc/bin/rustc"' >> mozconfig
+        echo 'export RUSTC="$RUNNER_USERDIR/win-cross/rustc/bin/rustc"' >> mozconfig
         
         echo Setup Visual Studio
         sudo apt install -y msitools python3-pip
@@ -289,7 +289,7 @@ jobs:
         echo Replace rustc
         aria2c "https://firefox-ci-tc.services.mozilla.com/api/index/v1/task/gecko.cache.level-3.toolchains.v3.linux64-rust-windows-1.68.latest/artifacts/public%2Fbuild%2Frustc.tar.zst" -o rustc.tar.zst
         tar --zstd -xvf rustc.tar.zst -C $RUNNER_USERDIR/win-cross
-        echo 'export RUSTC="$RUNNER_USERDIR/win-crosstool/rustc/bin/rustc"' >> mozconfig
+        echo 'export RUSTC="$RUNNER_USERDIR/win-cross/rustc/bin/rustc"' >> mozconfig
 
         echo Setup Visual Studio
         sudo apt install -y msitools python3-pip

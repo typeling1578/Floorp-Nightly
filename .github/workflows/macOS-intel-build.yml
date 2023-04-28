@@ -12,7 +12,7 @@ jobs:
     - name: Create environment
       run: |
         git clone https://github.com/floorp-projects/l10n-central
-        ./mach bootstrap
+        ./mach --no-interactive bootstrap --application-choice browser
         echo 'ac_add_options --disable-tests' >> mozconfig
         echo 'ac_add_options --disable-updater' >> mozconfig
         echo 'ac_add_options --with-app-name=floorp' >> mozconfig

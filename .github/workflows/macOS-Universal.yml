@@ -22,6 +22,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+
     - uses: actions/setup-python@v4
       with:
         python-version: '3.10' 
@@ -41,10 +42,10 @@ jobs:
         echo 'ac_add_options --enable-proxy-bypass-protection' >> mozconfig
         echo 'ac_add_options --enable-unverified-updates' >> mozconfig
         echo 'ac_add_options --enable-update-channel=release' >> mozconfig
-        echo 'ac_add_options --with-mozilla-api-keyfile=/Users/runner/work/${{ github.event.repository.name }}/${{ github.event.repository.name }}/floorp/apis/api-mozilla-key' >> mozconfig
-        echo 'ac_add_options --with-google-location-service-api-keyfile=/Users/runner/work/${{ github.event.repository.name }}/${{ github.event.repository.name }}/floorp/apis/api-google-location-service-key' >> mozconfig
-        echo 'ac_add_options --with-google-safebrowsing-api-keyfile=/Users/runner/work/${{ github.event.repository.name }}/${{ github.event.repository.name }}/floorp/apis/api-google-safe-browsing-key' >> mozconfig
-        echo 'ac_add_options --with-l10n-base=/Users/runner/work/${{ github.event.repository.name }}/${{ github.event.repository.name }}/l10n-central/l10n-central' >> mozconfig
+        echo 'ac_add_options --with-mozilla-api-keyfile=$PWD/floorp/apis/api-mozilla-key' >> mozconfig
+        echo 'ac_add_options --with-google-location-service-api-keyfile=$PWD/floorp/apis/api-google-location-service-key' >> mozconfig
+        echo 'ac_add_options --with-google-safebrowsing-api-keyfile=$PWD/floorp/apis/api-google-safe-browsing-key' >> mozconfig
+        echo 'ac_add_options --with-l10n-base=$PWD/l10n-central/l10n-central' >> mozconfig
         echo 'ac_add_options --enable-bootstrap' >> mozconfig
         echo 'ac_add_options --target=aarch64-apple-darwin' >> mozconfig
         echo 'ac_add_options "--enable-optimize=-O2"' >> mozconfig
@@ -72,6 +73,7 @@ jobs:
       with:
         name: obj-aarch64-apple-darwin
         path: obj-aarch64-apple-darwin.tar.xz
+
   build-intel:
     runs-on: macos-latest
 
@@ -97,10 +99,10 @@ jobs:
         echo 'ac_add_options --enable-proxy-bypass-protection' >> mozconfig
         echo 'ac_add_options --enable-unverified-updates' >> mozconfig
         echo 'ac_add_options --enable-update-channel=release' >> mozconfig
-        echo 'ac_add_options --with-mozilla-api-keyfile=/Users/runner/work/${{ github.event.repository.name }}/${{ github.event.repository.name }}/floorp/apis/api-mozilla-key' >> mozconfig
-        echo 'ac_add_options --with-google-location-service-api-keyfile=/Users/runner/work/${{ github.event.repository.name }}/${{ github.event.repository.name }}/floorp/apis/api-google-location-service-key' >> mozconfig
-        echo 'ac_add_options --with-google-safebrowsing-api-keyfile=/Users/runner/work/${{ github.event.repository.name }}/${{ github.event.repository.name }}/floorp/apis/api-google-safe-browsing-key' >> mozconfig
-        echo 'ac_add_options --with-l10n-base=/Users/runner/work/${{ github.event.repository.name }}/${{ github.event.repository.name }}/l10n-central/l10n-central' >> mozconfig
+        echo 'ac_add_options --with-mozilla-api-keyfile=$PWD/floorp/apis/api-mozilla-key' >> mozconfig
+        echo 'ac_add_options --with-google-location-service-api-keyfile=$PWD/floorp/apis/api-google-location-service-key' >> mozconfig
+        echo 'ac_add_options --with-google-safebrowsing-api-keyfile=$PWD/floorp/apis/api-google-safe-browsing-key' >> mozconfig
+        echo 'ac_add_options --with-l10n-base=$PWD/l10n-central/l10n-central' >> mozconfig
         echo 'ac_add_options --enable-bootstrap' >> mozconfig
         echo 'ac_add_options --target=x86_64-apple-darwin' >> mozconfig
         echo 'ac_add_options "--enable-optimize=-O2 -march=nehalem -mtune=haswell -w"' >> mozconfig
@@ -128,6 +130,7 @@ jobs:
       with:
         name: obj-x86_64-apple-darwin
         path: obj-x86_64-apple-darwin.tar.xz
+
   integration:
     needs: [build-m1, build-intel]
     runs-on: macos-latest
@@ -152,7 +155,7 @@ jobs:
 
     - name: Integration 🗃 & Package 📦 
       run: |       
-        ./mach python ./toolkit/mozapps/installer/unify.py ./obj-x86_64-apple-darwin/dist/${{ github.event.repository.name }}/${{ github.event.repository.name }}.app ./obj-aarch64-apple-darwin/dist/${{ github.event.repository.name }}/${{ github.event.repository.name }}.app
+        ./mach python ./toolkit/mozapps/installer/unify.py ./obj-x86_64-apple-darwin/dist/Floorp/Floorp.app ./obj-aarch64-apple-darwin/dist/Floorp/Floorp.app
         ./mach python -m mozbuild.action.make_dmg ./obj-x86_64-apple-darwin/dist/Floorp floorp-macOS-universal-temp.dmg
         unzip ./.github/base.zip
         hdiutil attach ./floorp-macOS-universal-temp.dmg
@@ -166,6 +169,7 @@ jobs:
       with:
         name: Universal-Artifact
         path: floorp-macOS-universal.dmg
+
   cleanup:
     needs: integration
     runs-on: ubuntu-latest

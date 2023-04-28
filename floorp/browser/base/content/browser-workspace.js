@@ -206,7 +206,8 @@ window.setTimeout(function(){
       </menupopup>
     </toolbarbutton>
     `
-  );document.querySelector(".toolbar-items").before(toolbarButtonEle);
+  );
+  document.querySelector(".toolbar-items").before(toolbarButtonEle);
   if(!Services.prefs.getBoolPref(WORKSPACE_TAB_ENABLED_PREF)) document.querySelector("#workspace-button").style.display = "none"
 
   //run codes

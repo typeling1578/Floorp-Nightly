@@ -268,7 +268,8 @@
 }
 
 :root[inDOMFullscreen] :is(#sidebar-select-box),
-:root[inFullscreen]:not([macOSNativeFullscreen]) :is(#sidebar-select-box) {
+:root[inFullscreen]:not([macOSNativeFullscreen]) :is(#sidebar-select-box),
+*|*:root[chromehidden~="toolbar"] #sidebar-select-box {
   display: none;
 }
 
@@ -435,4 +436,10 @@ toolbar #workspace-button:not([disabled="true"], [checked], [open], :active):hov
 #workspace-button:hover{
   color:inherit;
   background-color: color-mix(in srgb, currentColor 11%, transparent) !important;
+}
+
+:root[inDOMFullscreen] :is(#workspace-button),
+:root[inFullscreen]:not([macOSNativeFullscreen]) :is(#workspace-button),
+*|*:root[chromehidden~="toolbar"] #workspace-button {
+  display: none;
 }

@@ -31,6 +31,8 @@ function setVerticalTabs() {
     }, 500);
 
     window.setTimeout(function () {
+      let list = Services.wm.getEnumerator("navigator:browser");
+      while (list.hasMoreElements()) { if (list.getNext() != window) return; }
       //move workspace button
       let workspaceButton = document.getElementById("workspace-button");
       let customizeTarget = document.getElementById("nav-bar-customization-target");

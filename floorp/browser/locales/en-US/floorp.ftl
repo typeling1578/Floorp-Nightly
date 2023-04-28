@@ -444,7 +444,7 @@ sidebar2-change-ua-panel =
 sidebar2-delete-panel =
   .label = Delete this panel
 
-sidebar-close-button =
+sidebar2-close-button =
   .tooltiptext = Close sidebar
 
 sidebar-back-button =
@@ -519,8 +519,6 @@ bsb-context-link-add =
 
 open-profile-dir = 
     .label = Open Profile Directory
-appmenuitem-reboot =
-    .label = Reboot
 
 ####################################################################### menu ###############################################################
 

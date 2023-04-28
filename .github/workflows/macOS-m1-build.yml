@@ -29,7 +29,7 @@ jobs:
         echo 'ac_add_options --with-l10n-base=$PWD/l10n-central/l10n-central' >> mozconfig
         echo 'ac_add_options --enable-bootstrap' >> mozconfig
         echo 'ac_add_options --target=aarch64-apple-darwin' >> mozconfig
-        echo 'ac_add_options "--enable-optimize=-O2"' >> mozconfig
+        echo 'ac_add_options --enable-optimize="-O2"' >> mozconfig
         echo 'ac_add_options --enable-rust-simd' >> mozconfig
         echo 'ac_add_options RUSTC_OPT_LEVEL=3' >> mozconfig
         echo 'MOZ_REQUIRE_SIGNING=' >> mozconfig

@@ -29,6 +29,8 @@ Preferences.addAll([
   { id: "floorp.browser.tabs.openNewTabPosition", type: "int" },
   { id: "services.sync.prefs.sync.floorp.browser.note.memos", type: "bool" },
   { id: "floorp.browser.workspace.tab.enabled", type: "bool" },
+  { id: "floorp.tabscroll.reverse", type: "bool" },
+  { id: "floorp.tabscroll.wrap", type: "bool" },
 ]);
 
 window.addEventListener("pageshow", async function() {
@@ -124,6 +126,19 @@ window.addEventListener("pageshow", async function() {
 
   document.getElementById("backUpNotesOption").addEventListener("click", function () {
     window.location.href = "about:preferences#notes";
+  });
+
+  Services.prefs.addObserver("toolkit.tabbox.switchByScrolling", function() {
+    let isEnabled = Services.prefs.getBoolPref("toolkit.tabbox.switchByScrolling");
+    let tabscrollReverse = document.querySelector('[preference="floorp.tabscroll.reverse"]');
+    let tabscrollWrap = document.querySelector('[preference="floorp.tabscroll.wrap"]');
+    if (isEnabled) {
+      tabscrollReverse.removeAttribute("disabled");
+      tabscrollWrap.removeAttribute("disabled");
+    } else {
+      tabscrollReverse.setAttribute("disabled", "true");
+      tabscrollWrap.setAttribute("disabled", "true");
+    }
   });
 
   {

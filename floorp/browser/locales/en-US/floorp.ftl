@@ -698,3 +698,9 @@ workspace-context-menu-selected-tab =
  .label = Selected tab cannot be moved
 move-tab-another-workspace =
  .label = Move to another workspace
+
+######################################################################### menubar item ###############################################################
+
+sharemode-menuitem =
+  .label = Share Mode
+  .accesskey = S

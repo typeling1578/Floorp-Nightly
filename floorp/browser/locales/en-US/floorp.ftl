@@ -693,3 +693,8 @@ workspace-button = Workspace
 workspace-default = Default
 workspace-add = 
  .label= Add New Workspace
+
+workspace-context-menu-selected-tab =
+ .label = Selected tab cannot be moved
+move-tab-another-workspace =
+ .label = Move to another workspace

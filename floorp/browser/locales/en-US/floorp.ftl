@@ -437,6 +437,9 @@ userjs-prompt = Floorp user.js
 apply-userjs-attention = This will overwrite the original user.js file.
 apply-userjs-attention2 = Please back up the original user.js file before using it.
 
+userjs-button = Open user.js options...
+userjs-select-option = Select user.js
+
 ## userjs Options
 
 default-userjs-label = Floorp Default

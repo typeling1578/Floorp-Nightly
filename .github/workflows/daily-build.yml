@@ -266,7 +266,7 @@ jobs:
 
     - name: Clone l10n-central 🧬
       run: |
-        git clone --depth 1 https://github.com/Floorp-Projects/l10n-central.git $RUNNER_USERDIR/l10n-central
+        git clone --depth 1 -b 11.0.0 https://github.com/Floorp-Projects/l10n-central.git $RUNNER_USERDIR/l10n-central
 
     - name: Setup 🪛
       run: |

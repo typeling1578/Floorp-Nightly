@@ -207,6 +207,8 @@ jobs:
       run: |
         export RUNNER_USERDIR=`echo ~`
         echo "RUNNER_USERDIR=$RUNNER_USERDIR" >> $GITHUB_ENV
+        export DISABLE_TELEMETRY=1
+        echo "DISABLE_TELEMETRY=$DISABLE_TELEMETRY" >> $GITHUB_ENV
 
     - name: Clean up (Self-hosted only)
       if: contains(matrix.runs-on, 'self-hosted')
@@ -367,6 +369,8 @@ jobs:
       run: |
         export RUNNER_USERDIR=`echo ~`
         echo "RUNNER_USERDIR=$RUNNER_USERDIR" >> $GITHUB_ENV
+        export DISABLE_TELEMETRY=1
+        echo "DISABLE_TELEMETRY=$DISABLE_TELEMETRY" >> $GITHUB_ENV
 
     - name: Change PPA mirror servers
       run: |

@@ -174,7 +174,7 @@ function addNewWorkspace() {
   var input = {placeHolder: "Workspace Name"};
   let result = prompts.prompt(null, l10n.formatValueSync("workspace-prompt-title"), l10n.formatValueSync("please-enter-workspace-name"), input, null, check);
 
-  if (result && allWorkspace.indexOf(input.value) == -1 && input.value != "") {
+  if (result && allWorkspace.indexOf(input.value) == -1 && input.value != "" && input.value.length < 20) {
     let label = input.value;
     let workspaceAll = Services.prefs.getStringPref(WORKSPACE_ALL_PREF).split(",");
     try {

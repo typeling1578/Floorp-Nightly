@@ -427,6 +427,8 @@ backup-option-button = Open Backup Options...
 restore-from-backup-prompt-title = Floorp Notes Restore Service
 restore-from-this-backup = Restore Notes to the state of this backup ?
 
+restore-button = Restore
+
 ## user.js
 header-userjs = user.js
 userjs-customize = Customize { -brand-short-name } with user.js
@@ -440,6 +442,7 @@ apply-userjs-attention2 = Please back up the original user.js file before using 
 userjs-button = Open user.js options...
 userjs-select-option = Select user.js
 
+apply-userjs-button = Apply
 ## userjs Options
 
 default-userjs-label = Floorp Default

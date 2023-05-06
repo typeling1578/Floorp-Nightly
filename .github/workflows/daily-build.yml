@@ -109,8 +109,6 @@ jobs:
         export UPDATE_CHANNEL="release"
         echo "DISPLAY_VERSION=$DISPLAY_VERSION" >> $GITHUB_ENV
         echo "UPDATE_CHANNEL=$UPDATE_CHANNEL" >> $GITHUB_ENV
-        
-        rm -rf "$RUNNER_USERDIR/.mozbuild/srcdirs/*/_virtualenvs/mach/lib/python*/site-packages/glean_sdk*"
 
     - name: Set Display Version
       run: |
@@ -308,8 +306,6 @@ jobs:
         export UPDATE_CHANNEL="release"
         echo "DISPLAY_VERSION=$DISPLAY_VERSION" >> $GITHUB_ENV
         echo "UPDATE_CHANNEL=$UPDATE_CHANNEL" >> $GITHUB_ENV
-        
-        rm -rf "$RUNNER_USERDIR/.mozbuild/srcdirs/*/_virtualenvs/mach/lib/python*/site-packages/glean_sdk*"
 
     - name: Set Display Version
       run: |
@@ -447,8 +443,6 @@ jobs:
         for line in "${mozconfig_file[@]}" ; do echo $line >> mozconfig ; done
         ./mach --no-interactive bootstrap --application-choice browser
         export DISPLAY_VERSION=`cat browser/config/version_display.txt`
-        
-        rm -rf "$RUNNER_USERDIR/.mozbuild/srcdirs/*/_virtualenvs/mach/lib/python*/site-packages/glean_sdk*"
 
     - name: Set Display Version
       run: |

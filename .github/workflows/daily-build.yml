@@ -21,8 +21,6 @@ jobs:
       run: |
         export RUNNER_USERDIR=`echo ~`
         echo "RUNNER_USERDIR=$RUNNER_USERDIR" >> $GITHUB_ENV
-        export DISABLE_TELEMETRY=1
-        echo "DISABLE_TELEMETRY=$DISABLE_TELEMETRY" >> $GITHUB_ENV
 
     - name: Clean up (Self-hosted only)
       if: contains(matrix.runs-on, 'self-hosted')
@@ -111,6 +109,8 @@ jobs:
         export UPDATE_CHANNEL="release"
         echo "DISPLAY_VERSION=$DISPLAY_VERSION" >> $GITHUB_ENV
         echo "UPDATE_CHANNEL=$UPDATE_CHANNEL" >> $GITHUB_ENV
+        
+        rm -rf "$RUNNER_USERDIR/.mozbuild/srcdirs/*/_virtualenvs/mach/lib/python*/site-packages/glean_sdk*"
 
     - name: Set Display Version
       run: |
@@ -207,8 +207,6 @@ jobs:
       run: |
         export RUNNER_USERDIR=`echo ~`
         echo "RUNNER_USERDIR=$RUNNER_USERDIR" >> $GITHUB_ENV
-        export DISABLE_TELEMETRY=1
-        echo "DISABLE_TELEMETRY=$DISABLE_TELEMETRY" >> $GITHUB_ENV
 
     - name: Clean up (Self-hosted only)
       if: contains(matrix.runs-on, 'self-hosted')
@@ -310,6 +308,8 @@ jobs:
         export UPDATE_CHANNEL="release"
         echo "DISPLAY_VERSION=$DISPLAY_VERSION" >> $GITHUB_ENV
         echo "UPDATE_CHANNEL=$UPDATE_CHANNEL" >> $GITHUB_ENV
+        
+        rm -rf "$RUNNER_USERDIR/.mozbuild/srcdirs/*/_virtualenvs/mach/lib/python*/site-packages/glean_sdk*"
 
     - name: Set Display Version
       run: |
@@ -369,8 +369,6 @@ jobs:
       run: |
         export RUNNER_USERDIR=`echo ~`
         echo "RUNNER_USERDIR=$RUNNER_USERDIR" >> $GITHUB_ENV
-        export DISABLE_TELEMETRY=1
-        echo "DISABLE_TELEMETRY=$DISABLE_TELEMETRY" >> $GITHUB_ENV
 
     - name: Change PPA mirror servers
       run: |
@@ -449,6 +447,8 @@ jobs:
         for line in "${mozconfig_file[@]}" ; do echo $line >> mozconfig ; done
         ./mach --no-interactive bootstrap --application-choice browser
         export DISPLAY_VERSION=`cat browser/config/version_display.txt`
+        
+        rm -rf "$RUNNER_USERDIR/.mozbuild/srcdirs/*/_virtualenvs/mach/lib/python*/site-packages/glean_sdk*"
 
     - name: Set Display Version
       run: |
